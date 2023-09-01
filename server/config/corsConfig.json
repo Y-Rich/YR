@@ -1,0 +1,5 @@
+{
+  "origin": ["http://localhost:3000", "http://192.168.0.64:3001"],
+  "methods": ["OPTIONS", "GET", "POST", "HEAD", "PUT", "DELETE"],
+  "credentials": true
+}
