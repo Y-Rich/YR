@@ -5,17 +5,21 @@ import { Title, Input, Button, LinkText } from '../../components/Components';
 const Login = () => {
   return (
     <LoginContainer>
-      <Title>Login</Title>
+      <Title>LOGIN</Title>
       <LoginBox>
-        <Input type="text" placeholder="Id를 입력하세요" />
-        <Input type="text" placeholder="password를 입력하세요" />
+        <Input type="text" placeholder="Please enter your email" />
+        <Input type="text" placeholder="Please enter your password" />
       </LoginBox>
       <SmallBox>
-        <LinkText to="/register">회원가입</LinkText>
-        <LinkText to="/findpassword">비밀번호 찾기</LinkText>
+        <LinkText to="/register" className="smallbox">
+          SIGN IN
+        </LinkText>
+        <LinkText to="/findpassword" className="smallbox">
+          FIND PW
+        </LinkText>
       </SmallBox>
       <LoginBox>
-        <Button>Submit</Button>
+        <Button>SUBMIT</Button>
       </LoginBox>
     </LoginContainer>
   );

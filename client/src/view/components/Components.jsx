@@ -20,6 +20,9 @@ export const Input = styled.input`
     outline: none;
     box-shadow: none;
   }
+  &::-webkit-input-placeholder {
+    /* text-align: center; */
+  }
 `;
 
 export const Button = styled.button`
@@ -32,6 +35,7 @@ export const Button = styled.button`
   width: 40vw;
   height: 8vh;
   cursor: pointer;
+  font-weight: 600;
   &:hover {
     background-color: #4379cc;
   }
@@ -41,10 +45,36 @@ export const LinkText = styled(Link)`
   padding: 20px;
   color: #000000;
   text-decoration: none;
+  font-weight: 800;
   &:hover {
     color: #5498ff;
   }
   &:focus {
     color: #5498ff;
+  }
+  &.logo {
+    font-size: 20px;
+    font-family: 'CWDangamAsac-Bold';
+    &:focus {
+      color: #000000;
+    }
+  }
+  &.edukit {
+    color: #d9d9d9;
+    &:hover {
+      color: #5498ff;
+    }
+  }
+  &.usermodi {
+    color: #ffffff;
+    &:hover {
+      color: #5498ff;
+    }
+  }
+  &.selector {
+    padding: 10px;
+  }
+  &.smallbox {
+    font-weight: normal;
   }
 `;

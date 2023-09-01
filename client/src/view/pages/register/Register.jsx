@@ -65,26 +65,38 @@ const Register = () => {
   return (
     <RegisterContainer>
       <RegisterBox>
-        <Title>register</Title>
+        <Title>REGISTER</Title>
       </RegisterBox>
       <RegisterBox>
-        <Input placeholder="name" value={name} onChange={nameChange}></Input>
+        <Input
+          placeholder="Please enter your name"
+          value={name}
+          onChange={nameChange}
+        ></Input>
         <SmallBox>
-          <Input placeholder="nunmber" value={number} onChange={numberChange} />
-          <Button style={{ width: '10vw' }}>check</Button>
+          <Input
+            placeholder="Please enter your number"
+            value={number}
+            onChange={numberChange}
+          />
+          <Button style={{ width: '10vw' }}>Check</Button>
         </SmallBox>
         <SmallBox>
-          <Input placeholder="email" value={email} onChange={emailChange} />
+          <Input
+            placeholder="Please enter your email"
+            value={email}
+            onChange={emailChange}
+          />
           {/* <Email>@uvc.co.kr</Email> */}
         </SmallBox>
         {/* <SmallBox> */}
         <Input
-          placeholder="password"
+          placeholder="Please enter your password"
           value={password}
           onChange={passwordChange}
         />
         <Input
-          placeholder="passwordCheck"
+          placeholder="Please Check Your password"
           value={password2}
           onChange={password2Change}
         />
@@ -92,7 +104,7 @@ const Register = () => {
       </RegisterBox>
       <RegisterBox>
         <Button type="submit" onClick={handleSubmit}>
-          submit
+          SUBMIT
         </Button>
       </RegisterBox>
     </RegisterContainer>
