@@ -10,6 +10,8 @@ const path = require('path');
 const sqlModels = require('./controller/models/index');
 const indexRouter = require('./routes/index');
 const connect = require('./controller/batabase/connection_mongoDB');
+const { swaggerUi, specs } = require('./lib/swagger');
+
 // 환경변수 setting
 env.config();
 const { NODE_ENV, LOGGER_LEVEL } = process.env;
@@ -48,13 +50,13 @@ connect();
 //////
 //////
 //////
-
 app.use(cors(corsConfig));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
