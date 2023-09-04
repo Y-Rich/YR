@@ -1,7 +1,9 @@
 const express = require('express');
 const logger = require('../lib/logger');
-const departmentRouter = require('./sample');
+const sampleRouter = require('./sample');
 const mongoRouter = require('./sample_mongo');
+const departmentRouter = require('./department');
+const userRouter = require('./user');
 
 const router = express.Router();
 
@@ -16,6 +18,10 @@ router.get('/test', (req, res) => {
 // Mongo CRUD test
 router.use('/mongo', mongoRouter);
 // MySQL CRUD test
-router.use('/sample', departmentRouter);
+router.use('/sample', sampleRouter);
+
+//부서 , 회원 , 에듀킷 1,2,3,호기 CRUD
+router.use('/departments', departmentRouter);
+router.use('/users', userRouter);
 
 module.exports = router;
