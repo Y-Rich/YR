@@ -1,0 +1,38 @@
+[
+  {
+    "temp": 21,
+    "dust": 0,
+    "date": "2022-09-05",
+    "state": "unstable"
+  },
+  {
+    "temp": 21,
+    "dust": 10,
+    "date": "2022-09-05",
+    "state": "unstable"
+  },
+  {
+    "temp": 21,
+    "dust": 20,
+    "date": "2022-09-05",
+    "state": "unstable"
+  },
+  {
+    "temp": 21,
+    "dust": 30,
+    "date": "2022-09-05",
+    "state": "unstable"
+  },
+  {
+    "temp": 21,
+    "dust": 40,
+    "date": "2022-09-05",
+    "state": "unstable"
+  },
+  {
+    "temp": 21,
+    "dust": 50,
+    "date": "2022-09-05",
+    "state": "unstable"
+  }
+]
