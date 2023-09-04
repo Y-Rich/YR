@@ -1,18 +1,40 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 
+export const Container = styled.main`
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+`;
 export const Title = styled.div`
   color: #000000;
-  font-size: 80px;
+  font-size: 70px;
+  &.register {
+    margin-top: 20%;
+  }
+  &.login {
+    margin-top: 10%;
+  }
+  &.modi {
+    margin-top: 15%;
+  }
 `;
-
+export const SmallBox = styled.section`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 12px;
+`;
 export const Input = styled.input`
   background-color: #d9d9d9;
   color: #000000;
   border: none;
   text-decoration: none;
-  width: 35vw;
-  height: 8vh;
+  width: 30vw;
+  height: 5vh;
   border-radius: 5px;
   font-size: 1rem;
   padding-left: 10px;
@@ -32,8 +54,8 @@ export const Button = styled.button`
   text-align: center;
   border: none;
   border-radius: 5px;
-  width: 40vw;
-  height: 8vh;
+  width: 32vw;
+  height: 5vh;
   cursor: pointer;
   font-weight: 600;
   &:hover {

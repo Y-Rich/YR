@@ -1,11 +1,18 @@
 import React from 'react';
-import { LoginContainer, SmallBox, LoginBox } from './style';
-import { Title, Input, Button, LinkText } from '../../components/Components';
+import { LoginContainer, LoginBox } from './style';
+import {
+  Title,
+  Input,
+  Button,
+  LinkText,
+  SmallBox,
+  Container,
+} from '../../components/Components';
 
 const Login = () => {
   return (
-    <LoginContainer>
-      <Title>LOGIN</Title>
+    <Container>
+      <Title className="login">LOGIN</Title>
       <LoginBox>
         <Input type="text" placeholder="Please enter your email" />
         <Input type="text" placeholder="Please enter your password" />
@@ -21,7 +28,7 @@ const Login = () => {
       <LoginBox>
         <Button>SUBMIT</Button>
       </LoginBox>
-    </LoginContainer>
+    </Container>
   );
 };
 

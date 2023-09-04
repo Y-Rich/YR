@@ -6,7 +6,7 @@ const UserModi = () => {
   return (
     <ModiContainer>
       <ModiBox>
-        <Title>USER MODIFY</Title>
+        <Title className="modi">USER MODIFY</Title>
       </ModiBox>
       <ModiBox>
         <Input placeholder="Please enter your name"></Input>

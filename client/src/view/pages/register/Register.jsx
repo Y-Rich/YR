@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Email, RegisterBox, RegisterContainer, SmallBox } from './style';
-import { Button, Input, Title } from '../../components/Components';
+import { Email, RegisterBox, RegisterContainer } from './style';
+import {
+  Button,
+  Input,
+  Title,
+  SmallBox,
+  Container,
+} from '../../components/Components';
 import {
   validateNickname,
   validateEmail,
@@ -63,9 +69,9 @@ const Register = () => {
   };
 
   return (
-    <RegisterContainer>
+    <Container>
       <RegisterBox>
-        <Title>REGISTER</Title>
+        <Title className="register">REGISTER</Title>
       </RegisterBox>
       <RegisterBox>
         <Input
@@ -107,7 +113,7 @@ const Register = () => {
           SUBMIT
         </Button>
       </RegisterBox>
-    </RegisterContainer>
+    </Container>
   );
 };
 
