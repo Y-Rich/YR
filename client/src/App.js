@@ -7,7 +7,8 @@ import Register from './view/pages/register/Register';
 import Home from './view/pages/home/Home';
 import UserModi from './view/pages/usermodi/UserModi';
 import Find from './view/pages/findpassword/Find';
-import Edukit from './view/pages/3d/Edukit';
+import Chart from './view/pages/chart/Chart';
+import PLC from './view/pages/3d/Edukit';
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/usermodi" element={<UserModi />} />
         <Route path="/findpassword" element={<Find />} />
-        <Route path="/edukit" element={<Edukit />} />
+        <Route path="/plc" element={<PLC />} />
+        <Route path="/chart" element={<Chart />} />
       </Routes>
     </Router>
   );

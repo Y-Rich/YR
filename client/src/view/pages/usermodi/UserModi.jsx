@@ -6,17 +6,17 @@ const UserModi = () => {
   return (
     <ModiContainer>
       <ModiBox>
-        <Title>User Modi</Title>
+        <Title className="modi">USER MODIFY</Title>
       </ModiBox>
       <ModiBox>
-        <Input placeholder="name"></Input>
+        <Input placeholder="Please enter your name"></Input>
         <Input
-          placeholder="email"
+          placeholder="Cannot Change Your Email"
           disabled
           style={{ backgroundColor: '#d9d9c0' }}
         ></Input>
-        <Input placeholder="password"></Input>
-        <Input placeholder="passwordcheck"></Input>
+        <Input placeholder="Please enter your password"></Input>
+        <Input placeholder="Check your password"></Input>
       </ModiBox>
       <ModiBox>
         <Button>Submit</Button>

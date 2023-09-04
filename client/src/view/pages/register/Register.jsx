@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Email, RegisterBox, RegisterContainer, SmallBox } from './style';
-import { Button, Input, Title } from '../../components/Components';
+import { Email, RegisterBox, RegisterContainer } from './style';
+import {
+  Button,
+  Input,
+  Title,
+  SmallBox,
+  Container,
+} from '../../components/Components';
 import {
   validateNickname,
   validateEmail,
@@ -63,28 +69,40 @@ const Register = () => {
   };
 
   return (
-    <RegisterContainer>
+    <Container>
       <RegisterBox>
-        <Title>register</Title>
+        <Title className="register">REGISTER</Title>
       </RegisterBox>
       <RegisterBox>
-        <Input placeholder="name" value={name} onChange={nameChange}></Input>
+        <Input
+          placeholder="Please enter your name"
+          value={name}
+          onChange={nameChange}
+        ></Input>
         <SmallBox>
-          <Input placeholder="nunmber" value={number} onChange={numberChange} />
-          <Button style={{ width: '10vw' }}>check</Button>
+          <Input
+            placeholder="Please enter your number"
+            value={number}
+            onChange={numberChange}
+          />
+          <Button style={{ width: '10vw' }}>Check</Button>
         </SmallBox>
         <SmallBox>
-          <Input placeholder="email" value={email} onChange={emailChange} />
+          <Input
+            placeholder="Please enter your email"
+            value={email}
+            onChange={emailChange}
+          />
           {/* <Email>@uvc.co.kr</Email> */}
         </SmallBox>
         {/* <SmallBox> */}
         <Input
-          placeholder="password"
+          placeholder="Please enter your password"
           value={password}
           onChange={passwordChange}
         />
         <Input
-          placeholder="passwordCheck"
+          placeholder="Please Check Your password"
           value={password2}
           onChange={password2Change}
         />
@@ -92,10 +110,10 @@ const Register = () => {
       </RegisterBox>
       <RegisterBox>
         <Button type="submit" onClick={handleSubmit}>
-          submit
+          SUBMIT
         </Button>
       </RegisterBox>
-    </RegisterContainer>
+    </Container>
   );
 };
 

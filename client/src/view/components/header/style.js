@@ -18,5 +18,3 @@ export const HeaderContainer = styled.header`
 export const HeaderBox = styled.div`
   padding: 0 5% 0 5%;
 `;
-
-export const HeaderLogo = styled(Link)``;

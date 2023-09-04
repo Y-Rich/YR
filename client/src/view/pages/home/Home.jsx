@@ -6,9 +6,12 @@ import { LinkText } from '../../components/Components';
 const Home = () => {
   return (
     <HomeContainer>
-      당신의
+      <LinkText to="/usermodi" className="usermodi">
+        당신
+      </LinkText>
+      의
       <br />
-      <LinkText to="/edukit" style={{ color: '#d9d9d9' }}>
+      <LinkText to="/plc" className="edukit">
         EduKit
       </LinkText>
       을
