@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { HeaderContainer, HeaderBox } from './style';
 import { LinkText } from '../Components';
-// import { Cookies } from 'react-cookie';
 
-// const cookies = new Cookies();
-// export const isLogin = () => !!cookies.get('token');
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
-  // 백엔드 작업 완료시 state인 isLogin 지우고 위의 함수 isLogin 사용
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    setIsLogin(!!token);
+  }, []);
   const Guest = () => {
     return (
       <HeaderBox>
@@ -17,18 +17,15 @@ const Header = () => {
     );
   };
   const User = () => {
-    // const handleLogout = () => {
-    //   const cookies = new Cookies();
-    //   cookies.remove('token', { path: '/' });
-    //   localStorage.clear();
-    // };
+    const handleLogout = () => {
+      sessionStorage.removeItem('token');
+      setIsLogin(false);
+      window.location.href = '/';
+    };
     return (
       <HeaderBox>
         <LinkText to="/usermodi">MyPage</LinkText>
-        <LinkText
-          to="/"
-          // onClick={handleLogout}
-        >
+        <LinkText to="/" onClick={handleLogout}>
           Log out
         </LinkText>
       </HeaderBox>

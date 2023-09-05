@@ -5,7 +5,7 @@ import {
   Button,
   Input,
   Title,
-  SmallBox,
+  Box,
   Container,
 } from '../../components/Components';
 import {
@@ -13,17 +13,20 @@ import {
   validateEmail,
   validatePassword,
   validateNumber,
-} from '../../../utils/registerFunc';
+} from '../../../utils/userFunc';
 import { register } from '../../../services/user';
 
 const Register = () => {
   const navigate = useNavigate();
+  const [departmentCode, setDepartmentCode] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
 
+  const departmentCodeChange = ({ target: { value } }) =>
+    setDepartmentCode(value);
   const nameChange = ({ target: { value } }) => setName(value);
   const numberChange = ({ target: { value } }) => setNumber(value);
   const emailChange = ({ target: { value } }) => setEmail(value);
@@ -69,50 +72,56 @@ const Register = () => {
   };
 
   return (
-    <Container>
-      <RegisterBox>
-        <Title className="register">REGISTER</Title>
-      </RegisterBox>
-      <RegisterBox>
+    <Container className="register">
+      <Title className="register">REGISTER</Title>
+      <Box className="register">
+        <Input
+          placeholder="Please enter your departmentCode"
+          value={departmentCode}
+          onChange={departmentCodeChange}
+          className="register"
+        />
         <Input
           placeholder="Please enter your name"
           value={name}
           onChange={nameChange}
-        ></Input>
-        <SmallBox>
+          className="register"
+        />
+        <Box className="number">
           <Input
             placeholder="Please enter your number"
             value={number}
             onChange={numberChange}
+            className="register"
           />
-          <Button style={{ width: '10vw' }}>Check</Button>
-        </SmallBox>
-        <SmallBox>
-          <Input
-            placeholder="Please enter your email"
-            value={email}
-            onChange={emailChange}
-          />
-          {/* <Email>@uvc.co.kr</Email> */}
-        </SmallBox>
+          <Button style={{ width: '10vw' }} className="check">
+            Check
+          </Button>
+        </Box>
+        <Input
+          placeholder="Please enter your email"
+          value={email}
+          onChange={emailChange}
+          className="register"
+        />
+        {/* <Email>@uvc.co.kr</Email> */}
         {/* <SmallBox> */}
         <Input
           placeholder="Please enter your password"
           value={password}
           onChange={passwordChange}
+          className="register"
         />
         <Input
           placeholder="Please Check Your password"
           value={password2}
           onChange={password2Change}
+          className="register"
         />
-        {/* </SmallBox> */}
-      </RegisterBox>
-      <RegisterBox>
-        <Button type="submit" onClick={handleSubmit}>
-          SUBMIT
-        </Button>
-      </RegisterBox>
+      </Box>
+      <Button type="submit" onClick={handleSubmit} className="submit">
+        SUBMIT
+      </Button>
     </Container>
   );
 };

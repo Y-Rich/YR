@@ -13,6 +13,7 @@ import {
   ControlBox,
 } from '../../components/SideBar';
 import Loading from '../../components/Loading';
+import Header from '../../components/header/Header';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
@@ -87,32 +88,42 @@ const PLC = () => {
     //     }
     //   }
     // }
+    const folder1 = gui.addFolder('1호기 제어');
+    folder1.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    folder1.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
 
-    if (num === 4) {
-      const folder1 = gui.addFolder('1호기 제어');
-      folder1.add(object, 'num', min, max, 0.1).name('rangebar').listen();
-      folder1.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // const folder2 = gui.addFolder('2호기 제어');
+    // folder2.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    // folder2.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
 
-      const folder2 = gui.addFolder('2호기 제어');
-      folder2.add(object, 'num', min, max, 0.1).name('rangebar').listen();
-      folder2.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // const folder3 = gui.addFolder('3호기 제어');
+    // folder3.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    // folder3.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // if (num === 4) {
+    //   const folder1 = gui.addFolder('1호기 제어');
+    //   folder1.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    //   folder1.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
 
-      const folder3 = gui.addFolder('3호기 제어');
-      folder3.add(object, 'num', min, max, 0.1).name('rangebar').listen();
-      folder3.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
-    } else if (num === 1) {
-      const folder1 = gui.addFolder('1호기 제어');
-      folder1.add(object, 'num', min, max, 0.1).name('rangebar').listen();
-      folder1.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
-    } else if (num === 2) {
-      const folder2 = gui.addFolder('2호기 제어');
-      folder2.add(object, 'num', min, max, 0.1).name('rangebar').listen();
-      folder2.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
-    } else if (num === 3) {
-      const folder3 = gui.addFolder('3호기 제어');
-      folder3.add(object, 'num', min, max, 0.1).name('rangebar').listen();
-      folder3.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
-    }
+    //   const folder2 = gui.addFolder('2호기 제어');
+    //   folder2.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    //   folder2.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+
+    //   const folder3 = gui.addFolder('3호기 제어');
+    //   folder3.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    //   folder3.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // } else if (num === 1) {
+    //   const folder1 = gui.addFolder('1호기 제어');
+    //   folder1.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    //   folder1.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // } else if (num === 2) {
+    //   const folder2 = gui.addFolder('2호기 제어');
+    //   folder2.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    //   folder2.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // } else if (num === 3) {
+    //   const folder3 = gui.addFolder('3호기 제어');
+    //   folder3.add(object, 'num', min, max, 0.1).name('rangebar').listen();
+    //   folder3.add(object, 'num2', min, max, 0.01).name('rangebar2').listen();
+    // }
     const renderer = new THREE.WebGLRenderer({ canvas: canvas });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -198,6 +209,7 @@ const PLC = () => {
   };
   return (
     <div>
+      <Header />
       {loading ? <Loading /> : null}
       <SideBar />
       <Selector />
