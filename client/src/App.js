@@ -13,7 +13,7 @@ import PLC from './view/pages/3d/Edukit';
 function App() {
   return (
     <Router>
-      <Header />
+      {/* <Header /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
