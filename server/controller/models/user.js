@@ -7,13 +7,11 @@ module.exports = class User extends Sequelize.Model {
         departmentCode: {
           type: Sequelize.STRING(50),
         },
+        lineCode: {
+          type: Sequelize.STRING(50),
+        },
         name: {
           type: Sequelize.STRING(100),
-          allowNull: false,
-        },
-        userid: {
-          type: Sequelize.STRING(255),
-          unique: true,
           allowNull: false,
         },
         password: {
@@ -26,6 +24,7 @@ module.exports = class User extends Sequelize.Model {
         },
         email: {
           type: Sequelize.STRING(255),
+          unique: true,
           allowNull: false,
         },
         phone: {
@@ -53,6 +52,15 @@ module.exports = class User extends Sequelize.Model {
         name: 'departmentCode',
         onDelete: 'SET NULL',
         as: 'Department',
+      },
+    });
+  }
+  static associate(db) {
+    db.User.hasMany(db.Line, {
+      foreignKey: {
+        name: 'lineCode',
+        onDelete: 'SET NULL',
+        as: 'Line',
       },
     });
   }

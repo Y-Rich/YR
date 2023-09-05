@@ -1,23 +1,28 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Department extends Sequelize.Model {
+module.exports = class Line extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        //부서명
-        name: {
+        // 소속 부서
+        departmentCode: {
+          type: Sequelize.STRING(50),
+          // primaryKey: true, // 이 필드를 기본 키로 사용
+        },
+        // 부서에 소속된 라인명 (linename)
+        linename: {
           type: Sequelize.STRING(50),
           allowNull: false,
         },
-        //부서 고유 코드
+        // 공정 ID (department_id, foreign key)
         code: {
           type: Sequelize.STRING(50),
-          primaryKey: true, // 이 필드를 기본 키로 사용
+          // primaryKey: true, // 이 필드를 기본 키로 사용
           // autoIncrement: true, // 이 필드를 자동 증가
           unique: true, // code 필드에 고유 인덱스 추가
           allowNull: false,
         },
-        //부서에 대한 설명
+        // 공정에 대한 설명
         description: {
           type: Sequelize.TEXT,
           allowNull: false,
@@ -35,17 +40,18 @@ module.exports = class Department extends Sequelize.Model {
   }
   // Department 모델과 Line 모델 간의 관계 설정
   static associate(db) {
-    db.Department.hasMany(db.Line, {
-      foreignKey: { name: 'departmentCode' },
-      sourceKey: 'code',
-      onDelete: 'SET NULL',
-      as: 'Lines',
+    db.Line.hasMany(db.Department, {
+      foreignKey: {
+        name: 'departmentCode',
+        onDelete: 'SET NULL',
+        as: 'Departments',
+      },
     });
   }
-  // Department 모델과 User 모델 간의 관계 설정
+  // Line 모델과 User 모델 간의 관계 설정
   static associate(db) {
-    db.Department.hasMany(db.User, {
-      foreignKey: { name: 'departmentCode' },
+    db.Line.hasMany(db.User, {
+      foreignKey: { name: 'lineCode' },
       sourceKey: 'code',
       onDelete: 'SET NULL',
       as: 'Users',

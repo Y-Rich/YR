@@ -18,15 +18,15 @@ const dao = {
   selectList(params) {
     // where 검색 조건
     const setQuery = {};
-    if (params.name) {
+    if (params.code) {
       setQuery.where = {
         ...setQuery.where,
-        name: { [Op.like]: `%${params.name}%` }, // like검색
+        code: { [Op.like]: `%${params.code}%` }, // like검색
       };
     }
 
     // order by 정렬 조건
-    setQuery.order = [['id', 'DESC']];
+    setQuery.order = [['code', 'DESC']];
 
     return new Promise((resolve, reject) => {
       Department.findAndCountAll({

@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const params = {
-      name: req.query.name,
+      code: req.query.code,
     };
     logger.info(`(department.list.params) ${JSON.stringify(params)}`);
 

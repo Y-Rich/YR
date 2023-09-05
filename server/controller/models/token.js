@@ -33,15 +33,6 @@ module.exports = class Department extends Sequelize.Model {
       },
     );
   }
-  // Department 모델과 Line 모델 간의 관계 설정
-  static associate(db) {
-    db.Department.hasMany(db.Line, {
-      foreignKey: { name: 'departmentCode' },
-      sourceKey: 'code',
-      onDelete: 'SET NULL',
-      as: 'Lines',
-    });
-  }
   // Department 모델과 User 모델 간의 관계 설정
   static associate(db) {
     db.Department.hasMany(db.User, {

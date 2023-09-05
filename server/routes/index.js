@@ -3,6 +3,7 @@ const logger = require('../lib/logger');
 const sampleRouter = require('./sample');
 const mongoRouter = require('./sample_mongo');
 const departmentRouter = require('./department');
+const lineRouter = require('./line');
 const userRouter = require('./user');
 
 const router = express.Router();
@@ -22,6 +23,7 @@ router.use('/sample', sampleRouter);
 
 //부서 , 회원 , 에듀킷 1,2,3,호기 CRUD
 router.use('/departments', departmentRouter);
+router.use('/lines', lineRouter);
 router.use('/users', userRouter);
 
 module.exports = router;

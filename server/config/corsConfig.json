@@ -1,11 +1,14 @@
 {
   "origin": [
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://localhost:3002",
     "http://192.168.0.64:3001",
-    "http://192.168.0.71:3002"
+    "http://192.168.0.71:3002",
+    "http://192.168.0.127:8000"
   ],
   "methods": ["OPTIONS", "GET", "POST", "HEAD", "PUT", "DELETE"],
   "credentials": true,
-  "allowedHeaders": "Content-Type,Authorization,accesstoken"
+  "allowedHeaders": "Content-Type,accessToken",
+  "exposedHeaders": "accessToken"
 }
