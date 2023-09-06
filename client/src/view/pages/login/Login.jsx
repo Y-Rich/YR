@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 import { LoginContainer, LoginBox } from './style';
 import {
@@ -8,8 +9,20 @@ import {
   SmallBox,
   Container,
 } from '../../components/Components';
+import axios from 'axios';
 
 const Login = () => {
+
+  const handleOnClick =()=>{
+    const data = {userid:"yhoon8",password:"1111"}
+    axios.post("http://192.168.0.127:8000/users/login",data).then((res)=>{
+      console.log(res);
+      const headerValue = res.headers.accesstoken; 
+      console.log(headerValue);
+
+    })
+  }
+
   return (
     <Container>
       <Title className="login">LOGIN</Title>
@@ -26,7 +39,7 @@ const Login = () => {
         </LinkText>
       </SmallBox>
       <LoginBox>
-        <Button>SUBMIT</Button>
+        <Button onClick={handleOnClick}>SUBMIT</Button>
       </LoginBox>
     </Container>
   );
