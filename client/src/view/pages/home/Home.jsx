@@ -1,23 +1,36 @@
-import React from 'react';
-import { HomeContainer } from './style';
+import React, { useEffect, useState } from 'react';
+// import { Banner, Button, HomeContainer } from './style';
 import { Link } from 'react-router-dom';
-import { LinkText } from '../../components/Components';
+import { Page, LinkText } from '../../components/Components';
+import Login from '../user/Login';
+import PLC from '../3d/Edukit';
 
 const Home = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    setIsLogin(!!token);
+  }, []);
   return (
-    <HomeContainer>
-      <LinkText to="/usermodi" className="usermodi">
-        당신
-      </LinkText>
-      의
-      <br />
-      <LinkText to="/plc" className="edukit">
-        EduKit
-      </LinkText>
-      을
-      <br />
-      즐기세요
-    </HomeContainer>
+    <Page>
+      {isLogin ? <PLC /> : <Login />}
+
+      {/* {ready ? (
+        <Register ready={ready}>
+          <div></div>
+        </Register>
+      ) : (
+        <Banner ready={ready}>
+          <Button onClick={handlebutton}>바꾸기~</Button>
+        </Banner>
+      )} */}
+      {/* <Register ready={ready}>
+        <div></div>
+      </Register>
+      <Login>
+        <></>
+      </Login> */}
+    </Page>
   );
 };
 
