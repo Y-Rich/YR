@@ -1,4 +1,4 @@
-export const validateNickname = (nickname) => {
+export const validateName = (nickname) => {
   const Regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
   return Regex.test(nickname);
 };
@@ -8,7 +8,7 @@ export const validateEmail = (email) => {
   return uvcDomainRegex.test(email);
 };
 
-export const validateNumber = (number) => {
+export const validatePhone = (number) => {
   return number.length > 7;
 };
 

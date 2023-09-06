@@ -10,34 +10,51 @@ import {
 } from '../../components/Components';
 import { validateEmail, validatePassword } from '../../../utils/userFunc';
 import { login } from '../../../services/user';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'id') {
+    if (name === 'email') {
       setEmail(value);
     } else if (name === 'password') {
       setPassword(value);
     }
   };
   const handleOnClick = async () => {
+    // try {
+    //   if (!email || !password) {
+    //     alert('이메일 또는 비밀번호를 입력해주세요!');
+    //     return;
+    //   }
+    //   if (!validateEmail(email)) {
+    //     alert('유효한 이메일 주소를 입력해주세요!');
+    //     return;
+    //   }
+    //   const data = { email: email, password: password };
+    //   const res = await axios.post(
+    //     'http://192.168.0.127:8000/users/login',
+    //     data
+    //   );
+    //   if (res.status === 200) {
+    //     console.log(res);
+    //     const headerValue = res.headers.accesstoken;
+    //     sessionStorage.setItem('token', headerValue);
+    //     alert('로그인 성공');
+    //     window.location.href = '/';
+    //   } else {
+    //     alert('로그인 실패');
+    //   }
+    // } catch (error) {
+    //   console.error('Failed to login:', error);
+    //   alert('로그인 실패!');
+    // }
     try {
-      // if (!email || !password) {
-      //   alert('이메일과 비밀번호를 입력해주세요!');
-      //   return;
-      // }
-      // if (!validateEmail(email)) {
-      //   alert('유효한 이메일 주소를 입력해주세요!');
-      //   return;
-      // }
-      // if (!validatePassword(password)) {
-      //   alert('비밀번호는 최소 8자 이상이어야 합니다!');
-      //   return;
-      // }
-      const data = { userid: email, password: password };
+      const data = { email: email, password: password };
       const res = await axios.post(
         'http://192.168.0.127:8000/users/login',
         data
@@ -45,6 +62,8 @@ const Login = () => {
       if (res.status === 200) {
         console.log(res);
         const headerValue = res.headers.accesstoken;
+        console.log(res.data);
+        sessionStorage.setItem('employeeID', res.data.employeeID);
         sessionStorage.setItem('token', headerValue);
         alert('로그인 성공');
         window.location.href = '/';
@@ -53,7 +72,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Failed to login:', error);
-      alert('로그인 실패!');
+      alert('로그인에 실패하였습니다.');
     }
   };
   return (
@@ -62,7 +81,7 @@ const Login = () => {
       <Box className="login">
         <Input
           type="text"
-          name="id"
+          name="email"
           onChange={handleChange}
           placeholder="Please enter your email"
           className="login"
@@ -79,7 +98,7 @@ const Login = () => {
         <LinkText to="/register" className="smallbox">
           SIGN IN
         </LinkText>
-        <LinkText to="/findpassword" className="smallbox">
+        <LinkText to="/find" className="smallbox">
           FIND PW
         </LinkText>
       </Box>

@@ -13,7 +13,6 @@ import {
   ControlBox,
 } from '../../components/SideBar';
 import Loading from '../../components/Loading';
-import Header from '../../components/header/Header';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
@@ -209,7 +208,6 @@ const PLC = () => {
   };
   return (
     <div>
-      <Header />
       {loading ? <Loading /> : null}
       <SideBar />
       <Selector />

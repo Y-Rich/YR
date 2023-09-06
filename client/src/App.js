@@ -2,27 +2,34 @@ import React from 'react';
 // import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './view/components/header/Header';
-import Login from './view/pages/login/Login';
-import Register from './view/pages/register/Register';
-import Home from './view/pages/home/Home';
-import UserModi from './view/pages/usermodi/UserModi';
-import Find from './view/pages/findpassword/Find';
-import Chart from './view/pages/chart/Chart';
-import PLC from './view/pages/3d/Edukit';
+import { PRIVATE_ROUTE_ARR, PUBLIC_ROUTE_ARR } from './Route';
+import { PrivateRoute } from './utils/CustomRoute';
 
 function App() {
   return (
     <Router>
-      {/* <Header /> */}
+      <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/usermodi" element={<UserModi />} />
-        <Route path="/findpassword" element={<Find />} />
-        <Route path="/plc" element={<PLC />} />
-        <Route path="/chart" element={<Chart />} />
+        {PUBLIC_ROUTE_ARR.map((route, index) => {
+          return (
+            <Route path={route.path} element={<route.element />} key={index} />
+          );
+        })}
+        {PRIVATE_ROUTE_ARR.map((route, index) => {
+          return (
+            <Route
+              path={route.path}
+              element={
+                <div>
+                  <PrivateRoute>
+                    <route.element />
+                  </PrivateRoute>
+                </div>
+              }
+              key={index}
+            />
+          );
+        })}
       </Routes>
     </Router>
   );
