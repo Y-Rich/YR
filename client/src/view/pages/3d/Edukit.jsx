@@ -17,6 +17,9 @@ import Loading from '../../components/Loading';
 const PLC = () => {
   const [loading, setLoading] = useState(true);
   const [num, setNum] = useState(0); // 권한에 따른 제어를 위한 묵데이터
+  const [webSocket, setWebSocket] = useState(null);
+  const [messagePayload, setMessagePayload] = useState('');
+  const [mqttmsg, setMqttmsg] = useState(); // MQTT로 받은 메세지
   const canvasRef = useRef(null);
   // const guiRef = useRef(null);
   useEffect(() => {
@@ -159,6 +162,25 @@ const PLC = () => {
       //   client.end();
     };
   }, [num]);
+
+  // 웹소켓 설정
+  useEffect(() => {
+    const ws = new WebSocket('ws://192.168.0.71:8080');
+
+    setWebSocket(ws);
+
+    ws.addEventListener('message', function (event) {
+      const receivedMessage = event.data;
+
+      setMessagePayload(JSON.parse(receivedMessage));
+      console.log(JSON.parse(receivedMessage));
+    });
+
+    return () => {
+      ws.close(); // 웹소켓 연결 종료
+    };
+  }, []);
+
   const SideBar = ({ width = 280 }) => {
     const [isOpen, setOpen] = useState(false);
     const [xPosition, setX] = useState(-width);
@@ -189,6 +211,21 @@ const PLC = () => {
         window.removeEventListener('click', handleClose);
       };
     });
+
+    const startToEdukit = () => {
+      if (webSocket) {
+        const data = JSON.stringify({ tagId: '1', value: '1' });
+        webSocket.send(data);
+        console.log('Data sent to the server: 1');
+      }
+    };
+    const stopToEdukit = () => {
+      if (webSocket) {
+        const data = JSON.stringify({ tagId: '1', value: '0' });
+        webSocket.send(data);
+        console.log('Data sent to the server: 0');
+      }
+    };
 
     return (
       <SideBarContainer
