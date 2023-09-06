@@ -1,11 +1,11 @@
 const { Op } = require('sequelize');
-const { User, Department } = require('../models/index');
+const { Employee, Position } = require('../models/index');
 
 const dao = {
   // 등록
   insert(params) {
     return new Promise((resolve, reject) => {
-      User.create(params)
+      Employee.create(params)
         .then((inserted) => {
           // password는 제외하고 리턴함
           const insertedResult = { ...inserted };
@@ -17,14 +17,14 @@ const dao = {
         });
     });
   },
-  // 전체 조회 - 특정 조건에 맞는 리스트 : 예시) 사용자 role
-  selectList(params) {
+  // 특정 직급 전체 조회
+  positionList(params) {
     // where 검색 조건
     const setQuery = {};
-    if (params.role) {
+    if (params.positionID) {
       setQuery.where = {
         ...setQuery.where,
-        role: { [Op.like]: `%${params.role}%` }, // like검색
+        positionID: { [Op.like]: `%${params.positionID}%` }, // like검색
       };
     }
     // if (params.userid) {
@@ -35,17 +35,17 @@ const dao = {
     // }
 
     // order by 정렬 조건
-    setQuery.order = [['id', 'DESC']];
+    setQuery.order = [['employeeID', 'DESC']];
 
     return new Promise((resolve, reject) => {
-      User.findAndCountAll({
+      Employee.findAndCountAll({
         ...setQuery,
         attributes: { exclude: ['password'] }, // password 필드 제외
         include: [
           {
-            model: Department,
-            as: 'Department',
-            attributes: ['name', 'code'],
+            model: Position,
+            as: 'Position',
+            attributes: ['positionName', 'description'],
           },
         ],
       })
@@ -57,14 +57,15 @@ const dao = {
         });
     });
   },
+  // 직원 상세조회
   selectInfo(params) {
     return new Promise((resolve, reject) => {
       // User.findAll
-      User.findByPk(params.id, {
+      Employee.findByPk(params.employeeID, {
         include: [
           {
-            model: Department,
-            as: 'Department',
+            model: Position,
+            as: 'Position',
           },
         ],
         // attributes: { exclude: ['password'] }, // password 필드 제외
@@ -77,20 +78,20 @@ const dao = {
         });
     });
   },
-  // 로그인용 아이디로 사용자 검색
-  selectUser(params) {
+  // 로그인 -  이메일로 사용자 검색
+  searchEmployee(params) {
     return new Promise((resolve, reject) => {
-      User.findOne({
+      Employee.findOne({
         attributes: [
-          'departmentCode',
-          'id',
-          'userid',
+          'employeeID',
+          'email',
           'password',
           'name',
-          'role',
+          'positionID',
+          'phone',
         ],
         where: {
-          userid: params.userid,
+          email: params.email,
         },
       })
         .then((selectedOne) => {
@@ -101,11 +102,12 @@ const dao = {
         });
     });
   },
+  // 직원 정보 수정
   update(params) {
     return new Promise((resolve, reject) => {
-      User.update(params, {
+      Employee.update(params, {
         // id를 조건으로 검색하여 update
-        where: { id: params.id },
+        where: { employeeID: params.employeeID },
       })
         .then(([updated]) => {
           resolve({ updatedCount: updated });
@@ -115,11 +117,12 @@ const dao = {
         });
     });
   },
+  // 직원 정보 삭제
   delete(params) {
     return new Promise((resolve, reject) => {
       // User.findAll
-      User.destroy({
-        where: { id: params.id },
+      Employee.destroy({
+        where: { employeeID: params.employeeID },
       })
         .then((deleted) => {
           resolve({ deletedCount: deleted });

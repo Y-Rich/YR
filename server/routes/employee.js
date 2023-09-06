@@ -2,8 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 const logger = require('../lib/logger');
-const userService = require('../controller/service/userService');
+const employeeService = require('../controller/service/employeeService');
 const tokenUtil = require('../lib/tokenUtil');
+const hashUtil = require('../lib/hashUtil');
 
 /**
  * @swagger
@@ -222,19 +223,16 @@ const tokenUtil = require('../lib/tokenUtil');
  *         description: Failed to delete user
  */
 
-// 등록
+// router - 회원가입
 router.post('/register', async (req, res) => {
   try {
     const params = {
-      departmentCode: req.body.departmentCode,
-      lineCode: req.body.lineCode,
-      name: req.body.name,
-      password: req.body.password,
-      role: req.body.role,
       email: req.body.email,
+      password: req.body.password,
+      name: req.body.name,
       phone: req.body.phone,
     };
-    logger.info(`(user.reg.params) ${JSON.stringify(params)}`);
+    logger.info(`(employee.reg.params) ${JSON.stringify(params)}`);
 
     // // 입력값 null 체크
     // if (!params.name || !params.userid || !params.password) {
@@ -245,8 +243,8 @@ router.post('/register', async (req, res) => {
     // }
 
     // 비즈니스 로직 호출
-    const result = await userService.reg(params);
-    logger.info(`(user.reg.result) ${JSON.stringify(result)}`);
+    const result = await employeeService.reg(params);
+    logger.info(`(employee.reg.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     return res.status(201).json(result);
@@ -255,125 +253,25 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// 리스트 조회 - role 에따라 검색
-router.get('/search', async (req, res) => {
-  try {
-    const params = {
-      role: req.query.role,
-      // userid: req.query.userid,
-    };
-    logger.info(`(user.list.params) ${JSON.stringify(params)}`);
-
-    const result = await userService.list(params);
-    logger.info(`(user.list.result) ${JSON.stringify(result)}`);
-
-    // 최종 응답
-    return res.status(200).json(result);
-  } catch (err) {
-    return res.status(500).json({ err: err.toString() });
-  }
-});
-// 상세정보
-router.get('/profile/:id', async (req, res) => {
-  try {
-    const params = {
-      id: req.params.id,
-    };
-    logger.info(`(department.info.params) ${JSON.stringify(params)}`);
-
-    // 비즈니스 로직 호출
-    const result = await userService.info(params);
-
-    // 최종 응답
-    return res.status(200).json(result);
-  } catch (err) {
-    return res.status(500).json({ err: err.toString() });
-  }
-});
-
-// 유저 수정 - 기본정보
-router.put('/profile/:id', async (req, res) => {
-  try {
-    const params = {
-      id: req.params.id,
-      departmentCode: req.body.departmentCode,
-      name: req.body.name,
-      role: req.body.role,
-      email: req.body.email,
-      phone: req.body.phone,
-    };
-    logger.info(`(department.edit.params) ${JSON.stringify(params)}`);
-
-    // 비즈니스 로직 호출
-    const result = await userService.edit(params);
-
-    // 최종 응답
-    return res.status(200).json(result);
-  } catch (err) {
-    return res.status(500).json({ err: err.toString() });
-  }
-});
-
-// // 유저 수정 - 비밀번호 - 코드 수정해야됨
-// router.put('/:id', async (req, res) => {
-//   try {
-//     const params = {
-//       id: req.params.id,
-//       departmentCode: req.body.departmentCode,
-//       name: req.body.name,
-//       role: req.body.role,
-//       email: req.body.email,
-//       phone: req.body.phone,
-//     };
-//     logger.info(`(department.edit.params) ${JSON.stringify(params)}`);
-
-//     // 비즈니스 로직 호출
-//     const result = await userService.edit(params);
-
-//     // 최종 응답
-//     res.status(200).json(result);
-//   } catch (err) {
-//     res.status(500).json({ err: err.toString() });
-//   }
-// });
-
-// 유저 삭제
-router.delete('/:id', async (req, res) => {
-  try {
-    const params = {
-      id: req.params.id,
-    };
-    logger.info(`(department.delete.params) ${JSON.stringify(params)}`);
-
-    // 비즈니스 로직 호출
-    const result = await userService.delete(params);
-
-    // 최종 응답
-    return res.status(200).json(result);
-  } catch (err) {
-    return res.status(500).json({ err: err.toString() });
-  }
-});
-
-// 로그인
+// router - 로그인
 router.post('/login', async (req, res) => {
   try {
     const params = {
-      userid: req.body.userid,
+      email: req.body.email,
       password: req.body.password,
     };
-    logger.info(`(user.reg.params) ${JSON.stringify(params)}`);
+    logger.info(`(employee.login.params) ${JSON.stringify(params)}`);
 
-    // 입력값 null 체크
-    if (!params.userid || !params.password) {
-      const err = new Error('Not allowed null (userid, password)');
-      logger.error(err.toString());
+    // // 입력값 null 체크
+    // if (!params.email || !params.password) {
+    //   const err = new Error('Not allowed null (userid, password)');
+    //   logger.error(err.toString());
 
-      return res.status(500).json({ err: err.toString() });
-    }
+    //   return res.status(500).json({ err: err.toString() });
+    // }
 
     // 비즈니스 로직 호출
-    const result = await userService.login(params);
+    const result = await employeeService.login(params);
     logger.info(`(user.token.result) ${JSON.stringify(result)}`);
 
     // 토큰 생성
@@ -386,4 +284,116 @@ router.post('/login', async (req, res) => {
     return res.status(500).json({ err: err.toString() });
   }
 });
+
+// router - 전체 조회  - 직급에따라 검색
+router.get('/search', async (req, res) => {
+  try {
+    const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
+
+    // 모든 쿼리 파라미터가 유효한지 확인
+    for (const queryParam in req.query) {
+      if (!validQueries.includes(queryParam)) {
+        // 유효하지 않은 쿼리가 있을 경우, 400 Bad Request 상태 코드를 반환
+        return res
+          .status(400)
+          .json({ error: `Invalid query parameter: ${queryParam}` });
+      }
+    }
+    const params = {
+      positionID: req.query.positionID,
+    };
+    logger.info(`(employee.list.params) ${JSON.stringify(params)}`);
+
+    const result = await employeeService.positionList(params);
+    logger.info(`(employee.list.result) ${JSON.stringify(result)}`);
+
+    // 최종 응답
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+// router - 직원 상세정보
+router.get('/profile/:id', async (req, res) => {
+  try {
+    const params = {
+      employeeID: req.params.id,
+    };
+    logger.info(`(employee.info.params) ${JSON.stringify(params)}`);
+
+    // 비즈니스 로직 호출
+    const result = await employeeService.info(params);
+
+    // 최종 응답
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+// router - 유저 수정 - 기본정보 [+ 비밀번호 ]
+router.put('/profile/:id', async (req, res) => {
+  try {
+    const passwordParam = 'password'; // 패스워드 바디 파라미터 검사
+    let hashPassword = null;
+    let params = {};
+    // 패스워드 파라미터가 있는지 확인
+    if (req.body.hasOwnProperty(passwordParam)) {
+      // 있으면 암호화 진행
+      try {
+        hashPassword = await hashUtil.makePasswordHash(req.body.password);
+      } catch (err) {
+        logger.error(`(employee.edit.hashPassword) ${err.toString()}`);
+        return res.status(500).json({ error: `hashPassword error` });
+      }
+      //  hashPassword로 비밀번호 변경해서 params 전달
+      const pwParams = {
+        password: hashPassword,
+      };
+
+      params = {
+        employeeID: req.params.id,
+        name: req.body.name,
+        phone: req.body.phone,
+        ...pwParams, // 비밀번호 파라미터 합치기
+      };
+    } else {
+      params = {
+        employeeID: req.params.id,
+        name: req.body.name,
+        phone: req.body.phone,
+      };
+    }
+
+    logger.info(`(employee.edit.params) ${JSON.stringify(params)}`);
+
+    // 비즈니스 로직 호출
+    const result = await employeeService.edit(params);
+
+    // 최종 응답
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+// router - 회원 탈퇴
+router.delete('/:id', async (req, res) => {
+  try {
+    const params = {
+      employeeID: req.params.id,
+    };
+    logger.info(`(employee.delete.params) ${JSON.stringify(params)}`);
+
+    // 비즈니스 로직 호출
+    const result = await employeeService.delete(params);
+
+    // 최종 응답
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
 module.exports = router;

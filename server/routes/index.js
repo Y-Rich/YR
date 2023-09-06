@@ -1,10 +1,9 @@
 const express = require('express');
-const logger = require('../lib/logger');
 const sampleRouter = require('./sample');
 const mongoRouter = require('./sample_mongo');
-const departmentRouter = require('./department');
-const lineRouter = require('./line');
-const userRouter = require('./user');
+const controlRouter = require('./control');
+const employeeRouter = require('./employee');
+const adminRouter = require('./admin');
 
 const router = express.Router();
 
@@ -21,9 +20,13 @@ router.use('/mongo', mongoRouter);
 // MySQL CRUD test
 router.use('/sample', sampleRouter);
 
-//부서 , 회원 , 에듀킷 1,2,3,호기 CRUD
-router.use('/departments', departmentRouter);
-router.use('/lines', lineRouter);
-router.use('/users', userRouter);
+// 직원 CRUD 라우터
+router.use('/users', employeeRouter);
+
+//에듀킷 1,2,3,호기 CRUD 라우트
+router.use('/control', controlRouter);
+
+// 전체관리용 라우트
+router.use('/admin', adminRouter);
 
 module.exports = router;

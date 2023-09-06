@@ -29,6 +29,33 @@ const dailyRotateFileTransport = new transports.DailyRotateFile({
   ),
 });
 
+const yellowMessage = format((info, opts) => {
+  if (info.message) {
+    info.message = `\x1b[33m${info.message}\x1b[0m`; // 노란색으로 메시지를 래핑합니다.
+  }
+  return info;
+})();
+
+const greenMessage = format((info, opts) => {
+  if (info.message) {
+    info.message = `\x1b[32m${info.message}\x1b[0m`; // 초록색으로 메시지를 래핑합니다.
+  }
+  return info;
+})();
+
+const blueMessage = format((info, opts) => {
+  if (info.message) {
+    info.message = `\x1b[34m${info.message}\x1b[0m`; // 파란색으로 메시지를 래핑합니다.
+  }
+  return info;
+})();
+const cyanMessage = format((info, opts) => {
+  if (info.message) {
+    info.message = `\x1b[36m${info.message}\x1b[0m`; // 하늘색으로 메시지를 래핑합니다.
+  }
+  return info;
+})();
+
 const logger = createLogger({
   // 로거 환경 세팅(기본 세팅)
   level: loggerLevel,
@@ -43,6 +70,10 @@ const logger = createLogger({
       level: loggerLevel,
       format: format.combine(
         format.colorize(),
+        // yellowMessage, // 노란색 메시지 적용
+        // greenMessage, // 초록색 메시지 적용
+        // blueMessage, // 파란색 메시지 적용
+        cyanMessage, // 하늘색 메시지 적용
         format.printf(
           (info) => `${info.timestamp}[${info.level}] ${info.message}`,
         ),
