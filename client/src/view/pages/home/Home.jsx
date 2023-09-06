@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Banner, Button, HomeContainer } from './style';
+// import { Banner, Button, HomeContainer } from './style';
 import { Link } from 'react-router-dom';
-import { LinkText } from '../../components/Components';
-import Login from '../login/Login';
-import Register from '../register/Register';
+import { Page, LinkText } from '../../components/Components';
+import Login from '../user/Login';
+import PLC from '../3d/Edukit';
 
 const Home = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -12,8 +12,9 @@ const Home = () => {
     setIsLogin(!!token);
   }, []);
   return (
-    <HomeContainer>
-      {isLogin ? <Register /> : <Login />}
+    <Page>
+      {isLogin ? <PLC /> : <Login />}
+
       {/* {ready ? (
         <Register ready={ready}>
           <div></div>
@@ -29,7 +30,7 @@ const Home = () => {
       <Login>
         <></>
       </Login> */}
-    </HomeContainer>
+    </Page>
   );
 };
 

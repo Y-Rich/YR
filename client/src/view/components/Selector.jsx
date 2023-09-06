@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
 import { LinkText } from './Components';
 
-const SelectorContainer = styled.nav`
+const SelectorContainer = styled.footer`
   position: absolute;
   bottom: 10%;
   right: 15%;

@@ -1,8 +1,32 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const Container = styled.main`
-  /* background-color: #ffffff; */
+export const Page = styled.main`
+  color: #000000;
+  font-size: 100px;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.admin {
+    background-color: #d9d9d9;
+    align-items: baseline;
+  }
+  &::after {
+    content: '';
+    background: url('assets/back.jpg');
+    background-size: cover;
+    opacity: 0.5;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: -10;
+  }
+`;
+export const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,23 +44,25 @@ export const Container = styled.main`
     z-index: -10;
     border-radius: 10px;
   }
-
   &.login {
-    justify-content: center;
+    margin-top: 45vh;
   }
   &.register {
-    gap: 5vh;
+    margin-top: 35vh;
+    gap: 4vh;
     &::after {
-      content: '';
+      top: 15%;
       width: 30%;
       height: 75vh;
-      background-color: #ffffff;
-      opacity: 0.7;
-      position: absolute;
+    }
+  }
+  &.modi {
+    margin-top: 45vh;
+    gap: 2vh;
+    &::after {
       top: 15%;
-      left: 35vw;
-      z-index: -10;
-      border-radius: 10px;
+      width: 30%;
+      height: 75vh;
     }
   }
 `;
@@ -44,46 +70,42 @@ export const Title = styled.div`
   color: #000000;
   font-size: 70px;
   &.register {
-    margin-top: 10%;
+    font-size: 50px;
   }
   &.login {
-    padding-top: 4%;
   }
   &.modi {
-    margin-top: 15%;
+    font-size: 50px;
   }
 `;
-export const Box = styled.section`
+export const Box = styled.article`
   align-items: center;
-  /* gap: 5vh; */
+  display: flex;
+  flex-direction: column;
   &.login {
-    display: flex;
-    flex-direction: column;
     padding-top: 5vh;
     gap: 5vh;
   }
   &.register {
-    display: flex;
-    flex-direction: column;
     gap: 2vh;
+    &.phone {
+      gap: 0;
+      flex-direction: row;
+    }
   }
   &.small {
-    display: flex;
     flex-direction: row;
     gap: 10px;
     font-size: 12px;
   }
-  &.number {
-    display: flex;
-    flex-direction: row;
+  &.modi {
+    gap: 2vh;
   }
-  /* &.register {
-    display: flex;
-    flex-direction: column;
+  &.find {
     gap: 3vh;
     padding-top: 4vh;
     align-items: center;
-  } */
+  }
 `;
 export const Input = styled.input`
   background-color: #d9d9d9;
@@ -93,7 +115,6 @@ export const Input = styled.input`
   width: 30vw;
   height: 5vh;
   border-radius: 5px;
-  font-size: 1rem;
   padding-left: 10px;
   &.login {
     width: 20vw;
@@ -101,6 +122,10 @@ export const Input = styled.input`
   }
   &.register {
     width: 20vw;
+    &.phone {
+      width: 15vw;
+      border-radius: 5px 0 0 5px;
+    }
   }
   &:focus {
     outline: none;
@@ -108,6 +133,10 @@ export const Input = styled.input`
   }
   &::-webkit-input-placeholder {
     /* text-align: center; */
+  }
+  &.modi {
+    width: 20vw;
+    height: 5vh;
   }
 `;
 
@@ -126,9 +155,14 @@ export const Button = styled.button`
     width: 10vw;
     height: 7vh;
     margin-top: 3vh;
+    &.register {
+      margin-top: 0vh;
+    }
   }
   &.check {
-    width: 200px;
+    font-size: 0.8rem;
+    width: 5vw;
+    border-radius: 0 5px 5px 0;
   }
   &:hover {
     background-color: #4379cc;
@@ -167,6 +201,7 @@ export const LinkText = styled(Link)`
   }
   &.selector {
     padding: 10px;
+    font-size: 1rem;
   }
   &.smallbox {
     font-weight: normal;
