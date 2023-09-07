@@ -235,13 +235,13 @@ router.post('/register', async (req, res) => {
     };
     logger.info(`(employee.reg.params) ${JSON.stringify(params)}`);
 
-    // // 입력값 null 체크
-    // if (!params.name || !params.userid || !params.password) {
-    //   const err = new Error('Not allowed null (name, userid, password)');
-    //   logger.error(err.toString());
+    // 유효성 검사 - 입력값 null 체크
+    if (!params.email || !params.password || !params.name || !params.phone) {
+      const err = new Error('Not allowed null (email, name, phone, password)');
+      logger.error(err.toString());
 
-    //   res.status(500).json({ err: err.toString() });
-    // }
+      res.status(500).json({ err: err.toString() });
+    }
 
     // 비즈니스 로직 호출
     const result = await employeeService.reg(params);
@@ -256,6 +256,7 @@ router.post('/register', async (req, res) => {
 
 // router - 로그인
 router.post('/login', async (req, res) => {
+  let payload;
   try {
     const params = {
       email: req.body.email,
@@ -263,31 +264,44 @@ router.post('/login', async (req, res) => {
     };
     logger.info(`(employee.login.params) ${JSON.stringify(params)}`);
 
-    // // 입력값 null 체크
-    // if (!params.email || !params.password) {
-    //   const err = new Error('Not allowed null (userid, password)');
-    //   logger.error(err.toString());
+    // 유효성 검사 - 입력값 null 체크
+    if (!params.email || !params.password) {
+      const err = new Error('Not allowed null (email, password)');
+      logger.error(err.toString());
 
-    //   return res.status(500).json({ err: err.toString() });
-    // }
+      return res.status(500).json({ err: err.toString() });
+    }
 
     // 비즈니스 로직 호출
     const result = await employeeService.login(params);
-    logger.info(`(user.token.result) ${JSON.stringify(result)}`);
+    logger.info(`(employee.login.result) ${JSON.stringify(result)}`);
 
-    // 토큰 생성
-    const { accessToken, refreshToken, payload } = tokenUtil.makeToken(result);
-
-    //비즈니스 로직 호출 - 리프레시 토큰과 회원 ID를 DB에 저장
-    const result_Token = await tokenService.regToken({
-      employeeID: payload.employeeID,
-      refreshToken,
+    //비즈니스 로직 호출 - 리프레시 토큰 DB 체크
+    const tokenCheck = await tokenService.searchToken({
+      employeeID: result.employeeID,
     });
-    logger.info(`(token.reg.result) ${JSON.stringify(result_Token)}`);
+    logger.debug(`(token.searchToken.result) ${JSON.stringify(tokenCheck)}`);
 
-    res.set('accessToken', accessToken); // header 세팅
-    // 최종 응답
-    return res.status(200).json(payload);
+    // 리프레시 토큰이 DB에 없다면 토큰 프로세스 계속 진행
+    if (tokenCheck === null) {
+      const { accessToken, refreshToken, payload } =
+        tokenUtil.makeToken(result);
+      logger.debug(`(tokenUtil.makeToken.result) ${JSON.stringify(result)}`);
+      //비즈니스 로직 호출 - 리프레시 토큰과 회원 ID를 DB에 저장
+      const insertToken = await tokenService.regToken({
+        employeeID: payload.employeeID,
+        refreshToken,
+      });
+      logger.info(`(token.reg.result) ${JSON.stringify(insertToken)}`);
+      res.set('accessToken', accessToken); // header 세팅
+      return res.status(200).json(payload);
+    }
+    // 리프레시 토큰있으면 액세스 토큰 발급 + 페이로드 제공
+    else {
+      const { accessToken, payload } = tokenUtil.makeAccessToken(result);
+      res.set('accessToken', accessToken); // header 세팅
+      return res.status(200).json(payload);
+    }
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
   }
@@ -402,6 +416,25 @@ router.delete('/:id', async (req, res) => {
 
     // 최종 응답
     return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+// router - 로그아웃
+router.get('/logout', async (req, res) => {
+  // 토큰을 보내면 해당 토큰에 담겨있는 유저id로 DB에 리프레시토큰 삭제 요청
+  try {
+    const token = req.headers && req.headers.accesstoken;
+    logger.debug(`(employee.logout.token) accesstoken:${token}`);
+    // 토큰 확인
+    const decoded = tokenUtil.decodeToken(token);
+    // 비즈니스 로직 호출
+    logger.info(`(employee.logout.decoded) ${JSON.stringify(decoded)}`);
+    const result = await tokenService.deleteToken({ employeeID: decoded });
+
+    // 최종 응답
+    return res.status(200).json('successfully logout.... ');
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
   }

@@ -13,11 +13,11 @@ const options = {
     servers: [
       {
         url: 'http://192.168.0.127:8000', // Update with your server URL
-        description: 'local Server for foreigners',
+        description: '외부접근용 local Server',
       },
       {
         url: 'http://localhost:8000', // Update with your server URL
-        description: 'local Server for selftesting',
+        description: 'backend 테스트용 local Server',
       },
     ],
     components: {

@@ -27,9 +27,22 @@ const tokenUtil = {
     };
 
     const accessToken = jwt.sign(payload, accessSecretKey, accOptions);
-    const refreshToken = jwt.sign(payload, accessSecretKey, refOptions);
+    const refreshToken = jwt.sign(payload, refreshSecretKey, refOptions);
 
     return { accessToken, refreshToken, payload };
+  },
+  // 로그인 사용자용  - 새로운 액세스토큰 발급
+  makeAccessToken(user) {
+    const payload = {
+      employeeID: user.employeeID,
+      email: user.email,
+      name: user.name,
+      positionID: user.positionID,
+    };
+
+    const accessToken = jwt.sign(payload, accessSecretKey, accOptions);
+
+    return { accessToken, payload };
   },
   //액세스 토큰의 만료여부를 판단한다.
   //확인 사항 1. 서명확인 , 만료일자 확인
@@ -42,18 +55,48 @@ const tokenUtil = {
         const expirationTime = decodedToken.exp * 1000; // 만료 일시 (초 단위)를 밀리초 단위로 변환
         if (Date.now() >= expirationTime) {
           logger.debug('Access token has expired');
-          return null; // 토큰이 만료되었음을 반환
+          return { expired: decodedToken.employeeID }; // 토큰이 만료되었음 - 갱신위해 ID 반환
         } else {
           return token; // 토큰이 유효하면 토큰 자체를 반환
         }
       } else {
         logger.debug('Error verifying access token. Signature mismatch');
-        return null; // 서명 불일치 또는 다른 문제로 토큰 유효성 검사 실패 시 null 반환
+        return null; // 서명 불일치 또는 다른 문제로 토큰 유효성 검사 실패
       }
     } catch (error) {
       logger.debug('Error verifying access token:', error);
       return null; // 예외 발생 시 토큰을 만료된 것으로 간주하고 null 반환
     }
+  },
+  //리프레시 토큰의 만료여부를 판단한다.
+  verifyRefreshToken(token) {
+    try {
+      const decodedToken = jwt.verify(token, refreshSecretKey); // 토큰을 해독하고 유효성 검사
+
+      // 서명 확인 및 만료 여부 확인
+      if (decodedToken) {
+        const expirationTime = decodedToken.exp * 1000; // 만료 일시 (초 단위)를 밀리초 단위로 변환
+        if (Date.now() >= expirationTime) {
+          logger.debug('Access token has expired');
+          return { expired: decodedToken.employeeID }; // 토큰이 만료되었음 - 갱신위해 ID 반환
+        } else {
+          return token; // 토큰이 유효하면 토큰 자체를 반환
+        }
+      } else {
+        logger.debug('Error verifying access token. Signature mismatch');
+        return null; // 서명 불일치 또는 다른 문제로 토큰 유효성 검사 실패
+      }
+    } catch (error) {
+      logger.debug('Error verifying access token:', error);
+      return null; // 예외 발생 시 토큰을 만료된 것으로 간주하고 null 반환
+    }
+  },
+
+  // 회원 확인을 위해 페이로드 확인
+  decodeToken(token) {
+    const decodedToken = jwt.verify(token, accessSecretKey); // 토큰을 해독하고 유효성 검사
+    const { employeeID } = decodedToken;
+    return employeeID; //DB조회용 employeeID
   },
 };
 

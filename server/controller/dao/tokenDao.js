@@ -13,6 +13,51 @@ const dao = {
         });
     });
   },
+  // dao - search
+  search(params) {
+    return new Promise((resolve, reject) => {
+      Token.findOne({
+        where: { employeeID: params.employeeID },
+      })
+        .then((inserted) => {
+          resolve(inserted);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+  // dao - delete
+  delete(params) {
+    return new Promise((resolve, reject) => {
+      // User.findAll
+      Token.destroy({
+        where: { employeeID: params.employeeID },
+      })
+        .then((deleted) => {
+          resolve({ deletedCount: deleted });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  // dao - get
+  get(params) {
+    return new Promise((resolve, reject) => {
+      Token.findOne({
+        where: { employeeID: params.employeeID },
+        attributes: ['refreshToken'],
+      })
+        .then((selectedInfo) => {
+          resolve(selectedInfo);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
 };
 
 module.exports = dao;
