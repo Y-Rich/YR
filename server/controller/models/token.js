@@ -4,12 +4,13 @@ module.exports = class Token extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
-        accessToken: {
-          type: Sequelize.STRING(200),
+        employeeID: {
+          type: Sequelize.INTEGER,
+          unique: true,
         },
         refreshToken: {
-          type: Sequelize.STRING(200),
-          allowNull: false,
+          type: Sequelize.STRING(500),
+          unique: true,
         },
       },
       {

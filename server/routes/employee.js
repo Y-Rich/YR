@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../lib/logger');
 const employeeService = require('../controller/service/employeeService');
+const tokenService = require('../controller/service/tokenService');
 const tokenUtil = require('../lib/tokenUtil');
 const hashUtil = require('../lib/hashUtil');
 
@@ -275,9 +276,16 @@ router.post('/login', async (req, res) => {
     logger.info(`(user.token.result) ${JSON.stringify(result)}`);
 
     // 토큰 생성
-    const { token, payload } = tokenUtil.makeToken(result);
+    const { accessToken, refreshToken, payload } = tokenUtil.makeToken(result);
 
-    res.set('accessToken', token); // header 세팅
+    //비즈니스 로직 호출 - 리프레시 토큰과 회원 ID를 DB에 저장
+    const result_Token = await tokenService.regToken({
+      employeeID: payload.employeeID,
+      refreshToken,
+    });
+    logger.info(`(token.reg.result) ${JSON.stringify(result_Token)}`);
+
+    res.set('accessToken', accessToken); // header 세팅
     // 최종 응답
     return res.status(200).json(payload);
   } catch (err) {
@@ -338,8 +346,11 @@ router.put('/profile/:id', async (req, res) => {
     const passwordParam = 'password'; // 패스워드 바디 파라미터 검사
     let hashPassword = null;
     let params = {};
-    // 패스워드 파라미터가 있는지 확인
-    if (req.body.hasOwnProperty(passwordParam)) {
+    // 패스워드 파라미터가 있는지 확인 및 값체크
+    if (
+      req.body.hasOwnProperty(passwordParam) &&
+      req.params.password !== undefined
+    ) {
       // 있으면 암호화 진행
       try {
         hashPassword = await hashUtil.makePasswordHash(req.body.password);

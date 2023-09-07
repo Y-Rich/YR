@@ -7,10 +7,11 @@ const cors = require('cors');
 const corsConfig = require('./config/corsConfig.json');
 const logger = require('./lib/logger');
 const path = require('path');
-const sqlModels = require('./controller/models/index');
+const Models = require('./controller/models/index');
 const indexRouter = require('./routes/index');
-const connect = require('./controller/batabase/connection_mongoDB');
+const MongoDBconnect = require('./controller/connection_mongoDB');
 const { swaggerUi, specs } = require('./lib/swagger');
+const MQTTconnect = require('./controller/connection_MQTT');
 
 // 환경변수 setting
 env.config();
@@ -20,15 +21,14 @@ PORT = process.env.PORT || 8010;
 const app = express();
 logger.info(`app start`);
 
-// DB connection - MySQL
-// DB 연결 확인 및 table 생성
-sqlModels.sequelize
+// connection - DB : MySQL
+Models.sequelize
   .authenticate()
   .then(() => {
     logger.info('DB_MySQL connection success');
 
     // sequelize sync (table 생성)
-    sqlModels.sequelize
+    Models.sequelize
       .sync()
       .then(() => {
         logger.info('Sequelize sync success');
@@ -41,20 +41,18 @@ sqlModels.sequelize
     logger.error('DB_MySQL Connection fail', err);
   });
 
-// DB connection - MongoDB
-connect();
+// connection - DB : MongoDB
+MongoDBconnect();
 
-//////
-//////
-//////
-//////
-//////
-//////
+// middleware settings
 app.use(cors(corsConfig));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// connection - MQTT
+MQTTconnect();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/', indexRouter);
@@ -70,11 +68,11 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // send error message
   res.status(err.status || 500);
   res.json(`${err.message}`);
 });
 
 app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+  logger.info(`server is running on port ${PORT}`);
 });

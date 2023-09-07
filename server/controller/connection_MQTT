@@ -1,0 +1,53 @@
+const mqtt = require('mqtt');
+const logger = require('../lib/logger');
+const edukit1Service = require('./service/edukit1Service');
+
+const MQTTconnect = () => {
+  const client = mqtt.connect('mqtt://192.168.0.44:1883', {
+    clientId: 'edukit-' + Math.random().toString(16).substr(2, 8),
+    protocolVersion: 4,
+  });
+
+  // publish 기능을 내보냅니다.
+  function publish(topic, message, options, callback) {
+    client.publish(topic, message, options, callback);
+  }
+
+  client.on('connect', function () {
+    logger.debug('Connected to MQTT broker...');
+
+    // const topic = 'edukit1'
+    const topic = ['test1', 'test2'];
+    const topic_control = ['edukit/control'];
+    const topic_dataForDB = ['edukit1'];
+
+    client.subscribe(topic_dataForDB, { qos: 0 }, function (err) {
+      if (err) {
+        logger.error('Error subscribing to topic:', err);
+      } else {
+        logger.info(`Subscribed to topic: ${topic_dataForDB}`);
+      }
+    });
+  });
+
+  // message - 버퍼형식
+  // message -> tostring -> json parsing
+  client.on('message', async function (topic, message) {
+    try {
+      const parsedMessage = message.toString();
+      // logger.debug(`Received message on topic ${topic}: ${parsedMessage}`);
+      if (topic === 'edukit1') {
+        // 비즈니스 로직 호출
+        const result = await edukit1Service.reg(JSON.parse(parsedMessage));
+        // logger.info(`(edukit1.reg.result) : data insert successfully on mongoDB server: ${result}`);
+      }
+    } catch (error) {
+      logger.error('Error parsing message:', error);
+    }
+  });
+
+  client.on('error', function (error) {
+    logger.error('MQTT Error:', error);
+  });
+};
+module.exports = MQTTconnect;

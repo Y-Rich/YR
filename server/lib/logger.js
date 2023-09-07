@@ -70,10 +70,10 @@ const logger = createLogger({
       level: loggerLevel,
       format: format.combine(
         format.colorize(),
-        // yellowMessage, // 노란색 메시지 적용
+        yellowMessage, // 노란색 메시지 적용
         // greenMessage, // 초록색 메시지 적용
         // blueMessage, // 파란색 메시지 적용
-        cyanMessage, // 하늘색 메시지 적용
+        // cyanMessage, // 하늘색 메시지 적용
         format.printf(
           (info) => `${info.timestamp}[${info.level}] ${info.message}`,
         ),

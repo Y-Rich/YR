@@ -5,9 +5,14 @@ const logger = require('./logger');
 env.config();
 
 accessSecretKey = process.env.JWT_ACC_Secret_Key;
+refreshSecretKey = process.env.JWT_REF_Secret_Key;
 
 const accOptions = {
-  expiresIn: '20s', // 액세스 토큰 만료시간 (10분)   분,시간,일  (m,h,d)
+  expiresIn: '1d', // 액세스 토큰 만료시간 (1일)   분,시간,일  (m,h,d)
+  issuer: 'UVC_Project', //발행처
+};
+const refOptions = {
+  expiresIn: '14d', // 액세스 토큰 만료시간 (2주)   분,시간,일  (m,h,d)
   issuer: 'UVC_Project', //발행처
 };
 
@@ -21,9 +26,10 @@ const tokenUtil = {
       positionID: user.positionID,
     };
 
-    const token = jwt.sign(payload, accessSecretKey, accOptions);
+    const accessToken = jwt.sign(payload, accessSecretKey, accOptions);
+    const refreshToken = jwt.sign(payload, accessSecretKey, refOptions);
 
-    return { token, payload };
+    return { accessToken, refreshToken, payload };
   },
   //액세스 토큰의 만료여부를 판단한다.
   //확인 사항 1. 서명확인 , 만료일자 확인
