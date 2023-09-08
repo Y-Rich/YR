@@ -1,33 +1,54 @@
 import { styled } from 'styled-components';
 
-export const ChartContainer = styled.main`
-  display: grid;
-  grid-template-columns: 60% 20%;
-  grid-row-gap: 5vh;
-  margin-top: 10vh;
-  place-items: center;
-  /* justify-items: center; */
-  /* width: 90%; */
+export const Slide = styled.main`
+  .slick-dots {
+    .slick-active {
+      button::before {
+        color: #c1c1c1;
+      }
+    }
+    button::before {
+      color: #e9e9e9;
+    }
+  }
+`;
 
-  /* display: flex;
-  flex-direction: column; */
-  /* align-items: center; */
-  /* justify-content: center; */
+export const ChartContainer = styled.main`
+  width: 70%;
+  margin: 5% 0 0 15%;
+  padding: 5% 0 5% 2%;
+  // height: 100%;
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  background-color: #d9d9d9;
+  justify-content: center;
+  border-radius: 10px;
 `;
 
 export const ChartBox = styled.section`
-  background-color: white;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30vw;
-  height: 30vh;
+  flex-direction: column;
+  gap: 5rem;
   overflow: scroll;
+  align-items: center;
   &::-webkit-scrollbar {
     display: none;
   }
   border-radius: 5px;
-  iframe {
-    border-radius: 5px;
+`;
+export const CBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  &.title {
+    gap: 3vw;
+  }
+`;
+export const GBox = styled.div`
+  width: 20vw;
+  height: 30vh;
+  &.do {
+    width: 30vw;
+    height: 50vh;
   }
 `;
