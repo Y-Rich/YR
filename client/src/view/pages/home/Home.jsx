@@ -13,8 +13,7 @@ const Home = () => {
   }, []);
   return (
     <Page>
-      {/* {isLogin ? <PLC /> : <Login />} */}
-      <PLC />
+      {isLogin ? <PLC /> : <Login />}
       {/* {ready ? (
         <Register ready={ready}>
           <div></div>

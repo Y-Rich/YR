@@ -22,10 +22,29 @@ const PLC = () => {
   const [loading, setLoading] = useState(true);
   const [num, setNum] = useState(0); // 권한에 따른 제어를 위한 묵데이터
   const [webSocket, setWebSocket] = useState(null);
-  const [messagePayload, setMessagePayload] = useState('');
-  const [mqttmsg, setMqttmsg] = useState(); // MQTT로 받은 메세지
+  const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState();
+  const [messagePayloadEnvironment, setMessagePayloadEnvironment] = useState();
   const canvasRef = useRef(null);
   // const guiRef = useRef(null);
+  // const test = useMemo(() => {
+  //   return {
+  //     num1: {
+  //       value: 0,
+  //       min: -2728,
+  //       max: 53294192312,
+  //       step: 1,
+  //     },
+  //     num2: {
+  //       value: 0,
+  //       min: -2728,
+  //       max: 53294192312,
+  //       step: 1,
+  //     },
+  //   };
+  // }, []);
+  // const model = useControls('test', test);
+  const [m3axis1, setM3axis1] = useState(0);
+  const [m3axis2, setM3axis2] = useState(0);
   useEffect(() => {
     setLoading(true);
     axios
@@ -33,7 +52,6 @@ const PLC = () => {
       .then((res) => {
         const userNum = res.data[1].role;
         setNum(userNum);
-        console.log(userNum);
       })
       .catch((err) => {
         console.error(err);
@@ -85,12 +103,31 @@ const PLC = () => {
     const pointLight2 = new THREE.PointLight(0xffffff, 50, 0, 1);
     pointLight2.position.y = 20;
     pointLight2.position.z = -20;
-    pointLight2.position.x = -20;
+    pointLight2.position.x = -30;
     scene.add(pointLight2);
     scene.add(new THREE.PointLightHelper(pointLight2)); // 라이트의 위치를 알려주는 헬퍼
     const control = new OrbitControls(camera, renderer.domElement);
 
     let requestId = null;
+
+    const [min, max] = [-2728, 53294192312];
+
+    // 3호기 축 움직이기
+    const yAxisFunc = (() => {
+      return function () {
+        // return ((test.num1.value - min) / (max - min)) * 7;
+        return m3axis1;
+      };
+    })();
+    const xAxisFunc = (() => {
+      return function () {
+        return (
+          // ((test.num2.value - min) / (max - min)) * THREE.MathUtils.degToRad(90)
+          m3axis2
+        );
+      };
+    })();
+
     const tick = () => {
       renderer.render(scene, camera);
       requestId = requestAnimationFrame(tick);
@@ -100,6 +137,8 @@ const PLC = () => {
 
       if (edukit.loaded) {
         setLoading(false);
+        edukit.actionY(yAxisFunc());
+        edukit.actionX(xAxisFunc());
       }
     };
     tick();
@@ -116,10 +155,17 @@ const PLC = () => {
     setWebSocket(ws);
 
     ws.addEventListener('message', function (event) {
-      const receivedMessage = event.data;
-
-      setMessagePayload(JSON.parse(receivedMessage));
-      console.log(JSON.parse(receivedMessage));
+      const receivedMessage = JSON.parse(event.data);
+      console.log(receivedMessage);
+      setMessagePayloadEdukit1(receivedMessage);
+      // if (receivedMessage.topic === 'edukit1') {
+      //   setMessagePayloadEdukit1(receivedMessage.data);
+      //   console.log(receivedMessage.data);
+      // }
+      // if (receivedMessage.topic === 'environment/data') {
+      //   setMessagePayloadEnvironment(receivedMessage.data);
+      //   console.log(receivedMessage.data);
+      // }
     });
 
     return () => {
@@ -127,33 +173,31 @@ const PLC = () => {
     };
   }, []);
 
-  // // 데이터 받아오기
-  // useFrame((state, delta) => {
-  //   // GuiController의 edukitOption 바꾸기
-  // });
-
-  // 에듀킷 제어
-  const startToEdukit = () => {
-    if (webSocket) {
-      const data = JSON.stringify({ tagId: '1', value: '1' });
-      webSocket.send(data);
-      console.log('Data sent to the server: 1');
-    }
-  };
-  const stopToEdukit = () => {
-    if (webSocket) {
-      const data = JSON.stringify({ tagId: '1', value: '0' });
-      webSocket.send(data);
-      console.log('Data sent to the server: 0');
-    }
-  };
+  // 3호기 축 값 웹소켓으로 받기
+  useEffect(() => {
+    messagePayloadEdukit1?.Wrapper?.forEach((item) => {
+      if (item.tagId === '21') {
+        const convertedValue = parseInt(item.value);
+        setM3axis1(convertedValue);
+        setM3axis1(convertedValue);
+        console.log('M3axis1', convertedValue);
+      }
+      if (item.tagId === '22') {
+        const convertedValue = parseInt(item.value);
+        setM3axis2(convertedValue);
+        setM3axis2(convertedValue);
+        console.log('M3axis2', convertedValue);
+      }
+    });
+  }, [messagePayloadEdukit1]);
 
   return (
     <div>
       {loading ? <Loading /> : null}
-      {/* <button onClick={() => startToEdukit()}>start</button>
-      <button onClick={() => stopToEdukit()}>stop</button> */}
-      <GuiController messagePayload={messagePayload} />
+      <GuiController
+        messagePayloadEdukit1={messagePayloadEdukit1}
+        webSocket={webSocket}
+      />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
