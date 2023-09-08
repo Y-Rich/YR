@@ -27,13 +27,13 @@ export const ROUTE = {
     path: '/plc',
     element: PLC,
   },
-  Simple: {
+  CHART: {
     path: '/chart',
     element: Chart,
   },
 };
 export const PUBLIC_ROUTE = {
-  Simple: {
+  CHART: {
     path: '/chart',
     element: Chart,
   },
@@ -51,7 +51,7 @@ export const PUBLIC_ROUTE = {
   },
 };
 export const PRIVATE_ROUTE = {
-  Simple: {
+  CHART: {
     path: '/chart',
     element: Chart,
   },

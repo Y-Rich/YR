@@ -15,8 +15,8 @@ export const Slide = styled.main`
 
 export const ChartContainer = styled.main`
   width: 70%;
-  margin: 5% 0 0 15%;
-  padding: 5% 0 5% 2%;
+  margin: 9vh 0 0 15%;
+  padding: 5vh 0 5% 2%;
   // height: 100%;
   display: flex;
   flex-direction: row;

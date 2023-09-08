@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LinkText } from '../Components';
 import { styled } from 'styled-components';
 import axios from 'axios';
+import { logout } from '../../../services/user';
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -38,8 +39,12 @@ const Header = () => {
   };
   const User = () => {
     const handleLogout = () => {
+      const token = sessionStorage.getItem('token');
+      axios.defaults.headers.common['accessToken'] = `${token}`;
+      logout();
       sessionStorage.removeItem('token');
       setIsLogin(false);
+      alert('로그아웃~~');
       window.location.href = '/';
     };
     return (

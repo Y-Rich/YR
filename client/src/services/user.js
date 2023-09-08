@@ -59,6 +59,16 @@ export const info = async () => {
     throw error;
   }
 };
+export const logout = async () => {
+  try {
+    const res = await axios.get(`http://192.168.0.127:8000/users/logout`);
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.error('Failed to register:', error);
+    throw error;
+  }
+};
 // export const login = async (data) => {
 //   try {
 //     const res = await axios.post('http://192.168.0.127:8000/users/login', data);

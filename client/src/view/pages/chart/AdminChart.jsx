@@ -18,7 +18,6 @@ export const AdminChart = () => {
   useEffect(() => {
     axios
       .get('http://localhost:3001/mock/chart1.json')
-      // .get('http://localhost:3000/mock/chart1.json')
       .then((res) => {
         const data1_1 = res.data.map((item) => item.create);
         const data1_2 = res.data.map((item) => item.error);
@@ -30,7 +29,6 @@ export const AdminChart = () => {
       });
     axios
       .get('http://localhost:3001/mock/chart2.json')
-      // .get('http://localhost:3000/mock/chart2.json')
       .then((res) => {
         const data2_1 = res.data.map((item) => item.create);
         const data2_2 = res.data.map((item) => item.error);
@@ -42,7 +40,6 @@ export const AdminChart = () => {
       });
     axios
       .get('http://localhost:3001/mock/chart3.json')
-      // .get('http://localhost:3000/mock/chart3.json')
       .then((res) => {
         const data3_1 = res.data.map((item) => item.create);
         const data3_2 = res.data.map((item) => item.error);
@@ -54,7 +51,6 @@ export const AdminChart = () => {
       });
     axios
       .get('http://localhost:3001/mock/chart4.json')
-      // .get('http://localhost:3000/mock/chart4.json')
       .then((res) => {
         const data4_1 = res.data.map((item) => item.temp);
         const data4_2 = res.data.map((item) => item.dust);

@@ -29,6 +29,9 @@ const UserModi = () => {
 
   useEffect(() => {
     try {
+      axios.get(`http://192.168.0.127:8000/users/search`).then((res) => {
+        console.log(res.data);
+      });
       const employeeID = sessionStorage.getItem('employeeID');
       axios
         .get(`http://192.168.0.127:8000/users/profile/${employeeID}`)
