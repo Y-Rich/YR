@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TNU9+2MXwE+F4dKrStl3SSNI9hPcO76PW789Lu8h4Uoqb/4MHc1qJaqiSccoqBqc8gR7hhNH4PgrAp0cnL5XJg==",
+  "dgSpecHash": "1TgVPRHzpH5tG3+j7H+RpTDx909s+Kn2g4lQMeyo/uF77cgdbWBJ6XVgcRfcZTL2+gpBDMPGIWlzBbY3teniGQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\UVC\\Desktop\\메타캠프 프로젝트 자료 모음\\2차 팀프로젝트 webgl & Edukit 참고 코드 및 메뉴얼\\FLEXING_EDUKiT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj",
+  "projectFilePath": "C:\\workspace\\YR\\IoT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\UVC\\.nuget\\packages\\ecng.collections\\1.0.95\\ecng.collections.1.0.95.nupkg.sha512",
     "C:\\Users\\UVC\\.nuget\\packages\\ecng.common\\1.0.92\\ecng.common.1.0.92.nupkg.sha512",

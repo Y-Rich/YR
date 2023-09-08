@@ -1,4 +1,3 @@
-// import { OrbitControls, Html } from '@react-three/drei';
 import { Canvas, useLoader, useFrame } from '@react-three/fiber';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import Selector from '../../components/Selector';
@@ -8,12 +7,6 @@ import { GUI } from 'dat.gui';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import Edukit from './loader';
 import axios from 'axios';
-import {
-  SideBarContainer,
-  ArrowBtn,
-  Content,
-  ControlBox,
-} from '../../components/SideBar';
 import Loading from '../../components/Loading';
 import { useControls } from 'leva';
 import GuiController from './GuiController';
@@ -58,7 +51,6 @@ const PLC = () => {
       });
 
     const canvas = canvasRef.current;
-    // const canvas = document.querySelector('#webgl');
     const scene = new THREE.Scene();
     const edukit = new Edukit();
     edukit.fileload(scene);

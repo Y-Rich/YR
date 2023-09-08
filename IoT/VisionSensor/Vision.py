@@ -4,9 +4,6 @@ from socket import *
 from select import *
 import sys
 from time import sleep
-from mqtt_publisher import generate_json_data, publish_json_data, mqtt_topic
-import time
-
 
 # 교육키트 IP
 HOST = '192.168.0.120'
@@ -31,9 +28,6 @@ params.minInertiaRatio = Circle_Inertia
 
 detector = cv2.SimpleBlobDetector_create(params)
 
-last_publish_time = time.time()
-
-
 while True:
     ret, frame = cap.read()
     
@@ -45,12 +39,6 @@ while True:
     num = len(keypoints)
     readings.append(num)
 
-    current_time = time.time()
-    if current_time - last_publish_time >= 2:
-        last_publish_time = current_time
-        json_data = generate_json_data(num)
-        publish_json_data(mqtt_topic, json_data)
-    
     # print(readings)
     if readings[-1] == readings[-2] == readings[-3] == readings[-4] == readings[-5] == readings[-6]:
             im_with_keypoints = cv2.drawKeypoints(frame, keypoints, np.array([]), (0, 0, 255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
@@ -70,4 +58,4 @@ while True:
                      print("Error" + str(e))
             cv2.imwrite("After.png", im_with_keypoints)
             print('close PLC Success!')
-            sleep(3)
+            sleep(1)
