@@ -29,15 +29,11 @@ const UserModi = () => {
 
   useEffect(() => {
     try {
-      const employeeID = sessionStorage.getItem('employeeID');
-      axios
-        .get(`http://192.168.0.127:8000/users/profile/${employeeID}`)
-        .then((res) => {
-          setName(res.data.name);
-          setEmail(res.data.email);
-          setPhone(res.data.phone);
-          console.log(res.data);
-        });
+      info().then((res) => {
+        setName(res.name);
+        setEmail(res.email);
+        setPhone(res.phone);
+      });
     } catch (error) {
       console.error('Failed to register:', error);
       throw error;
@@ -50,7 +46,6 @@ const UserModi = () => {
       alert('정보를 전부 입력해주세요!');
       return;
     }
-
     if (!validateName(name)) {
       alert('이름을 한글로 입력해주세요');
       return;

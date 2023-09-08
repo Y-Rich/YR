@@ -2,8 +2,6 @@ import { styled } from 'styled-components';
 
 export const Table = styled.table`
   font-size: 1rem;
-  /* width: 50%; */
-  /* height: 70%; */
   margin-top: 5%;
   border-radius: 10px;
   border-collapse: collapse;
@@ -11,7 +9,6 @@ export const Table = styled.table`
 
 export const Thead = styled.thead`
   background-color: beige;
-  /* height: 10%; */
   border-radius: 10px;
 `;
 
@@ -25,7 +22,7 @@ export const Tr = styled.tr`
 `;
 
 export const Th = styled.th`
-  padding: 1.5vw; /* 셀 내부 패딩을 추가합니다. */
+  padding: 1.5vw;
   text-align: center;
 `;
 
@@ -33,5 +30,4 @@ export const Td = styled.td`
   padding: 8px;
   text-align: center;
   padding: 1.5vw;
-  /* border: 1px solid #999999; */
 `;

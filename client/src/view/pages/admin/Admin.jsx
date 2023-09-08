@@ -8,7 +8,7 @@ const Admin = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchData(); // 데이터 가져오는 함수를 호출합니다.
+    fetchData();
   }, []);
 
   const fetchData = () => {
@@ -16,7 +16,7 @@ const Admin = () => {
       .get('http://localhost:3001/mock/user.json')
       .then((res) => {
         setData(res.data);
-        console.log(res.data); // 데이터가 출력됩니다.
+        console.log(res.data);
       })
       .catch((error) => {
         console.error('데이터를 불러오는 중 에러가 발생했습니다.', error);

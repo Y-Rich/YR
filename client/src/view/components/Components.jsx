@@ -78,7 +78,9 @@ export const Title = styled.div`
     font-size: 50px;
   }
   &.label {
-    font-size: 2rem;
+    /* margin-top: 20%; */
+    font-size: 4vh;
+    align-items: center;
   }
 `;
 export const Box = styled.article`
@@ -111,6 +113,13 @@ export const Box = styled.article`
   }
   &.chart {
     gap: 5vh;
+    align-items: flex-start;
+    &.title {
+      margin-left: 7%;
+    }
+    &.graph {
+      flex-direction: row;
+    }
   }
 `;
 export const Input = styled.input`
