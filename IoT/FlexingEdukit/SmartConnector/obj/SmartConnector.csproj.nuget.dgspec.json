@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\UVC\\Desktop\\메타캠프 프로젝트 자료 모음\\2차 팀프로젝트 webgl & Edukit 참고 코드 및 메뉴얼\\FLEXING_EDUKiT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj": {}
+    "C:\\workspace\\YR\\IoT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj": {}
   },
   "projects": {
-    "C:\\Users\\UVC\\Desktop\\메타캠프 프로젝트 자료 모음\\2차 팀프로젝트 webgl & Edukit 참고 코드 및 메뉴얼\\FLEXING_EDUKiT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj": {
+    "C:\\workspace\\YR\\IoT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\UVC\\Desktop\\메타캠프 프로젝트 자료 모음\\2차 팀프로젝트 webgl & Edukit 참고 코드 및 메뉴얼\\FLEXING_EDUKiT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj",
+        "projectUniqueName": "C:\\workspace\\YR\\IoT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj",
         "projectName": "SmartConnector",
-        "projectPath": "C:\\Users\\UVC\\Desktop\\메타캠프 프로젝트 자료 모음\\2차 팀프로젝트 webgl & Edukit 참고 코드 및 메뉴얼\\FLEXING_EDUKiT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj",
+        "projectPath": "C:\\workspace\\YR\\IoT\\FlexingEdukit\\SmartConnector\\SmartConnector.csproj",
         "packagesPath": "C:\\Users\\UVC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\UVC\\Desktop\\메타캠프 프로젝트 자료 모음\\2차 팀프로젝트 webgl & Edukit 참고 코드 및 메뉴얼\\FLEXING_EDUKiT\\FlexingEdukit\\SmartConnector\\obj\\",
+        "outputPath": "C:\\workspace\\YR\\IoT\\FlexingEdukit\\SmartConnector\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\UVC\\AppData\\Roaming\\NuGet\\NuGet.Config",
