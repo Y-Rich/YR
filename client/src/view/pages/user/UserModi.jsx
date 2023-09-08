@@ -36,8 +36,6 @@ const UserModi = () => {
           setName(res.data.name);
           setEmail(res.data.email);
           setPhone(res.data.phone);
-          setPassword(res.data.password);
-          setPassword2(res.data.password);
           console.log(res.data);
         });
     } catch (error) {
@@ -48,7 +46,7 @@ const UserModi = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await new Promise((res) => setTimeout(res, 1000));
-    if (!name || !phone || !password || !password2) {
+    if (!name || !phone) {
       alert('정보를 전부 입력해주세요!');
       return;
     }
@@ -58,11 +56,14 @@ const UserModi = () => {
       return;
     }
     if (!validatePhone(phone)) {
-      alert('정확한 사번을 입력해주세요');
+      alert('정확한 핸드폰 번호를 입력해주세요');
       return;
     }
-    if (!validatePassword(password)) {
-      alert('8자 이상의 비밀번호를 입력해주세요!');
+    if (password.length > 0 || password2.length > 0) {
+      if (!validatePassword(password)) {
+        alert('8자 이상의 비밀번호를 입력해주세요!');
+        return;
+      }
       return;
     }
     if (password !== password2) {

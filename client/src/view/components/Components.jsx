@@ -77,6 +77,9 @@ export const Title = styled.div`
   &.modi {
     font-size: 50px;
   }
+  &.label {
+    font-size: 2rem;
+  }
 `;
 export const Box = styled.article`
   align-items: center;
@@ -105,6 +108,9 @@ export const Box = styled.article`
     gap: 3vh;
     padding-top: 4vh;
     align-items: center;
+  }
+  &.chart {
+    gap: 5vh;
   }
 `;
 export const Input = styled.input`
