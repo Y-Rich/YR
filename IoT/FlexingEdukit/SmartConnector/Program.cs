@@ -72,129 +72,193 @@ namespace SmartConnector.Edukit
                         dynamic test = JsonConvert.DeserializeObject<test>(receivedMessage);
                         string topic = e.Topic;
 
-                        if (test != null)
+                        if (test.tagId.Equals("1")) //start
                         {
-                            if (test.tagId.Equals("1")) //start
+                            if (test.value.Equals("0"))
                             {
-                                if (test.value.Equals("0"))
-                                {
-                                    pAddress2.Address = "0";
-                                    pAddress2.Data = "0";
-                                    test1.Address = "22";
-                                    test1.Data = "0";
-
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                    xGTClass.Write(XGT_DataType.Bit, test1, XGT_MemoryType.IO_P, 0);
-                                }
-                                else if (test.value.Equals("1"))
-                                {
-                                    pAddress2.Address = "0";
-                                    pAddress2.Data = "1";
-                                    test1.Address = "22";
-                                    test1.Data = "1";
-
-                                    xGTClass.Write(XGT_DataType.Bit, test1, XGT_MemoryType.IO_P, 0);
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                            }
-                            else if (test.tagId.Equals("8")) //reset
-                            {
-                                pAddress2.Address = "F";
-                                pAddress2.Data = "1";
-                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-
-                                pAddress2.Address = "F";
+                                pAddress2.Address = "0";
                                 pAddress2.Data = "0";
+                                test1.Address = "22";
+                                test1.Data = "0";
+
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                                xGTClass.Write(XGT_DataType.Bit, test1, XGT_MemoryType.IO_P, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "0";
+                                pAddress2.Data = "1";
+                                test1.Address = "22";
+                                test1.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, test1, XGT_MemoryType.IO_P, 0);
                                 xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
                             }
-                            else if (test.tagId.Equals("9")) // 1호기 ON/OFF
-                            {
-                                if (test.value.Equals("0"))
-                                {
-                                    pAddress2.Address = "8F";
-                                    pAddress2.Data = "0";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                                else if (test.value.Equals("1"))
-                                {
-                                    pAddress2.Address = "8F";
-                                    pAddress2.Data = "1";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                            }
-                            else if (test.tagId.Equals("10")) // 2호기 ON/OFF
-                            {
-                                if (test.value.Equals("0"))
-                                {
-                                    pAddress2.Address = "9F";
-                                    pAddress2.Data = "0";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                                else if (test.value.Equals("1"))
-                                {
-                                    pAddress2.Address = "9F";
-                                    pAddress2.Data = "1";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                            }
-                            else if (test.tagId.Equals("11")) // 3호기 ON/OFF
-                            {
-                                if (test.value.Equals("0"))
-                                {
-                                    pAddress2.Address = "10E";
-                                    pAddress2.Data = "0";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                                else if (test.value.Equals("1"))
-                                {
-                                    pAddress2.Address = "10E";
-                                    pAddress2.Data = "1";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                            }
-                            else if (test.tagId.Equals("12")) // sensor1 ON/OFF
-                            {
-                                if (test.value.Equals("0"))
-                                {
-                                    pAddress2.Address = "6F";
-                                    pAddress2.Data = "0";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                                else if (test.value.Equals("1"))
-                                {
-                                    pAddress2.Address = "6F";
-                                    pAddress2.Data = "1";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                            }
-                            else if (test.tagId.Equals("13")) // sensor2 ON/OFF
-                            {
-                                if (test.value.Equals("0"))
-                                {
-                                    pAddress2.Address = "7F";
-                                    pAddress2.Data = "0";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                                else if (test.value.Equals("1"))
-                                {
-                                    pAddress2.Address = "7F";
-                                    pAddress2.Data = "1";
-
-                                    xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
-                                }
-                            }
-                            Console.WriteLine(test.tagId);
                         }
+                        else if (test.tagId.Equals("3")) //No1_밀기작동
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "92";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "92";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("8")) //reset
+                        {
+                            pAddress2.Address = "F";
+                            pAddress2.Data = "1";
+                            xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+
+                            pAddress2.Address = "F";
+                            pAddress2.Data = "0";
+                            xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                        }
+                        else if (test.tagId.Equals("9")) // 1호기 ON/OFF
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "8F";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "8F";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("10")) // 2호기 ON/OFF
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "9F";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "9F";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("11")) // 3호기 ON/OFF
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "10E";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "10E";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("12")) // sensor1 ON/OFF
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "6F";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "6F";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("13")) // sensor2 ON/OFF
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "7F";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "7F";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("14")) //생산 주기
+                        {
+                            pAddress2.Address = "1101";
+                            pAddress2.Data = test.value;
+
+                            xGTClass.Write(XGT_DataType.Word, pAddress2, XGT_MemoryType.DataRegister_D, 0);
+
+                        }
+                        else if (test.tagId.Equals("31")) //No2운전방법 색 선별 ON/OFF
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "18";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "18";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.SubRelay_M, 0);
+                            }
+                        }
+                        else if (test.tagId.Equals("36")) //생산량 리미트
+                        {
+                            pAddress2.Address = "10000";
+                            pAddress2.Data = test.value;
+
+                            xGTClass.Write(XGT_DataType.Word, pAddress2, XGT_MemoryType.DataRegister_D, 0);
+
+                        }
+                        else if (test.tagId.Equals("40")) // No3Gripper
+                        {
+                            if (test.value.Equals("0"))
+                            {
+                                pAddress2.Address = "2B";
+                                pAddress2.Data = "0";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.IO_P, 0);
+                            }
+                            else if (test.value.Equals("1"))
+                            {
+                                pAddress2.Address = "2B";
+                                pAddress2.Data = "1";
+
+                                xGTClass.Write(XGT_DataType.Bit, pAddress2, XGT_MemoryType.IO_P, 0);
+                            }
+                        }
+                        Console.WriteLine(test.tagId);
                     }
 
                     string websocket = edgeConfigResult.WebSocketServerUrl;
