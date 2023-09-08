@@ -32,13 +32,13 @@ app.use(
 app.use(express.json());
 
 // MQTT Broker에 연결
-const mqttClient = mqtt.connect("http://localhost:1883"); // MQTT Broker
+const mqttClient = mqtt.connect("http://192.168.0.44:1883"); // MQTT Broker
 
 mqttClient.on("connect", () => {
   console.log("Connected to MQTT Broker");
 
   // MQTT Topic에서 메시지를 수신
-  mqttClient.subscribe("myEdukit"); // 구독할 MQTT 토픽
+  mqttClient.subscribe("edukit1"); // 구독할 MQTT 토픽
 });
 
 // WebSocket 연결 및 데이터 전송
@@ -71,6 +71,7 @@ wss.on("connection", function connection(ws) {
   const topic = "edukit/control";
   ws.on("message", function (message) {
     mqttClient.publish(topic, message);
+    console.log("제어 명령:", message);
   });
 });
 
