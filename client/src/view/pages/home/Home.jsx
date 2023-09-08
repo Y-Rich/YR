@@ -9,6 +9,7 @@ const Home = () => {
     const token = sessionStorage.getItem('token');
     setIsLogin(!!token);
   }, []);
+
   return <Page>{isLogin ? <PLC /> : <Login />}</Page>;
 };
 

@@ -19,20 +19,16 @@ export default class Edukit {
 
   async fileload(scene) {
     const group = (this.object.group = new Group());
-    const groupY = (this.axes.yAxis = new Group());
-    const groupX = (this.axes.xAxis = new Group());
-    const groupX2 = (this.axes.xAxis2 = new Group());
+    const groupM3Y = (this.axes.yAxis = new Group());
+    const groupM3X = (this.axes.xAxis = new Group());
+    const groupM3X2 = (this.axes.xAxis2 = new Group());
 
-    const group2 = (this.object.group = new Group());
+    const groupM3 = (this.object.group = new Group());
 
-    const geometry = new BoxGeometry(3, 3, 3);
-    const material = new MeshBasicMaterial({ color: 'red' });
-    const mesh = new Mesh(geometry, material);
-    mesh.position.y = 3;
-    // groupX.rotation.y = MathUtils.degToRad(-90);
-    groupX2.position.x = 5;
-    // groupX2.position.y = 10;
-    // groupX2.rotation.y = MathUtils.degToRad(90);
+    // const geometry = new BoxGeometry(3, 3, 3);
+    // const material = new MeshBasicMaterial({ color: 'red' });
+    // const mesh = new Mesh(geometry, material);
+    // mesh.position.y = 3;
     group.position.x = 10;
 
     // // 이전 body 설정
@@ -159,10 +155,10 @@ export default class Edukit {
       });
     }
 
-    // groupX2.add(mesh1_1, mesh.clone(), new AxesHelper(7));
-    // groupX.add(mesh.clone(), mesh1_2, groupX2, new AxesHelper(7));
-    // groupY.add(groupX, mesh1_3);
-    // group.add(groupY, mesh1_4);
+    groupM3X2.add(mesh_m3_gripper, new AxesHelper(7));
+    groupM3X.add(mesh_m3_y_bar, groupM3X2, new AxesHelper(7));
+    groupM3Y.add(groupM3X, mesh_m3_y_axis);
+    group.add(groupM3Y);
     group.add(
       mesh_belt,
       mesh_edukit_body,
@@ -174,9 +170,9 @@ export default class Edukit {
       mesh_m2_body,
       mesh_m2_pusher,
       mesh_m3_body,
-      mesh_m3_gripper,
-      mesh_m3_y_axis,
-      mesh_m3_y_bar,
+      // mesh_m3_gripper,
+      // mesh_m3_y_axis,
+      // mesh_m3_y_bar,
       mesh_trf_body,
       mesh_trf_grn,
       mesh_trf_red,
