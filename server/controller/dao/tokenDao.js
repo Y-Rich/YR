@@ -44,11 +44,10 @@ const dao = {
   },
 
   // dao - get
-  get(params) {
+  getToken(params) {
     return new Promise((resolve, reject) => {
       Token.findOne({
         where: { employeeID: params.employeeID },
-        attributes: ['refreshToken'],
       })
         .then((selectedInfo) => {
           resolve(selectedInfo);

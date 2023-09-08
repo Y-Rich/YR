@@ -21,11 +21,11 @@ const MQTTconnect = () => {
     const topic_control = ['edukit/control'];
     const topic_dataForDB = ['edukit1'];
 
-    client.subscribe(topic_dataForDB, { qos: 0 }, function (err) {
+    client.subscribe(topic, { qos: 0 }, function (err) {
       if (err) {
         logger.error('Error subscribing to topic:', err);
       } else {
-        logger.info(`Subscribed to topic: ${topic_dataForDB}`);
+        logger.info(`Subscribed to topic: ${topic}`);
       }
     });
   });
@@ -35,7 +35,7 @@ const MQTTconnect = () => {
   client.on('message', async function (topic, message) {
     try {
       const parsedMessage = message.toString();
-      // logger.debug(`Received message on topic ${topic}: ${parsedMessage}`);
+      logger.debug(`Received message on topic ${topic}: ${parsedMessage}`);
       if (topic === 'edukit1') {
         // 비즈니스 로직 호출
         const result = await edukit1Service.reg(JSON.parse(parsedMessage));
@@ -49,5 +49,9 @@ const MQTTconnect = () => {
   client.on('error', function (error) {
     logger.error('MQTT Error:', error);
   });
+
+  return {
+    publish, // 다른 모듈에서 사용할 수 있도록 publish 함수를 내보냅니다.
+  };
 };
 module.exports = MQTTconnect;

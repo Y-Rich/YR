@@ -65,8 +65,9 @@ const service = {
     let result = null;
 
     try {
-      result = await tokenDao.get(params);
-      logger.debug(`(tokenService.getToken) ${JSON.stringify(result)}`);
+      logger.debug(`(tokenService.getToken.params) ${JSON.stringify(params)}`);
+      result = await tokenDao.getToken(params);
+      logger.debug(`(tokenService.getToken.result) ${JSON.stringify(result)}`);
     } catch (err) {
       logger.error(`(tokenService.getToken) ${err.toString()}`);
       return new Promise((resolve, reject) => {

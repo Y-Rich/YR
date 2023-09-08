@@ -21,4 +21,5 @@ module.exports = class Token extends Sequelize.Model {
       },
     );
   }
+  static includeAttributes = ['refreshToken'];
 };

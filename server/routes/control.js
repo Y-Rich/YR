@@ -5,7 +5,7 @@ const lineService = require('../controller/service/lineService');
 const MQTTconnect = require('../controller/connection_MQTT'); // MQTTconnect 모듈을 가져옵니다.
 
 // MQTT 연결을 설정합니다. - MQTTconnect 모듈 require
-// const mqttClient = MQTTconnect();
+const mqttClient = MQTTconnect();
 
 //커멘드 셋
 // MQTT  - 에듀킷 컨트롤 제어시 json형식으로 보내야함
