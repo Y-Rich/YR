@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 
 export const SideBarContainer = styled.aside`
-  /* background-color: #e3ecf1; */
   background-color: #d9d9d9;
-  /* border-left: 4px solid #202020; */
   position: fixed;
   top: 0;
   bottom: 0;
@@ -29,17 +27,11 @@ export const ArrowBtn = styled.button`
   height: 40px;
   font-size: 20px;
   text-align: center;
-  /* z-index: 99; */
   transition: 0.8s ease;
-  /* border: 2px solid #202020; */
   border: none;
   border-radius: 40px;
   overflow: hidden;
   cursor: pointer;
-  /* &open {
-    width: 100%;
-    height: 100%;
-  } */
   &span {
     justify-content: center;
   }
@@ -51,9 +43,7 @@ export const Content = styled.div`
   width: 100%;
 `;
 
-export const ControlContainer = styled.section`
-  /* background-color: aliceblue; */
-`;
+export const ControlContainer = styled.section``;
 export const ControlName = styled.div`
   background-color: aquamarine;
 `;

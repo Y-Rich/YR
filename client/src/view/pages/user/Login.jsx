@@ -26,50 +26,16 @@ const Login = () => {
     }
   };
   const handleOnClick = async () => {
-    // try {
-    //   if (!email || !password) {
-    //     alert('이메일 또는 비밀번호를 입력해주세요!');
-    //     return;
-    //   }
-    //   if (!validateEmail(email)) {
-    //     alert('유효한 이메일 주소를 입력해주세요!');
-    //     return;
-    //   }
-    //   const data = { email: email, password: password };
-    //   const res = await axios.post(
-    //     'http://192.168.0.127:8000/users/login',
-    //     data
-    //   );
-    //   if (res.status === 200) {
-    //     console.log(res);
-    //     const headerValue = res.headers.accesstoken;
-    //     sessionStorage.setItem('token', headerValue);
-    //     alert('로그인 성공');
-    //     window.location.href = '/';
-    //   } else {
-    //     alert('로그인 실패');
-    //   }
-    // } catch (error) {
-    //   console.error('Failed to login:', error);
-    //   alert('로그인 실패!');
-    // }
     try {
-      const data = { email: email, password: password };
-      const res = await axios.post(
-        'http://192.168.0.127:8000/users/login',
-        data
-      );
-      if (res.status === 200) {
-        console.log(res);
-        const headerValue = res.headers.accesstoken;
-        console.log(res.data);
-        sessionStorage.setItem('employeeID', res.data.employeeID);
-        sessionStorage.setItem('token', headerValue);
-        alert('로그인 성공');
-        window.location.href = '/';
-      } else {
-        alert('로그인 실패');
+      if (!email || !password) {
+        alert('이메일 또는 비밀번호를 입력해주세요!');
+        return;
       }
+      if (!validateEmail(email)) {
+        alert('유효한 이메일 주소를 입력해주세요!');
+        return;
+      }
+      login(email, password);
     } catch (error) {
       console.error('Failed to login:', error);
       alert('로그인에 실패하였습니다.');

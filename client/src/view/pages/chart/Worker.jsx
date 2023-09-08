@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { CBox, ChartBox, ChartContainer, GBox } from './style';
-import Selector from '../../components/Selector';
+import { CBox, ChartBox, ChartContainer, GBox, TitleBox } from './style';
 import { DoughnutGraph, LineGraph } from './Graph';
 import axios from 'axios';
 import { Box, Title } from '../../components/Components';
 
-export const EmployeeChart = () => {
+export const Worker = ({ fac, line, userName }) => {
+  console.log(fac, line, userName);
+  const lineNumber = line[line.length - 1] + '호기';
   const [data1_1, setData1_1] = useState([]);
   const [data1_2, setData1_2] = useState([]);
   const [data2_1, setData2_1] = useState([]);
@@ -64,41 +65,49 @@ export const EmployeeChart = () => {
 
   return (
     <ChartContainer>
-      <ChartBox>
-        <CBox className="title">
-          <Box className="chart">
-            <Title className="label">1호기 생산량</Title>
-            <Title style={{ color: 'green' }}>53</Title>
-          </Box>
-          <Box className="chart">
-            <Title className="label">1호기 투입량</Title>
-            <Title style={{ color: 'blue' }}>59</Title>
-          </Box>
-          <Box className="chart">
-            <Title className="label">오류 발생률</Title>
-            <Title style={{ color: 'red' }}>6</Title>
-          </Box>
-        </CBox>
-        <CBox>
+      <ChartBox className="left">
+        <Box className="chart title">
+          <CBox>
+            <p>담당자: {userName}</p>
+            <p>
+              소속: {fac} - {line}
+            </p>
+          </CBox>
+          <TitleBox>
+            <CBox className="title">
+              <Title className="label">{lineNumber} 생산량</Title>
+              <Title style={{ color: 'green' }}>53</Title>
+            </CBox>
+            <CBox className="title">
+              <Title className="label">{lineNumber} 투입량</Title>
+              <Title style={{ color: 'blue' }}>59</Title>
+            </CBox>
+            <CBox className="title">
+              <Title className="label">오류 발생률</Title>
+              <Title style={{ color: 'red' }}>6</Title>
+            </CBox>
+          </TitleBox>
+        </Box>
+        <Box className="chart graph">
           <GBox>
             <LineGraph
-              title="2호기"
+              title={lineNumber}
               label1="생산량"
               label2="오류율"
-              data1={data3_1}
-              data2={data3_2}
+              data1={data1_1}
+              data2={data1_2}
             />
           </GBox>
           <GBox>
             <LineGraph
-              title="2호기"
+              title={lineNumber}
               label1="생산량"
               label2="오류율"
-              data1={data3_1}
-              data2={data3_2}
+              data1={data2_1}
+              data2={data2_1}
             />
           </GBox>
-        </CBox>
+        </Box>
       </ChartBox>
       <ChartBox>
         <GBox className="do">
