@@ -1,0 +1,103 @@
+{
+  "count": 7,
+  "rows": [
+    {
+      "employeeID": 12,
+      "email": "namoo@uvc.co.kr",
+      "name": "源��섎Т",
+      "positionID": 7,
+      "phone": "01012341234",
+      "createdAt": "2023-09-06T07:50:11.000Z",
+      "updatedAt": "2023-09-06T07:50:11.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "worker_fac1_line2",
+        "description": "worker_fac1_line2"
+      }
+    },
+    {
+      "employeeID": 11,
+      "email": "jung@uvc.co.kr",
+      "name": "源�源�諛�",
+      "positionID": 6,
+      "phone": "010987654321",
+      "createdAt": "2023-09-06T07:08:08.000Z",
+      "updatedAt": "2023-09-06T08:47:07.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "worker_fac1_line1",
+        "description": "worker_fac1_line1"
+      }
+    },
+    {
+      "employeeID": 10,
+      "email": "sample08@uvc.co.kr",
+      "name": "�섑뵆��",
+      "positionID": 4,
+      "phone": "01088888888",
+      "createdAt": "2023-09-06T05:58:20.000Z",
+      "updatedAt": "2023-09-06T05:58:20.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "supervisor_fac1",
+        "description": "supervisor_fac1"
+      }
+    },
+    {
+      "employeeID": 9,
+      "email": "test5@test.com",
+      "name": "�뚯뒪��4",
+      "positionID": 3,
+      "phone": "010-1111-1111",
+      "createdAt": "2023-09-06T05:51:01.000Z",
+      "updatedAt": "2023-09-06T05:51:01.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "worker",
+        "description": "worker"
+      }
+    },
+    {
+      "employeeID": 3,
+      "email": "test3@test.com",
+      "name": "�뚯뒪��3",
+      "positionID": 2,
+      "phone": "010-1111-1111",
+      "createdAt": "2023-09-06T03:41:00.000Z",
+      "updatedAt": "2023-09-06T03:41:00.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "supervisor",
+        "description": "supervisor"
+      }
+    },
+    {
+      "employeeID": 2,
+      "email": "test2@test.com",
+      "name": "�뚯뒪��2",
+      "positionID": 1,
+      "phone": "010-1111-1111",
+      "createdAt": "2023-09-06T03:40:49.000Z",
+      "updatedAt": "2023-09-06T03:40:49.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "manager",
+        "description": "manager"
+      }
+    },
+    {
+      "employeeID": 1,
+      "email": "test@test.com",
+      "name": "�섑뵆��",
+      "positionID": 3,
+      "phone": "01000000000",
+      "createdAt": "2023-09-06T02:38:43.000Z",
+      "updatedAt": "2023-09-06T06:53:20.000Z",
+      "deletedAt": null,
+      "Position": {
+        "positionName": "worker",
+        "description": "worker"
+      }
+    }
+  ]
+}

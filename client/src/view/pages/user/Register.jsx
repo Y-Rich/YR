@@ -15,59 +15,73 @@ import {
   validatePhone,
 } from '../../../utils/userFunc';
 import { register } from '../../../services/user';
+import Modal from '../../components/Modal';
 
 const Register = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const [modal, setModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
 
-  const nameChange = ({ target: { value } }) => setName(value);
-  const phoneChange = ({ target: { value } }) => setPhone(value);
-  const emailChange = ({ target: { value } }) => setEmail(value);
-  const passwordChange = ({ target: { value } }) => setPassword(value);
-  const password2Change = ({ target: { value } }) => setPassword2(value);
-
+  const updateUserInfo = (fieldName, value) => {
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      [fieldName]: value,
+    }));
+  };
+  const openModal = (content) => {
+    setModalContent(content);
+    setModal(true);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     await new Promise((res) => setTimeout(res, 1000));
+    const { name, phone, email, password, password2 } = userInfo;
     if (!name || !phone || !email || !password || !password2) {
-      alert('정보를 전부 입력해주세요!');
+      openModal('정보를 전부 입력해주세요!');
       return;
     }
 
     if (!validateName(name)) {
-      alert('이름을 한글로 입력해주세요');
+      openModal('이름을 한글로 입력해주세요');
       return;
     }
     if (!validatePhone(phone)) {
-      alert('정확한 사번을 입력해주세요');
+      openModal('정확한 전화번호를 입력해주세요');
       return;
     }
     if (!validateEmail(email)) {
-      alert('사내 이메일을 입력해주세요');
+      openModal('사내 이메일을 입력해주세요');
       return;
     }
     if (!validatePassword(password)) {
-      alert('8자 이상의 비밀번호를 입력해주세요!');
+      openModal('8자 이상의 비밀번호를 입력해주세요!');
       return;
     }
     if (password !== password2) {
-      alert('비밀번호를 재확인해주세요!');
+      openModal('비밀번호를 재확인해주세요!');
       return;
     }
     try {
       await register(name, phone, email, password);
-      alert('회원가입이 완료되었습니다.');
+      openModal(`${name}님의 회원가입이 완료되었습니다.`);
       navigate('/');
     } catch (error) {
       console.error('Failed to register:', error);
-      alert('회원가입에 실패하였습니다.');
+      openModal('회원가입에 실패하였습니다.');
     }
   };
 
+  const closeModal = () => {
+    setModal(false);
+    setModalContent('');
+  };
   return (
     <Page>
       <Container className="register">
@@ -75,37 +89,37 @@ const Register = () => {
         <Box className="register">
           <Input
             placeholder="Please enter your name"
-            value={name}
-            onChange={nameChange}
+            value={userInfo.name}
+            onChange={(e) => updateUserInfo('name', e.target.value)}
             className="register"
           />
           <Box className="register phone">
             <Input
               placeholder="Please enter your phone"
-              value={phone}
-              onChange={phoneChange}
+              value={userInfo.phone}
+              onChange={(e) => updateUserInfo('phone', e.target.value)}
               className="register phone"
             />
             <Button className="check">Check</Button>
           </Box>
           <Input
             placeholder="Please enter your email"
-            value={email}
-            onChange={emailChange}
+            value={userInfo.email}
+            onChange={(e) => updateUserInfo('email', e.target.value)}
             className="register"
           />
           <Input
             type="password"
             placeholder="Please enter your password"
-            value={password}
-            onChange={passwordChange}
+            value={userInfo.password}
+            onChange={(e) => updateUserInfo('password', e.target.value)}
             className="register"
           />
           <Input
             type="password"
             placeholder="Please Check Your password"
-            value={password2}
-            onChange={password2Change}
+            value={userInfo.password2}
+            onChange={(e) => updateUserInfo('password2', e.target.value)}
             className="register"
           />
         </Box>
@@ -116,6 +130,7 @@ const Register = () => {
         >
           SUBMIT
         </Button>
+        {modal && <Modal setModal={closeModal} element={modalContent} />}
       </Container>
     </Page>
   );
