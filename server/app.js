@@ -11,7 +11,7 @@ const Models = require('./controller/models/index');
 const indexRouter = require('./routes/index');
 const MongoDBconnect = require('./controller/connection_mongoDB');
 const { swaggerUi, specs } = require('./lib/swagger');
-const MQTTconnect = require('./controller/connection_MQTT');
+const MQTTconnectForDataStore = require('./controller/connection_MQTT_dataStore');
 
 // 환경변수 setting
 env.config();
@@ -51,8 +51,8 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// connection - MQTT
-MQTTconnect();
+// connection - MQTT / 에듀킷 + 각종 데이터 구독 [센서 등등]
+MQTTconnectForDataStore();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/', indexRouter);

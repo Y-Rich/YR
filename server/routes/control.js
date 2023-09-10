@@ -2,36 +2,17 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../lib/logger');
 const lineService = require('../controller/service/lineService');
-const MQTTconnect = require('../controller/connection_MQTT'); // MQTTconnect 모듈을 가져옵니다.
-
+const MQTTconnectForControl = require('../controller/connection_MQTT_edukitControl'); // MQTTconnect 모듈을 가져옵니다.
+const controlSet = require('../config/edukitConfig.json');
 // MQTT 연결을 설정합니다. - MQTTconnect 모듈 require
-const mqttClient = MQTTconnect();
+const mqttClient = MQTTconnectForControl();
 
 //커멘드 셋
 // MQTT  - 에듀킷 컨트롤 제어시 json형식으로 보내야함
 const command = { tagId: 1, value: 1 };
 
-// 등록
-router.post('/', async (req, res) => {
-  try {
-    const params = {
-      departmentCode: req.body.departmentCode,
-      linename: req.body.linename,
-      code: req.body.code,
-      description: req.body.description,
-    };
-    logger.info(`(line.reg.params) ${JSON.stringify(params)}`);
+// MQTT - test commands
 
-    // 비즈니스 로직 호출
-    const result = await lineService.reg(params);
-    logger.info(`(department.reg.result) ${JSON.stringify(result)}`);
-
-    // 최종 응답
-    return res.status(200).json(result);
-  } catch (err) {
-    return res.status(500).json({ err: err.toString() });
-  }
-});
 // 에듀킷 시작
 router.get('/start', async (req, res) => {
   try {
@@ -97,6 +78,50 @@ router.get('/reset', async (req, res) => {
     // 최종 응답
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
+  }
+});
+
+//[edukit control  - edukit1]
+/*
+1. get 요청의 쿼리를 받아 commandSet에 등록되어있는 command를 mqtt publish
+-> 쿼리에 명령값이 나타나므로 보안을 위해 post body로 데이터 받는다.
+
+*/
+router.post('/edukit1', (req, res) => {
+  try {
+    const controlSet = JSON.parse(controlSet).controlSet;
+    const command = req.body.command;
+    // commandSet 등록 변수값 체크 / 없으면 error 처리
+    if (command in controlSet) {
+      console.log('command exists');
+    } else {
+      console.log('command not exists');
+      throw new Error('command not found');
+    }
+  } catch (error) {
+    res.status(404).json({ error: error.toString() });
+  }
+});
+
+//[edukit control  - edukit2]
+router.post('/edukit2', (req, res) => {
+  try {
+    // json파일 require할때 자동으로 json.parse 해준다. -> 오브젝트체인 가능함.
+    const parsed = controlSet;
+    console.error(`parsed:${parsed}  , ${typeof parsed}`);
+    const controlList = parsed.controlSet;
+    console.error(controlList);
+    const command = req.body.command;
+    // commandSet 등록 변수값 체크 / 없으면 error 처리
+    if (command in controlList) {
+      console.error(`command exists. command:${command}`);
+    } else {
+      console.error(`command not exists. command:${command}`);
+      throw new Error('command not found');
+    }
+    res.status(200).json('test');
+  } catch (error) {
+    res.status(404).json({ error: error.toString() });
   }
 });
 
