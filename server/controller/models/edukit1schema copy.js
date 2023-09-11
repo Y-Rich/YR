@@ -2,14 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Edukit1Schema = new Schema({
-  DataTime: { type: Date, default: Date.now },
-  Wrapper: [
-    {
-      tagId: { type: Number, required: true },
-      name: { type: String, required: true },
-      value: { type: mongoose.Schema.Types.Mixed }, // 값의 데이터 타입은 다양할 수 있음
-    },
-  ],
+  Wrapper: Array,
+  // title: {
+  //   type: String,
+  // },
   // slug: {
   //   type: String,
   //   lowercase: true,
@@ -39,3 +35,16 @@ const Edukit1Schema = new Schema({
 });
 
 module.exports = Edukit1Schema;
+
+//참고
+
+// // Defining User schema
+// const userSchema = new mongoose.Schema({ name: String, age: Number });
+
+// // Defining User model
+// const User = mongoose.model("sample", userSchema);
+
+// // Create collection of Model
+// User.createCollection().then(function (collection) {
+//   console.log("Collection is created!");
+// });

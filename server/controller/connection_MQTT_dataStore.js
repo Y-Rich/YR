@@ -4,8 +4,8 @@ const edukit1Service = require('./service/edukit1Service');
 const fs = require('fs');
 const path = require('path');
 
-const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-// const addr2 = 'mqtt://localhost:1883'; // 집에서 테스트
+// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnect = () => {
   const client = mqtt.connect(addr, {
@@ -29,9 +29,9 @@ const MQTTconnect = () => {
 
     client.subscribe(topic_DB, { qos: 1 }, function (err) {
       if (err) {
-        logger.error('[ dataStore ] Error subscribing to topic:', err);
+        logger.error('[ edukit1/dataStore ] Error subscribing to topic:', err);
       } else {
-        logger.info(`[ dataStore ] Subscribed to topic: ${topic_DB}`);
+        logger.info(`[ edukit1/dataStore ] Subscribed to topic: ${topic_DB}`);
       }
     });
   });
@@ -44,10 +44,18 @@ const MQTTconnect = () => {
       const parsedMes = message.toString();
 
       //토픽 메세지 확인
-      if (topic !== 'edukit1/vision/data/image' && topic !== 'edukit1') {
-        // logger.debug(
-        //   `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
-        // );
+      if (
+        topic === 'edukit1/vision/data' ||
+        topic === 'edukit1/environment/data'
+      ) {
+        logger.debug(
+          `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
+        );
+        // 비즈니스 로직 호출
+        const result = await edukit1Service.saveTempAndHumi(
+          JSON.parse(parsedMes),
+        );
+        //온습도 데이터 저장
       }
       // 센서 이미지 저장
       else if (topic === 'edukit1/vision/data/image') {
@@ -59,9 +67,9 @@ const MQTTconnect = () => {
       if (topic === 'edukit1') {
         // 비즈니스 로직 호출
         const result = await edukit1Service.saveStatus(JSON.parse(parsedMes));
-        // logger.info(
-        // `(edukit1.reg.result) : data insert successfully on mongoDB server: ${result}`,
-        // );
+        logger.info(
+          `(edukit1.reg.result) : data insert successfully on mongoDB server: ${result}`,
+        );
       }
     } catch (error) {
       logger.error('[ dataStore ]Error parsing message:', error);

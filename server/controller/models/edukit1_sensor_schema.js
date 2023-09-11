@@ -2,7 +2,17 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Edukit1SensorSchema = new Schema({
-  image: Array,
+  Humidity: {
+    type: Number,
+  },
+  Temperature: {
+    type: Number,
+  },
+  createdAt: {
+    type: Date,
+    default: () => Date.now(),
+    immutable: true,
+  },
   // title: {
   //   type: String,
   // },
