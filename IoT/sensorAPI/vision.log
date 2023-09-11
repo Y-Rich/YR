@@ -1,0 +1,34 @@
+2023-09-11 13:13:44,272 [DEBUG] Found  keypoints in the frame.
+2023-09-11 13:13:44,297 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-09-11 13:13:44,297 [INFO] [33mPress CTRL+C to quit[0m
+2023-09-11 13:13:44,297 [INFO]  * Restarting with stat
+2023-09-11 13:13:44,553 [DEBUG] Found  keypoints in the frame.
+2023-09-11 13:13:44,558 [WARNING]  * Debugger is active!
+2023-09-11 13:13:44,560 [INFO]  * Debugger PIN: 421-454-915
+2023-09-11 13:14:55,708 [INFO]  * Detected change in 'C:\\workspace\\YR\\IoT\\sensorAPI\\app.py', reloading
+2023-09-11 13:14:55,747 [INFO]  * Restarting with stat
+2023-09-11 13:14:56,019 [WARNING]  * Debugger is active!
+2023-09-11 13:14:56,021 [INFO]  * Debugger PIN: 421-454-915
+2023-09-11 13:15:18,833 [DEBUG] Found  keypoints in the frame.
+2023-09-11 13:18:53,426 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-09-11 13:18:53,426 [INFO] [33mPress CTRL+C to quit[0m
+2023-09-11 13:18:53,426 [INFO]  * Restarting with stat
+2023-09-11 13:18:53,675 [WARNING]  * Debugger is active!
+2023-09-11 13:18:53,675 [INFO]  * Debugger PIN: 421-454-915
+2023-09-11 13:19:00,119 [DEBUG] Found  keypoints in the frame.
+2023-09-11 13:19:21,340 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-09-11 13:19:21,341 [INFO] [33mPress CTRL+C to quit[0m
+2023-09-11 13:19:21,342 [INFO]  * Restarting with stat
+2023-09-11 13:19:21,561 [WARNING]  * Debugger is active!
+2023-09-11 13:19:21,561 [INFO]  * Debugger PIN: 421-454-915
+2023-09-11 13:19:55,672 [DEBUG] Found  keypoints in the frame.
+2023-09-11 13:22:10,248 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-09-11 13:22:10,248 [INFO] [33mPress CTRL+C to quit[0m
+2023-09-11 13:22:10,248 [INFO]  * Restarting with stat
+2023-09-11 13:22:10,470 [WARNING]  * Debugger is active!
+2023-09-11 13:22:10,470 [INFO]  * Debugger PIN: 421-454-915
+2023-09-11 13:22:13,989 [DEBUG] Found  keypoints in the frame.
