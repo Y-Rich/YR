@@ -86,31 +86,6 @@ const GuiController = ({ messagePayloadEdukit1, webSocket }) => {
     };
   });
 
-  // useEffect(() => {
-  //   messagePayload.Wrapper?.forEach((item) => {
-  //     if (item.tagId === '1') {
-  //       const convertedValue = item.value ? 1 : 0;
-  //       setEdukitOnOff(convertedValue);
-  //       console.log('edukitonOff', edukitOnOff);
-  //     }
-  //     if (item.tagId === '9') {
-  //       const convertedValue = item.value ? 1 : 0;
-  //       setM1OnOff(convertedValue);
-  //       console.log('m1OnOff', m1OnOff);
-  //     }
-  //     if (item.tagId === '10') {
-  //       const convertedValue = item.value ? 1 : 0;
-  //       setM2OnOff(convertedValue);
-  //       console.log('m2OnOff', m2OnOff);
-  //     }
-  //     if (item.tagId === '11') {
-  //       const convertedValue = item.value ? 1 : 0;
-  //       setM3OnOff(convertedValue);
-  //       console.log('m3OnOff', m3OnOff);
-  //     }
-  //   });
-  // }, [messagePayload.Wrapper]);
-
   const { 공장전원 } = useControls('에듀킷', edukitOption);
   const { 공정1전원 } = useControls('공정1', m1Options);
   const { 공정2전원 } = useControls('공정2', m2Options);
