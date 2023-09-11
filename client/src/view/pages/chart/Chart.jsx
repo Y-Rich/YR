@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Supervisor } from './Supervisor';
 import { Worker } from './Worker';
 import Selector from '../../components/Selector';
-import { Slide } from './style';
+import { Page, Slide } from './style';
 import { info } from '../../../services/user';
 import { Manager } from './Manager';
 
@@ -26,6 +26,7 @@ const Chart = () => {
   useEffect(() => {
     try {
       info().then((res) => {
+        console.log(res);
         setUserName(res.name);
         const userPosition = res.Position.positionName.toString();
         setUser(userPosition);
@@ -121,10 +122,12 @@ const Chart = () => {
   };
 
   return (
-    <Slide>
-      {renderComponents()}
-      <Selector />
-    </Slide>
+    <Page>
+      <Slide>
+        {renderComponents()}
+        <Selector />
+      </Slide>
+    </Page>
   );
 };
 export default Chart;

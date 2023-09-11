@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Title,
@@ -9,7 +9,7 @@ import {
   Box,
 } from '../../components/Components';
 import { validateEmail, validatePassword } from '../../../utils/userFunc';
-import { login } from '../../../services/user';
+import { info, login } from '../../../services/user';
 import Modal from '../../components/Modal';
 
 const Login = () => {

@@ -70,11 +70,11 @@ const Register = () => {
     }
     try {
       await register(name, phone, email, password);
-      openModal(`${name}님의 회원가입이 완료되었습니다.`);
+      openModal(`${name}님의 회원가입이 완료되었습니다.`, true);
       navigate('/');
     } catch (error) {
       console.error('Failed to register:', error);
-      openModal('회원가입에 실패하였습니다.');
+      openModal('회원가입에 실패하였습니다.', false);
     }
   };
 

@@ -39,8 +39,9 @@ const ModalBtn = styled.button`
 `;
 
 const Modal = ({ setModal, element }) => {
-  const closeModal = () => {
+  const closeModal = (href) => {
     setModal(false);
+    window.location.href = `/${href}`;
   };
   const modalRef = useRef(null);
   const handleOutsideClick = (e) => {
@@ -57,7 +58,7 @@ const Modal = ({ setModal, element }) => {
   return (
     <ModalContainer ref={modalRef}>
       <ModalContent>{element}</ModalContent>
-      <ModalBtn onClick={closeModal}>확인</ModalBtn>
+      <ModalBtn onClick={() => closeModal('')}>확인</ModalBtn>
     </ModalContainer>
   );
 };

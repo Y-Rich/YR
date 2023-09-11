@@ -23,15 +23,15 @@ export const login = async (email, password) => {
       email,
       password,
     });
+    console.log(response.data);
     if (response.status === 200) {
       const headerValue = response.headers.accesstoken;
       sessionStorage.setItem('employeeID', response.data.employeeID);
       sessionStorage.setItem('token', headerValue);
-      alert('로그인 성공');
-      window.location.href = '/';
-    } else {
-      alert('로그인 실패');
     }
+    // else {
+    // alert('로그인 실패');
+    // }
     return response.data;
   } catch (error) {
     console.error('Failed to login:', error);
@@ -63,7 +63,7 @@ export const info = async () => {
     );
     return res.data;
   } catch (error) {
-    console.error('Failed to register:', error);
+    console.error('Failed to info:', error);
     throw error;
   }
 };
@@ -72,7 +72,7 @@ export const logout = async () => {
     const res = await axios.get(`http://192.168.0.127:8000/users/logout`);
     return res.data;
   } catch (error) {
-    console.error('Failed to register:', error);
+    console.error('Failed to logout:', error);
     throw error;
   }
 };

@@ -43,6 +43,7 @@ export const Worker = ({ fac, line, userName }) => {
 
   return (
     <ChartContainer>
+      워커
       <ChartBox className="left">
         <Box className="chart title">
           <CBox>
