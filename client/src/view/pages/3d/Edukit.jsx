@@ -10,14 +10,23 @@ import axios from 'axios';
 import Loading from '../../components/Loading';
 import { useControls } from 'leva';
 import GuiController from './GuiController';
+import Data from './Data';
+import TextSprite from './TextSprite';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
   const [num, setNum] = useState(0); // 권한에 따른 제어를 위한 묵데이터
   const [webSocket, setWebSocket] = useState(null);
-  const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState();
-  const [messagePayloadEnvironment, setMessagePayloadEnvironment] = useState();
+  const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState(null);
+  const [messagePayloadEnvironment, setMessagePayloadEnvironment] =
+    useState(null);
   const canvasRef = useRef(null);
+  const [borderColor, setBorderColor] = useState({
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 1.0,
+  });
   // const guiRef = useRef(null);
   // const test = useMemo(() => {
   //   return {
@@ -54,6 +63,66 @@ const PLC = () => {
     const scene = new THREE.Scene();
     const edukit = new Edukit();
     edukit.fileload(scene);
+
+    // TEXT SPRITE
+    // 1호기
+    const message1 = 'On\n자재정상';
+    const textSprite1 = new TextSprite(message1, {
+      borderColor: borderColor,
+      backgroundColor: { r: 0, g: 0, b: 0, a: 1.0 },
+      textColor: { r: 255, g: 255, b: 255, a: 1.0 },
+      canvasX: 10, // X 좌표 설정
+      canvasY: 9, // Y 좌표 설정
+      canvasZ: -9, // Z 좌표 설정
+    });
+    // 2호기
+    const message2 = 'On\n부품정상';
+    const textSprite2 = new TextSprite(message2, {
+      borderColor: { r: 0, g: 245, b: 12, a: 1.0 },
+      backgroundColor: { r: 0, g: 0, b: 0, a: 1.0 },
+      textColor: { r: 255, g: 255, b: 255, a: 1.0 },
+      canvasX: 1.5, // X 좌표 설정
+      canvasY: 11, // Y 좌표 설정
+      canvasZ: -9, // Z 좌표 설정
+    });
+    // 3호기
+    const message3 = 'Off';
+    const textSprite3 = new TextSprite(message3, {
+      borderColor: { r: 255, g: 0, b: 0, a: 1.0 },
+      backgroundColor: { r: 0, g: 0, b: 0, a: 1.0 },
+      textColor: { r: 255, g: 255, b: 255, a: 1.0 },
+      canvasX: -7, // X 좌표 설정
+      canvasY: 14, // Y 좌표 설정
+      canvasZ: -7, // Z 좌표 설정
+    });
+    // 컬러센서
+    const messageC = 'On\n색선별';
+    const textSpriteC = new TextSprite(messageC, {
+      borderColor: { r: 0, g: 245, b: 12, a: 1.0 },
+      backgroundColor: { r: 0, g: 0, b: 0, a: 1.0 },
+      textColor: { r: 255, g: 255, b: 255, a: 1.0 },
+      canvasX: 5.5, // X 좌표 설정
+      canvasY: 4.5, // Y 좌표 설정
+      canvasZ: -12, // Z 좌표 설정
+    });
+    // 비전센서
+    const messageV = 'On\n';
+    const textSpriteV = new TextSprite(messageV, {
+      borderColor: { r: 0, g: 245, b: 12, a: 1.0 },
+      backgroundColor: { r: 0, g: 0, b: 0, a: 1.0 },
+      textColor: { r: 255, g: 255, b: 255, a: 1.0 },
+      canvasX: -3, // X 좌표 설정
+      canvasY: 9, // Y 좌표 설정
+      canvasZ: -12, // Z 좌표 설정
+    });
+
+    scene.add(textSprite1);
+    scene.add(textSprite2);
+    scene.add(textSprite3);
+    scene.add(textSpriteC);
+    scene.add(textSpriteV);
+
+    // 카메라
     const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
@@ -120,6 +189,9 @@ const PLC = () => {
       };
     })();
 
+    // dataState.m1OnOff 값이 변경되었을 때에만 textSprite1 업데이트 수행
+    let lastM1OnOff = dataState.m1OnOff; // 초기값으로 설정
+
     const tick = () => {
       renderer.render(scene, camera);
       requestId = requestAnimationFrame(tick);
@@ -132,8 +204,21 @@ const PLC = () => {
         edukit.actionY(yAxisFunc());
         edukit.actionX(xAxisFunc());
       }
+
+      if (dataState.m1OnOff !== lastM1OnOff) {
+        lastM1OnOff = dataState.m1OnOff; // 현재 값으로 업데이트
+        if (lastM1OnOff === 1) {
+          textSprite1.updateText('새로운 내용1');
+          textSprite1.updateBorderColor({ r: 255, g: 0, b: 0, a: 1.0 });
+        } else {
+          textSprite1.updateText('새로운 내용2');
+          textSprite1.updateBorderColor({ r: 255, g: 0, b: 0, a: 1.0 });
+        }
+      }
     };
+
     tick();
+
     return () => {
       cancelAnimationFrame(requestId);
       //   client.end();
@@ -148,16 +233,17 @@ const PLC = () => {
 
     ws.addEventListener('message', function (event) {
       const receivedMessage = JSON.parse(event.data);
-      console.log(receivedMessage);
-      setMessagePayloadEdukit1(receivedMessage);
-      // if (receivedMessage.topic === 'edukit1') {
-      //   setMessagePayloadEdukit1(receivedMessage.data);
-      //   console.log(receivedMessage.data);
-      // }
-      // if (receivedMessage.topic === 'environment/data') {
-      //   setMessagePayloadEnvironment(receivedMessage.data);
-      //   console.log(receivedMessage.data);
-      // }
+      // console.log(receivedMessage);
+      // setMessagePayloadEdukit1(receivedMessage);
+      if (receivedMessage.topic === 'edukit1') {
+        setMessagePayloadEdukit1(JSON.parse(receivedMessage.data));
+        console.log(JSON.parse(receivedMessage.data));
+      }
+      // 환경 데이터
+      if (receivedMessage.topic === 'environment/data') {
+        setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
+        console.log(JSON.parse(receivedMessage.data));
+      }
     });
 
     return () => {
@@ -165,22 +251,34 @@ const PLC = () => {
     };
   }, []);
 
+  const dataState = Data(
+    messagePayloadEdukit1,
+    webSocket,
+    messagePayloadEnvironment
+  );
+
   // 3호기 축 값 웹소켓으로 받기
   useEffect(() => {
-    messagePayloadEdukit1?.Wrapper?.forEach((item) => {
-      if (item.tagId === '21') {
-        const convertedValue = parseInt(item.value);
-        setM3axis1(convertedValue);
-        setM3axis1(convertedValue);
-        console.log('M3axis1', convertedValue);
+    console.log('herere', dataState.m1OnOff);
+    if (webSocket) {
+      if (dataState.m1OnOff === 1) {
+        setBorderColor({
+          // 초록색
+          r: 0,
+          g: 245,
+          b: 12,
+          a: 1.0,
+        });
+      } else {
+        setBorderColor({
+          // 빨간색
+          r: 255,
+          g: 0,
+          b: 0,
+          a: 1.0,
+        });
       }
-      if (item.tagId === '22') {
-        const convertedValue = parseInt(item.value);
-        setM3axis2(convertedValue);
-        setM3axis2(convertedValue);
-        console.log('M3axis2', convertedValue);
-      }
-    });
+    }
   }, [messagePayloadEdukit1]);
 
   return (
@@ -190,6 +288,11 @@ const PLC = () => {
         messagePayloadEdukit1={messagePayloadEdukit1}
         webSocket={webSocket}
       />
+      {/* <Data
+        messagePayloadEdukit1={messagePayloadEdukit1}
+        webSocket={webSocket}
+        messagePayloadEnvironment={messagePayloadEnvironment}
+      /> */}
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
