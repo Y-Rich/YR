@@ -2,18 +2,18 @@ import serial
 import paho.mqtt.client as mqtt
 import json
 
-ser = serial.Serial('COM4', 9600)  
+ser = serial.Serial('COM3', 9600)  
 
 mqtt_broker = "192.168.0.44"  
 mqtt_port = 1883  
-mqtt_topic = "environment/data"
+mqtt_topic = "edukit1/environment/data"
 
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
+    print("[environment] Connected with result code "+str(rc))
     client.subscribe(mqtt_topic)
 
 def on_publish(client, userdata, mid):
-    print("Message Published")
+    print("[environment] Message Published")
 
 client = mqtt.Client()
 client.on_connect = on_connect
@@ -36,5 +36,3 @@ while True:
     json_data = json.dumps(payload)
     
     client.publish(mqtt_topic, json_data)
-
-client.loop_forever()
