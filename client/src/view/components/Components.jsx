@@ -113,7 +113,7 @@ export const Box = styled.article`
   }
   &.chart {
     gap: 5vh;
-    align-items: flex-start;
+    /* align-items: flex-start; */
     &.title {
       margin-left: 7%;
     }
@@ -215,8 +215,11 @@ export const LinkText = styled(Link)`
     }
   }
   &.selector {
-    padding: 10px;
-    font-size: 1rem;
+    background-color: #5498ff;
+    padding: 15px;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   }
   &.smallbox {
     font-weight: normal;

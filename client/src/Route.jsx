@@ -5,6 +5,7 @@ import PLC from './view/pages/3d/Edukit';
 import Register from './view/pages/user/Register';
 import Admin from './view/pages/admin/Admin';
 import Chart from './view/pages/chart/Chart';
+import Pannel from './view/pages/pannel/Pannel';
 
 export const ROUTE = {
   HOME: {
@@ -31,11 +32,20 @@ export const ROUTE = {
     path: '/chart',
     element: Chart,
   },
+  PANNEL: {
+    path: '/pannel',
+    element: Pannel,
+  },
 };
 export const PUBLIC_ROUTE = {
   CHART: {
     path: '/chart',
     element: Chart,
+  },
+
+  PANNEL: {
+    path: '/pannel',
+    element: Pannel,
   },
   HOME: {
     path: '/',
@@ -66,6 +76,11 @@ export const PRIVATE_ROUTE = {
   PLC: {
     path: '/plc',
     element: PLC,
+  },
+
+  PANNEL: {
+    path: '/pannel',
+    element: Pannel,
   },
 };
 

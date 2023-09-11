@@ -21,9 +21,9 @@ function App() {
               path={route.path}
               element={
                 <div>
-                  {/* <PrivateRoute> */}
-                  <route.element />
-                  {/* </PrivateRoute> */}
+                  <PrivateRoute>
+                    <route.element />
+                  </PrivateRoute>
                 </div>
               }
               key={index}

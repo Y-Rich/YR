@@ -13,7 +13,7 @@ import {
   validatePhone,
 } from '../../../utils/userFunc';
 import { info, modi } from '../../../services/user';
-import axios from 'axios';
+import Modal from '../../components/Modal';
 
 const UserModi = () => {
   const [userInfo, setUserInfo] = useState({
@@ -38,9 +38,12 @@ const UserModi = () => {
   useEffect(() => {
     try {
       info().then((res) => {
-        userInfo.name(res.name);
-        userInfo.email(res.email);
-        userInfo.phone(res.phone);
+        setUserInfo((prevUserInfo) => ({
+          ...prevUserInfo,
+          name: res.name,
+          email: res.email,
+          phone: res.phone,
+        }));
       });
     } catch (error) {
       console.error('Failed to register:', error);
@@ -82,6 +85,10 @@ const UserModi = () => {
       console.error('Failed to register:', error);
       openModal('회원 수정에 실패하였습니다.');
     }
+  };
+  const closeModal = () => {
+    setModal(false);
+    setModalContent('');
   };
   return (
     <Page>
@@ -125,6 +132,7 @@ const UserModi = () => {
         <Button className="submit" onClick={handleSubmit}>
           Submit
         </Button>
+        {modal && <Modal setModal={closeModal} element={modalContent} />}
       </Container>
     </Page>
   );

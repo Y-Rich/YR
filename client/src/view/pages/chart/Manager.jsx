@@ -30,6 +30,7 @@ export const Manager = () => {
 
   return (
     <ChartContainer>
+      매니저
       <ChartBox>
         <CBox className="title">
           <Box className="chart">

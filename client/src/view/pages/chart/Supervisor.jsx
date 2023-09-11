@@ -42,6 +42,7 @@ export const Supervisor = (fac) => {
 
   return (
     <ChartContainer>
+      슈퍼바이저
       <ChartBox>
         <CBox className="title">
           <Box className="chart">

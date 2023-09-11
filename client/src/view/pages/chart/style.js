@@ -1,28 +1,35 @@
 import { styled } from 'styled-components';
 
-export const Slide = styled.main`
+export const Page = styled.main`
+  height: 100vh;
+  background-color: #c2c2c2;
+`;
+
+export const Slide = styled.section`
   .slick-dots {
     .slick-active {
       button::before {
-        color: #c1c1c1;
+        /* color: #c1c1c1; */
+        color: pink;
+        z-index: 999;
       }
     }
     button::before {
-      color: #e9e9e9;
+      /* color: #e9e9e9; */
+      color: blueviolet;
+      z-index: 999;
     }
   }
 `;
 
-export const ChartContainer = styled.main`
+export const ChartContainer = styled.section`
   width: 70%;
-  margin: 9vh 0 0 15%;
-  padding: 5vh 0 3% 2%;
-  // height: 100%;
+  box-shadow: 0px 0px 10px gray;
+  margin: 10vh 15% 0 15%;
+  padding: 3% 3% 3% 3%;
   display: flex;
-  flex-direction: row;
   place-items: center;
-  background-color: #d9d9d9;
-  justify-content: center;
+  background-color: whitesmoke;
   border-radius: 5px;
 `;
 
@@ -30,7 +37,6 @@ export const ChartBox = styled.section`
   display: flex;
   flex-direction: column;
   gap: 8vh;
-  overflow: scroll;
   align-items: center;
   &.left {
     align-items: flex-start;
@@ -48,7 +54,7 @@ export const CBox = styled.div`
   display: flex;
   gap: 5vh;
   &.title {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
   }
 `;
