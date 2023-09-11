@@ -7,60 +7,38 @@ import { Box, Title } from '../../components/Components';
 export const Worker = ({ fac, line, userName }) => {
   console.log(fac, line, userName);
   const lineNumber = line[line.length - 1] + '호기';
-  const [data1_1, setData1_1] = useState([]);
-  const [data1_2, setData1_2] = useState([]);
-  const [data2_1, setData2_1] = useState([]);
-  const [data2_2, setData2_2] = useState([]);
-  const [data3_1, setData3_1] = useState([]);
-  const [data3_2, setData3_2] = useState([]);
-  const [data4_1, setData4_1] = useState([]);
-  const [data4_2, setData4_2] = useState([]);
+  const [chartData, setChartData] = useState({
+    data1_1: [],
+    data1_2: [],
+    data2_1: [],
+    data2_2: [],
+    data3_1: [],
+    data3_2: [],
+    data4_1: [],
+    data4_2: [],
+  });
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/mock/chart1.json')
-      .then((res) => {
-        const data1_1 = res.data.map((item) => item.create);
-        const data1_2 = res.data.map((item) => item.error);
-        setData1_1(data1_1);
-        setData1_2(data1_2);
-      })
-      .catch((err) => {
+    const fetchData = async (url, dataKey) => {
+      try {
+        const res = await axios.get(url);
+        const newData = {
+          [dataKey + '_1']: res.data.map((item) => item.create),
+          [dataKey + '_2']: res.data.map((item) => item.error),
+        };
+        setChartData((prevData) => ({ ...prevData, ...newData }));
+      } catch (err) {
         console.log(err);
-      });
-    axios
-      .get('http://localhost:3001/mock/chart2.json')
-      .then((res) => {
-        const data2_1 = res.data.map((item) => item.create);
-        const data2_2 = res.data.map((item) => item.error);
-        setData2_1(data2_1);
-        setData2_2(data2_2);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axios
-      .get('http://localhost:3001/mock/chart3.json')
-      .then((res) => {
-        const data3_1 = res.data.map((item) => item.create);
-        const data3_2 = res.data.map((item) => item.error);
-        setData3_1(data3_1);
-        setData3_2(data3_2);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axios
-      .get('http://localhost:3001/mock/chart4.json')
-      .then((res) => {
-        const data4_1 = res.data.map((item) => item.temp);
-        const data4_2 = res.data.map((item) => item.dust);
-        setData4_1(data4_1);
-        setData4_2(data4_2);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    };
+    // fetchData('http://localhost:3001/mock/chart1.json', 'data1');
+    // fetchData('http://localhost:3001/mock/chart2.json', 'data2');
+    // fetchData('http://localhost:3001/mock/chart3.json', 'data3');
+    // fetchData('http://localhost:3001/mock/chart4.json', 'data4');
+    fetchData('http://localhost:3000/mock/chart1.json', 'data1');
+    fetchData('http://localhost:3000/mock/chart2.json', 'data2');
+    fetchData('http://localhost:3000/mock/chart3.json', 'data3');
+    fetchData('http://localhost:3000/mock/chart4.json', 'data4');
   }, []);
 
   return (
@@ -94,8 +72,8 @@ export const Worker = ({ fac, line, userName }) => {
               title={lineNumber}
               label1="생산량"
               label2="오류율"
-              data1={data1_1}
-              data2={data1_2}
+              data1={chartData.data1_1}
+              data2={chartData.data1_2}
             />
           </GBox>
           <GBox>
@@ -103,8 +81,8 @@ export const Worker = ({ fac, line, userName }) => {
               title={lineNumber}
               label1="생산량"
               label2="오류율"
-              data1={data2_1}
-              data2={data2_1}
+              data1={chartData.data2_1}
+              data2={chartData.data2_1}
             />
           </GBox>
         </Box>
