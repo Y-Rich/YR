@@ -10,6 +10,7 @@ import axios from 'axios';
 import Loading from '../../components/Loading';
 import { useControls } from 'leva';
 import GuiController from './GuiController';
+import TextSprite from './TextSprite';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
@@ -54,6 +55,13 @@ const PLC = () => {
     const scene = new THREE.Scene();
     const edukit = new Edukit();
     edukit.fileload(scene);
+    const textSprite = new TextSprite('Hello, World!', {
+      fontsize: 32,
+      fontface: 'Georgia',
+      borderColor: { r: 0, g: 0, b: 255, a: 1.0 },
+      backgroundColor: { r: 255, g: 255, b: 255, a: 1.0 },
+    });
+    scene.add(textSprite);
     const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
