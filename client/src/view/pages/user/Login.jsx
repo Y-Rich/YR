@@ -10,12 +10,13 @@ import {
 } from '../../components/Components';
 import { validateEmail, validatePassword } from '../../../utils/userFunc';
 import { login } from '../../../services/user';
-import { useNavigate } from 'react-router-dom';
+import Modal from '../../components/Modal';
 
 const Login = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [modal, setModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,21 +26,31 @@ const Login = () => {
       setPassword(value);
     }
   };
+
+  const openModal = (content) => {
+    setModalContent(content);
+    setModal(true);
+  };
   const handleOnClick = async () => {
     try {
       if (!email || !password) {
-        alert('이메일 또는 비밀번호를 입력해주세요!');
+        openModal('이메일 또는 비밀번호를 입력해주세요!');
         return;
       }
       if (!validateEmail(email)) {
-        alert('유효한 이메일 주소를 입력해주세요!');
+        openModal('유효한 이메일 주소를 입력해주세요!');
         return;
       }
-      login(email, password);
+      await login(email, password);
+      openModal(`어서오세요, ${email}님!`);
     } catch (error) {
       console.error('Failed to login:', error);
-      alert('로그인에 실패하였습니다.');
+      openModal('로그인에 실패하였습니다.');
     }
+  };
+  const closeModal = () => {
+    setModal(false);
+    setModalContent('');
   };
   return (
     <Container className="login">
@@ -71,6 +82,7 @@ const Login = () => {
       <Button onClick={handleOnClick} className="submit">
         SUBMIT
       </Button>
+      {modal && <Modal setModal={closeModal} element={modalContent} />}
     </Container>
   );
 };

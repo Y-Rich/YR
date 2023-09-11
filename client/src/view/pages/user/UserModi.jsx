@@ -16,23 +16,31 @@ import { info, modi } from '../../../services/user';
 import axios from 'axios';
 
 const UserModi = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    phone: '',
+    password: '',
+    password2: '',
+  });
+  const [modal, setModal] = useState(false);
+  const [modalContent, setModalContent] = useState('');
 
-  const nameChange = ({ target: { value } }) => setName(value);
-  const phoneChange = ({ target: { value } }) => setPhone(value);
-  const passwordChange = ({ target: { value } }) => setPassword(value);
-  const password2Change = ({ target: { value } }) => setPassword2(value);
-
+  const updateUserInfo = (fieldName, value) => {
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      [fieldName]: value,
+    }));
+  };
+  const openModal = (content) => {
+    setModalContent(content);
+    setModal(true);
+  };
   useEffect(() => {
     try {
       info().then((res) => {
-        setName(res.name);
-        setEmail(res.email);
-        setPhone(res.phone);
+        userInfo.name(res.name);
+        userInfo.email(res.email);
+        userInfo.phone(res.phone);
       });
     } catch (error) {
       console.error('Failed to register:', error);
@@ -42,36 +50,37 @@ const UserModi = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await new Promise((res) => setTimeout(res, 1000));
+    const { name, phone, password, password2 } = userInfo;
     if (!name || !phone) {
-      alert('정보를 전부 입력해주세요!');
+      openModal('정보를 전부 입력해주세요!');
       return;
     }
     if (!validateName(name)) {
-      alert('이름을 한글로 입력해주세요');
+      openModal('이름을 한글로 입력해주세요');
       return;
     }
     if (!validatePhone(phone)) {
-      alert('정확한 핸드폰 번호를 입력해주세요');
+      openModal('정확한 핸드폰 번호를 입력해주세요');
       return;
     }
     if (password.length > 0 || password2.length > 0) {
       if (!validatePassword(password)) {
-        alert('8자 이상의 비밀번호를 입력해주세요!');
+        openModal('8자 이상의 비밀번호를 입력해주세요!');
         return;
       }
       return;
     }
     if (password !== password2) {
-      alert('비밀번호를 재확인해주세요!');
+      openModal('비밀번호를 재확인해주세요!');
       return;
     }
     try {
       await modi(name, phone, password);
-      alert('회원 수정이 완료되었습니다.');
+      openModal('회원 수정이 완료되었습니다.');
       window.location.reload('/usermodi');
     } catch (error) {
       console.error('Failed to register:', error);
-      alert('회원 수정에 실패하였습니다.');
+      openModal('회원 수정에 실패하였습니다.');
     }
   };
   return (
@@ -80,13 +89,13 @@ const UserModi = () => {
         <Title className="modi">USER MODIFY</Title>
         <Box className="modi">
           <Input
-            value={name}
-            onChange={nameChange}
+            value={userInfo.name}
+            onChange={(e) => updateUserInfo('name', e.target.value)}
             className="modi"
             placeholder="Please enter your name"
           ></Input>
           <Input
-            value={email}
+            value={userInfo.email}
             className="modi"
             placeholder="Cannot Change Your Email"
             disabled
@@ -94,22 +103,22 @@ const UserModi = () => {
           />
           <Input
             placeholder="Please enter your phone"
-            value={phone}
-            onChange={phoneChange}
+            value={userInfo.phone}
+            onChange={(e) => updateUserInfo('phone', e.target.value)}
             className="modi"
           />
           <Input
             type="password"
-            value={password}
+            value={userInfo.password}
             className="modi"
-            onChange={passwordChange}
+            onChange={(e) => updateUserInfo('password', e.target.value)}
             placeholder="Please enter your password"
           />
           <Input
             type="password"
-            value={password2}
+            value={userInfo.password2}
             className="modi"
-            onChange={password2Change}
+            onChange={(e) => updateUserInfo('password2', e.target.value)}
             placeholder="Check your password"
           ></Input>
         </Box>
