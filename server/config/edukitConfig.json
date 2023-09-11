@@ -1,6 +1,21 @@
 {
   "controlSet": {
     "start": { "tagId": "1", "value": "1" },
-    "stop": { "tagId": "1", "value": "0" }
+    "stop": { "tagId": "1", "value": "0" },
+    "No1_밀기작동": { "tagId": "3", "value": "1" },
+    "RESET": { "tagId": "3", "value": "1" },
+    "No1_ON": { "tagId": "9", "value": "1" },
+    "No1_OFF": { "tagId": "9", "value": "0" },
+    "No2_ON": { "tagId": "10", "value": "1" },
+    "No2_OFF": { "tagId": "10", "value": "0" },
+    "No3_ON": { "tagId": "11", "value": "1" },
+    "No3_OFF": { "tagId": "11", "value": "0" },
+    "sen1_ON_OFF": { "tagId": "3", "value": "1" },
+    "sen2_ON_OFF": { "tagId": "3", "value": "1" },
+    "공정반복시간": { "tagId": "14", "value": "10" },
+    "No2운전방법": { "tagId": "3", "value": "1" },
+    "생산량리미트": { "tagId": "3", "value": "1" },
+    "No3_그리퍼_ON": { "tagId": "40", "value": "1" },
+    "No3_그리퍼_OFF": { "tagId": "40", "value": "0" }
   }
 }

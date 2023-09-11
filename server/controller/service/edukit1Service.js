@@ -3,11 +3,11 @@ const edukitDao = require('../dao/edukitDao');
 
 const service = {
   // CRUD - Create
-  async reg(params) {
+  async saveStatus(params) {
     let inserted = null;
 
     try {
-      inserted = await edukitDao.insert(params);
+      inserted = await edukitDao.insertData(params);
       // logger.debug(`(edukit1Service.reg) ${JSON.stringify(inserted)}`);
     } catch (err) {
       logger.error(`(edukit1Service.reg) ${err.toString()}`);
@@ -92,6 +92,26 @@ const service = {
 
     return new Promise((resolve) => {
       resolve(result);
+    });
+  },
+
+  // 비전센서 이미지 저장
+  async saveImage(params) {
+    let inserted = null;
+
+    try {
+      inserted = await edukitDao.insertImage(params);
+      // logger.debug(`(edukit1Service.reg) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(edukit1Service.saveImage) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
     });
   },
 };

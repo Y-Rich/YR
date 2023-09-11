@@ -108,18 +108,29 @@ router.post('/edukit2', (req, res) => {
   try {
     // json파일 require할때 자동으로 json.parse 해준다. -> 오브젝트체인 가능함.
     const parsed = controlSet;
-    console.error(`parsed:${parsed}  , ${typeof parsed}`);
+    // console.error(`parsed:${parsed}  , ${typeof parsed}`);
     const controlList = parsed.controlSet;
     console.error(controlList);
     const command = req.body.command;
     // commandSet 등록 변수값 체크 / 없으면 error 처리
     if (command in controlList) {
       console.error(`command exists. command:${command}`);
+      const mes = JSON.stringify(controlList[command]);
+      console.log(mes);
+      mqttClient.publish('edukit1/control', mes, { qos: 0 }, function (err) {
+        if (err) {
+          console.error('Error publishing message:', err);
+        } else {
+          return res
+            .status(200)
+            .json(`[command :${command} ] Message published successfully`);
+        }
+      });
     } else {
       console.error(`command not exists. command:${command}`);
       throw new Error('command not found');
     }
-    res.status(200).json('test');
+    // res.status(200).json('test');
   } catch (error) {
     res.status(404).json({ error: error.toString() });
   }

@@ -1,8 +1,8 @@
-const { Edukit1 } = require('../models/index_mongo');
+const { Edukit1, Edukit1Sensor } = require('../models/index_mongo');
 
 const dao = {
   // 등록
-  insert(params) {
+  insertData(params) {
     return new Promise((resolve, reject) => {
       const data = new Edukit1(params);
       data
@@ -76,6 +76,20 @@ const dao = {
       Blog.deleteOne(params)
         .then((deleted) => {
           resolve({ deletedCount: deleted });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  insertImage(params) {
+    return new Promise((resolve, reject) => {
+      const data = new Edukit1Sensor(params);
+      data
+        .save()
+        .then((inserted) => {
+          resolve(inserted);
         })
         .catch((err) => {
           reject(err);

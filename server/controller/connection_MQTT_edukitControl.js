@@ -3,19 +3,19 @@ const logger = require('../lib/logger');
 const edukit1Service = require('./service/edukit1Service');
 
 const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr2 = 'mqtt://localhost:1883'; // 집에서 테스트
+// const addr2 = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnect = () => {
-  const client = mqtt.connect(addr2, {
+  const client = mqtt.connect(addr, {
     clientId: 'edukit-' + Math.random().toString(16).substr(2, 8),
     protocolVersion: 4,
   });
 
   client.on('connect', function () {
-    logger.debug('[edukitControl]Connected to MQTT broker...');
+    logger.debug('[ edukitControl ] Connected to MQTT broker...');
 
     // const topic = 'edukit1'
-    const topic = ['test1', 'test2', '$SYS/broker/version'];
+    const topic = ['test1', 'test2', '$SYS/broker/version', 'edukit/control'];
     const topic_control = ['edukit/control'];
     const topic_dataForDB = ['edukit1'];
 
@@ -27,7 +27,10 @@ const MQTTconnect = () => {
       }
     });
   });
-
+  // publish 기능을 내보냅니다.
+  function publish(topic, message, options, callback) {
+    client.publish(topic, message, options, callback);
+  }
   // message - 버퍼형식
   // message -> tostring -> json parsing
   client.on('message', async function (topic, message) {
@@ -49,6 +52,10 @@ const MQTTconnect = () => {
   client.on('error', function (error) {
     logger.error('[edukitControl]MQTT Error:', error);
   });
+
+  return {
+    publish, // 다른 모듈에서 사용할 수 있도록 publish 함수를 내보냅니다.
+  };
 };
 module.exports = MQTTconnect;
 
