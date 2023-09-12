@@ -75,15 +75,15 @@ while True:
                 clientSocket.send(socketTxData + num_little)
                 clientSocket.close()
 
-                # 이미지를 바이트 배열로 변환
+                # # 이미지를 바이트 배열로 변환
                 _, im_with_keypoints_bytes = cv2.imencode('.png', im_with_keypoints)
                 im_with_keypoints_bytes = im_with_keypoints_bytes.tobytes()
 
-                # MQTT 메시지로 이미지 publish
+                # # MQTT 메시지로 이미지 publish
                 client.publish(mqtt_topic + "/image", im_with_keypoints_bytes)
 
             except Exception as e:
                 print("[vision] Error" + str(e))
         cv2.imwrite("After.png", im_with_keypoints)
         print('[vision] close PLC Success!')
-        sleep(5)
+        sleep(1)
