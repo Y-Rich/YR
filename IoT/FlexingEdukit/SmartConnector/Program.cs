@@ -58,7 +58,7 @@ namespace SmartConnector.Edukit
                     mqttClient.ProtocolVersion = MqttProtocolVersion.Version_3_1_1;    // 기본값 3.1.1, 버전이 맞아야 연결된다.
                     byte code = mqttClient.Connect(Guid.NewGuid().ToString());
 
-                    mqttClient.Subscribe(new string[] { "edukit/control" },
+                    mqttClient.Subscribe(new string[] { "edukit1/control" },
                                            new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
                     // 이벤트 핸들러 등록
@@ -236,6 +236,14 @@ namespace SmartConnector.Edukit
                         else if (test.tagId.Equals("36")) //생산량 리미트
                         {
                             pAddress2.Address = "10000";
+                            pAddress2.Data = test.value;
+
+                            xGTClass.Write(XGT_DataType.Word, pAddress2, XGT_MemoryType.DataRegister_D, 0);
+
+                        }
+                        else if (test.tagId.Equals("38")) //양품 조건
+                        {
+                            pAddress2.Address = "150";
                             pAddress2.Data = test.value;
 
                             xGTClass.Write(XGT_DataType.Word, pAddress2, XGT_MemoryType.DataRegister_D, 0);
