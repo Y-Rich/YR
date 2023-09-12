@@ -61,19 +61,49 @@ const service = {
       resolve(inserted);
     });
   },
-  async searchTemp(params) {
+  async searchDailyAvg(params) {
     let inserted = null;
-
     try {
-      inserted = await edukitDao.senslist1(params);
-      // logger.debug(`(edukitDao.senslist1) ${JSON.stringify(inserted)}`);
+      inserted = await edukitDao.dailySensList1(params);
+      // logger.debug(`(edukitDao.dailySensList1) ${JSON.stringify(inserted)}`);
     } catch (err) {
-      logger.error(`(edukitDao.senslist1) ${err.toString()}`);
+      logger.error(`(edukitDao.dailySensList1) ${err.toString()}`);
       return new Promise((resolve, reject) => {
         reject(err);
       });
     }
-
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+  async searchWeeklyAvg(params) {
+    let inserted = null;
+    try {
+      inserted = await edukitDao.weeklySensList1(params);
+      // logger.debug(`(edukitDao.weeklySensList1) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(edukitDao.weeklySensList1) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+  async searchMonthlyAvg(params) {
+    let inserted = null;
+    try {
+      inserted = await edukitDao.monthlySensList1(params);
+      // logger.debug(`(edukitDao.monthlySensList1) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(edukitDao.monthlySensList1) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
     // 결과값 리턴
     return new Promise((resolve) => {
       resolve(inserted);

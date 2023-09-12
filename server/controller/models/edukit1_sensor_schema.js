@@ -8,6 +8,9 @@ const Edukit1SensorSchema = new Schema({
   Temperature: {
     type: Number,
   },
+  Particulates: {
+    type: Number,
+  },
   createdAt: {
     type: String,
     default: () => Date.now().toString(),

@@ -26,43 +26,66 @@ router.post('/edukit1/search', async (req, res) => {
         );
       }
     }
-    const parameter = { Temperature: params.Temperature[1] };
-    console.log(parameter);
-    // 1. 온도 일별 데이터 조회
-    const result = await edukit1Service.searchTemp(parameter);
-
-    return res.status(200).json(result);
+    let dataSet = {};
+    // sensorDataSearch
+    for (const sensorData in params) {
+      if ('Temperature' === sensorData) {
+        if (params[sensorData][0] === 'Day') {
+          const parameter = { Temperature: params.Temperature[1] };
+          // 1. 온도 일별 데이터 조회 - 로직 호출
+          const result = await edukit1Service.searchDailyAvg(parameter);
+          dataSet['dailyAvgTemp'] = result;
+        } else if (params[sensorData][0] === 'Week') {
+          // 1. 온도 주간 데이터 조회 - 로직 호출
+          const parameter = { Temperature: params.Temperature[1] };
+          const result = await edukit1Service.searchWeeklyAvg(parameter);
+          dataSet['weeklyAvgTemp'] = result;
+        } else if (params[sensorData][0] === 'Month') {
+          // 1. 온도 월간 데이터 조회 - 로직 호출
+          const parameter = { Temperature: params.Temperature[1] };
+          const result = await edukit1Service.searchMonthlyAvg(parameter);
+          dataSet['monthlyAvgTemp'] = result;
+        }
+      } else if ('Humidity' === sensorData) {
+        if (params[sensorData][0] === 'Day') {
+          const parameter = { Humidity: params.Humidity[1] };
+          // 2. 습도 일별 데이터 조회 - 로직 호출
+          const result = await edukit1Service.searchDailyAvg(parameter);
+          dataSet['dailyAvgHumi'] = result;
+        } else if (params[sensorData][0] === 'Week') {
+          // 2. 습도 주간 데이터 조회 - 로직 호출
+          const parameter = { Humidity: params.Humidity[1] };
+          const result = await edukit1Service.searchWeeklyAvg(parameter);
+          dataSet['weeklyAvgHumi'] = result;
+        } else if (params[sensorData][0] === 'Month') {
+          // 2. 습도 월간 데이터 조회 - 로직 호출
+          const parameter = { Humidity: params.Humidity[1] };
+          const result = await edukit1Service.searchMonthlyAvg(parameter);
+          dataSet['monthlyAvgTemp'] = result;
+        }
+      } else if ('Particulates' === sensorData) {
+        if (params[sensorData][0] === 'Day') {
+          const parameter = { Particulates: params.Particulates[1] };
+          // 3. 미세먼지 일별 데이터 조회 - 로직 호출
+          const result = await edukit1Service.searchDailyAvg(parameter);
+          dataSet['dailyAvgPar'] = result;
+        } else if (params[sensorData][0] === 'Week') {
+          // 3. 미세먼지 주간 데이터 조회 - 로직 호출
+          const parameter = { Particulates: params.Particulates[1] };
+          const result = await edukit1Service.searchWeeklyAvg(parameter);
+          dataSet['weeklyAvgPar'] = result;
+        } else if (params[sensorData][0] === 'Month') {
+          // 3. 미세먼지 월간 데이터 조회 - 로직 호출
+          const parameter = { Particulates: params.Particulates[1] };
+          const result = await edukit1Service.searchMonthlyAvg(parameter);
+          dataSet['monthlyAvgTemp'] = result;
+        }
+      }
+    }
+    return res.status(200).json(dataSet);
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
   }
 });
-
-// router.get('/search', async (req, res) => {
-//   try {
-//     const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
-
-//     // 모든 쿼리 파라미터가 유효한지 확인
-//     for (const queryParam in req.query) {
-//       if (!validQueries.includes(queryParam)) {
-//         // 유효하지 않은 쿼리가 있을 경우, 400 Bad Request 상태 코드를 반환
-//         return res
-//           .status(400)
-//           .json({ error: `Invalid query parameter: ${queryParam}` });
-//       }
-//     }
-//     const params = {
-//       positionID: req.query.positionID,
-//     };
-//     logger.info(`(employee.list.params) ${JSON.stringify(params)}`);
-
-//     const result = await employeeService.positionList(params);
-//     logger.info(`(employee.list.result) ${JSON.stringify(result)}`);
-
-//     // 최종 응답
-//     return res.status(200).json(result);
-//   } catch (err) {
-//     return res.status(500).json({ err: err.toString() });
-//   }
-// });
 
 module.exports = router;
