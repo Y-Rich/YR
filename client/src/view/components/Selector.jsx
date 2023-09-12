@@ -27,12 +27,15 @@ const Selector = () => {
     <SelectorContainer>
       <LinkText to="/chart" className="selector">
         <AiOutlineBarChart />
+        Charts
       </LinkText>
       <LinkText to="/pannel" className="selector">
         <LiaDigitalTachographSolid />
+        Status
       </LinkText>
       <LinkText to="/plc" className="selector">
         <GiSewingMachine />
+        Edukit
       </LinkText>
     </SelectorContainer>
   );
