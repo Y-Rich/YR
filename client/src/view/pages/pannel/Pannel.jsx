@@ -7,39 +7,6 @@ const Pannel = () => {
   const num1 = 1;
   const num2 = 2;
   const num3 = 3;
-  const [user, setUser] = useState('');
-  const [userName, setUserName] = useState('');
-  const [position, setPosition] = useState('');
-  const [facilities, setFacilities] = useState([]);
-  const [lines, setLines] = useState([]);
-  useEffect(() => {
-    try {
-      info().then((res) => {
-        setUserName(res.name);
-        const userPosition = res.Position.positionName.toString();
-        setUser(userPosition);
-        const facMatches = user.match(/fac\d+/g) || [];
-        const lineMatches = user.match(/line\d+/g) || [];
-        setFacilities(facMatches);
-        setLines(lineMatches);
-        if (userPosition.includes('manager')) {
-          setPosition('manager');
-        } else if (userPosition.includes('supervisor')) {
-          setPosition('supervisor');
-        } else if (userPosition.includes('worker')) {
-          setPosition('worker');
-        }
-      });
-    } catch (error) {
-      console.error('Failed to loading:', error);
-      throw error;
-    }
-  }, [user]);
-
-  sessionStorage.setItem('userName', userName);
-  sessionStorage.setItem('position', position);
-  sessionStorage.setItem('facilities', facilities);
-  sessionStorage.setItem('lines', lines);
 
   return (
     <Page>

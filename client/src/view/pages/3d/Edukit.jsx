@@ -12,6 +12,7 @@ import { useControls } from 'leva';
 import GuiController from './GuiController';
 import Data from './Data';
 import TextSprite from './TextSprite';
+import Gui from './Gui';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,11 @@ const PLC = () => {
     b: 255,
     a: 1.0,
   });
+  const [edukitOnOff, setEdukitOnOff] = useState(0);
+  const handleEdukitOnOffChange = (newValue) => {
+    setEdukitOnOff(newValue);
+    // 값이 변경될 때 수행해야 할 작업을 추가하세요.
+  };
   // const guiRef = useRef(null);
   // const test = useMemo(() => {
   //   return {
@@ -293,6 +299,7 @@ const PLC = () => {
         webSocket={webSocket}
         messagePayloadEnvironment={messagePayloadEnvironment}
       /> */}
+      <Gui />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>

@@ -22,16 +22,28 @@ const SelectorContainer = styled.footer`
   gap: 20px;
 `;
 
-const Selector = () => {
+const Selector = ({ onSelect }) => {
   return (
     <SelectorContainer>
-      <LinkText to="/chart" className="selector">
+      <LinkText
+        to="/chart"
+        className="selector"
+        // onClick={() => onSelect('chart')}
+      >
         <AiOutlineBarChart />
       </LinkText>
-      <LinkText to="/pannel" className="selector">
+      <LinkText
+        to="/pannel"
+        className="selector"
+        // onClick={() => onSelect('pannel')}
+      >
         <LiaDigitalTachographSolid />
       </LinkText>
-      <LinkText to="/plc" className="selector">
+      <LinkText
+        to="/plc"
+        className="selector"
+        // onClick={() => onSelect('plc')}
+      >
         <GiSewingMachine />
       </LinkText>
     </SelectorContainer>

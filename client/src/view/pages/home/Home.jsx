@@ -11,7 +11,17 @@ const Home = () => {
     setIsLogin(!!token);
   }, []);
 
-  return <Page>{isLogin ? <PLC /> : <Login />}</Page>;
+  return (
+    <>
+      {isLogin ? (
+        <Pannel />
+      ) : (
+        <Page>
+          <Login />
+        </Page>
+      )}
+    </>
+  );
 };
 
 export default Home;
