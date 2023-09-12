@@ -153,6 +153,11 @@ export const Input = styled.input`
     width: 20vw;
     height: 5vh;
   }
+  &.gui {
+    width: 5vw;
+    height: 3vh;
+    margin-right: 0.5vw;
+  }
 `;
 
 export const Button = styled.button`
@@ -181,6 +186,23 @@ export const Button = styled.button`
   }
   &:hover {
     background-color: #4379cc;
+  }
+  &.gui {
+    font-size: 0.8rem;
+    color: #999;
+    width: 5vw;
+    background-color: #d9d9d9;
+    border: 2mm outset rgba(133, 133, 117, 0.6);
+    &.reset {
+      &:active {
+        background-color: rgb(255, 1, 1);
+        border: 2mm ridge rgba(141, 0, 0, 0.6);
+      }
+    }
+    &:active {
+      background-color: rgb(0, 200, 102);
+      border: 2mm ridge rgba(0, 133, 117, 0.6);
+    }
   }
 `;
 

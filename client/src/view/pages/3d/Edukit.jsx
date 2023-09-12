@@ -11,6 +11,7 @@ import Loading from '../../components/Loading';
 import { useControls } from 'leva';
 import GuiController from './GuiController';
 import TextSprite from './TextSprite';
+import Gui from './Gui';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,31 @@ const PLC = () => {
     b: 255,
     a: 1.0,
   });
+  const [edukitOnOff, setEdukitOnOff] = useState(0);
+  const handleEdukitOnOffChange = (newValue) => {
+    setEdukitOnOff(newValue);
+    // 값이 변경될 때 수행해야 할 작업을 추가하세요.
+  };
+  // const guiRef = useRef(null);
+  // const test = useMemo(() => {
+  //   return {
+  //     num1: {
+  //       value: 0,
+  //       min: -2728,
+  //       max: 53294192312,
+  //       step: 1,
+  //     },
+  //     num2: {
+  //       value: 0,
+  //       min: -2728,
+  //       max: 53294192312,
+  //       step: 1,
+  //     },
+  //   };
+  // }, []);
+  // const model = useControls('test', test);
+  const [m3axis1, setM3axis1] = useState(0);
+  const [m3axis2, setM3axis2] = useState(0);
   useEffect(() => {
     setLoading(true);
     const canvas = canvasRef.current;
@@ -249,6 +275,7 @@ const PLC = () => {
   return (
     <div>
       {loading ? <Loading /> : null}
+      <Gui />
       <GuiController />
       <Selector />
       <div style={{ display: 'flex' }}></div>
