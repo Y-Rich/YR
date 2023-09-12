@@ -9,8 +9,8 @@ const Edukit1SensorSchema = new Schema({
     type: Number,
   },
   createdAt: {
-    type: Date,
-    default: () => Date.now(),
+    type: String,
+    default: () => Date.now().toString(),
     immutable: true,
   },
   // title: {

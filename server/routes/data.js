@@ -1,29 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const logger = require('../lib/logger');
-
+const edukit1Service = require('../controller/service/edukit1Service');
 // router - edukit1 - 센서 데이터 조회
-// 쿼리의 프로퍼티 값을 배열로 준다.
-// search?fieldtype=Humidity&fieldtype=Temperature&datetype=day&datetype=week
-router.get('/edukit1/search', async (req, res) => {
+// 원하는 센서 데이터 값을 프로퍼티 키로 주고 , 제공받기 원하는 기간 데이터 값을 프로퍼티 value에 배열로 준다.
+router.post('/edukit1/search', async (req, res) => {
   try {
-    // fieldtype : Temperature , Humidity
-    // datetype : day ,week , month
-    let result = {};
-    const queries = req.query;
-    //배열은 includes , 객체는 in
-    if (queries.fieldtype.includes('Humidity')) {
-      console.log(`Humidity : ${queries.datetype[0]}`);
-      result['Humidity'] = queries.datetype[0];
-      console.log(result);
-    } else {
-      console.log(result);
-      console.log(typeof result);
+    const params = req.body;
+    // fieldtype : Temperature , Humidity , Particulates
+    // datetype : 'Day', 'Week', 'Month'
+    const allowedFieldTypes = ['Humidity', 'Temperature', 'Particulates'];
+    const allowedDateTypes = ['Day', 'Week', 'Month'];
+    // 프로퍼티 키 검사
+    for (const fieldType in params) {
+      if (!allowedFieldTypes.includes(fieldType)) {
+        throw new Error(
+          `fieldtype "${fieldType}" incorrect. expected: [Humidity, Temperature, Particulates]`,
+        );
+      }
+      const [dateType, dateValue] = params[fieldType];
+      // dateType 검사
+      if (!allowedDateTypes.includes(dateType)) {
+        throw new Error(
+          `datetype "${dateType}" incorrect. expected: [Day, Week, Month]`,
+        );
+      }
     }
+    const parameter = { Temperature: params.Temperature[1] };
+    console.log(parameter);
+    // 1. 온도 일별 데이터 조회
+    const result = await edukit1Service.searchTemp(parameter);
 
-    // 최종 응답
-    // return res.status(200).json(result);
-    return res.status(200).json('test');
+    return res.status(200).json(result);
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
   }

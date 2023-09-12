@@ -28,14 +28,63 @@ router.post('/edukit1', (req, res) => {
       let mes;
       // commandSet value parameter check + value modify
       if (req.body.value) {
-        console.log(`value :${req.body.value}`);
+        logger.debug(`value :${req.body.value}`);
         let mesObj = controlList[command];
-        mesObj.value = req.body.value;
+        // 특정 commandSet value limit 적용
+        if (req.body.command === 'DiceComparisonValue') {
+          // req.body.value를 숫자로 변환합니다.
+          const numericValue = parseInt(req.body.value);
+          // isNaN 함수를 사용하여 숫자로 변환이 실패한 경우를 처리합니다.
+          if (!isNaN(numericValue)) {
+            // 범위를 비교합니다.
+            if (numericValue >= 1 && numericValue <= 5) {
+              logger.debug(`기준범위 내: ${numericValue}`);
+              mesObj.value = numericValue.toString();
+            } else {
+              return res
+                .status(400)
+                .json(
+                  `기준범위 초과. value: ${numericValue} , 범위: 1<=value<=5`,
+                );
+            }
+          } else {
+            return res
+              .status(400)
+              .json('[value type error]숫자로 변환할 수 없는 값입니다.');
+          }
+        } else {
+          mesObj.value = req.body.value;
+        }
+        if (req.body.command === 'No1Delay') {
+          // req.body.value를 숫자로 변환합니다.
+          const numericValue = parseInt(req.body.value);
+          // isNaN 함수를 사용하여 숫자로 변환이 실패한 경우를 처리합니다.
+          if (!isNaN(numericValue)) {
+            // 범위를 비교합니다.
+            if (numericValue >= 80) {
+              logger.debug(`기준범위 내: ${numericValue}`);
+              mesObj.value = numericValue.toString();
+            } else {
+              return res
+                .status(400)
+                .json(
+                  `기준범위 초과. value: ${numericValue} , 범위: 80<=value`,
+                );
+            }
+          } else {
+            return res
+              .status(400)
+              .json('[value type error]숫자로 변환할 수 없는 값입니다.');
+          }
+        } else {
+          mesObj.value = req.body.value;
+        }
         mes = JSON.stringify(mesObj);
       } else {
         mes = JSON.stringify(controlList[command]);
       }
-      mqttClient.publish('edukit1/control', mes, { qos: 1 }, function (err) {
+      // mqttClient.publish('edukit1/control', mes, { qos: 1 }, function (err) {
+      mqttClient.publish('test1', mes, { qos: 1 }, function (err) {
         if (err) {
           logger.error('[ edukit1/control ] Error publishing message:', err);
         } else {

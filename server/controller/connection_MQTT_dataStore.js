@@ -25,6 +25,11 @@ const MQTTconnect = () => {
       'edukit1/environment/data',
       'edukit1/vision/data',
       'edukit1/vision/data/image',
+      'edukit2',
+      'edukit2/environment/data',
+      'edukit2/vision/data',
+      'eduki2/vision/data/image',
+      'test2',
     ];
 
     client.subscribe(topic_DB, { qos: 1 }, function (err) {
@@ -48,9 +53,9 @@ const MQTTconnect = () => {
         topic === 'edukit1/vision/data' ||
         topic === 'edukit1/environment/data'
       ) {
-        logger.debug(
-          `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
-        );
+        // logger.debug(
+        //   `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
+        // );
         // 비즈니스 로직 호출
         const result = await edukit1Service.saveTempAndHumi(
           JSON.parse(parsedMes),
@@ -64,12 +69,28 @@ const MQTTconnect = () => {
         // saveImageFileDB(message); //mongoDB에 파일저장
       }
       // 에듀킷 상태 데이터 저장
-      if (topic === 'edukit1') {
-        // 비즈니스 로직 호출
-        const result = await edukit1Service.saveStatus(JSON.parse(parsedMes));
-        logger.info(
-          `(edukit1.reg.result) : data insert successfully on mongoDB server: ${result}`,
+      if (topic === 'test2') {
+        let parsedMessage = JSON.parse(parsedMes);
+        // tagId 오름차순으로 정렬
+        parsedMessage.Wrapper.sort((a, b) => a.tagId - b.tagId);
+
+        // date를 최상단으로 이동
+        const dateObj = parsedMessage.Wrapper.find(
+          (item) => item.name === 'DataTime',
         );
+        if (dateObj) {
+          parsedMessage.DataTime = dateObj.value;
+          parsedMessage.Wrapper = parsedMessage.Wrapper.filter(
+            (item) => item.name !== 'DataTime',
+          );
+          parsedMessage.Wrapper.unshift(dateObj);
+        }
+        //1.  비즈니스 로직 호출 [상태데이터 DB저장]
+        const result = await edukit1Service.saveStatus(parsedMessage);
+        logger.info(
+          `(edukit1Service.saveStatus.result) : data insert successfully on mongoDB server`,
+        );
+        // 2. 생산량 DB저장
       }
     } catch (error) {
       logger.error('[ dataStore ]Error parsing message:', error);

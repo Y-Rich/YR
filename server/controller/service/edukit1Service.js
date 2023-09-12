@@ -46,11 +46,29 @@ const service = {
 
     try {
       inserted = await edukitDao.insertSensData1(params);
-      logger.debug(
-        `(edukit1Service.insertSensData1) ${JSON.stringify(inserted)}`,
-      );
+      // logger.debug(
+      //   `(edukit1Service.insertSensData1) ${JSON.stringify(inserted)}`,
+      // );
     } catch (err) {
       logger.error(`(edukit1Service.insertSensData1) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+  async searchTemp(params) {
+    let inserted = null;
+
+    try {
+      inserted = await edukitDao.senslist1(params);
+      // logger.debug(`(edukitDao.senslist1) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(edukitDao.senslist1) ${err.toString()}`);
       return new Promise((resolve, reject) => {
         reject(err);
       });

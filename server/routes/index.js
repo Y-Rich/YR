@@ -6,6 +6,7 @@ const dataRouter = require('./data');
 const employeeRouter = require('./employee');
 const adminRouter = require('./admin');
 const { isLoggedIn } = require('../lib/middleware');
+const mockDataGen = require('../lib/mockDataGen');
 
 const router = express.Router();
 
@@ -15,6 +16,11 @@ router.get('/', (req, res) => {
 });
 router.get('/test', (req, res) => {
   res.json('api라우팅테스트2');
+});
+
+router.get('/mockData', (req, res) => {
+  mockDataGen();
+  res.json('mockDataGen');
 });
 
 // Mongo CRUD test
