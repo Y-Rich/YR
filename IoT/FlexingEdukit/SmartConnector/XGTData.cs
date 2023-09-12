@@ -66,6 +66,8 @@ namespace SmartConnector.Edukit
                 NAK_ErrorCotent = "서버로 부터 응답을 받지 못했습니다.";
                 return;
             }
+            if (RX.Length < 30)
+                return;
             if (RX[20] == (short)XGT_Request_Func.ReadResponse)
             {
                 ResponseType = XGT_Request_Func.ReadResponse;
@@ -193,6 +195,8 @@ namespace SmartConnector.Edukit
                     NAK_ErrorCotent = "서버로 부터 응답을 받지 못했습니다.";
                     return;
                 }
+                if (RX.Length < 30)
+                    return;
                 if (RX[20] == (short)XGT_Request_Func.ReadResponse)
                 {
                     ResponseType = XGT_Request_Func.ReadResponse;
