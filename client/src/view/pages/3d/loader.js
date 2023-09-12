@@ -202,9 +202,9 @@ export default class Edukit {
 
   actionY(value) {
     const currentY = this.axes.yAxis.position.y;
-    if (value.toFixed(2) < currentY.toFixed(2)) {
+    if (value < currentY) {
       this.axes.yAxis.position.y -= 0.05;
-    } else if (value.toFixed(2) > currentY.toFixed(2)) {
+    } else if (value > currentY) {
       this.axes.yAxis.position.y += 0.05;
     }
   }
@@ -213,10 +213,10 @@ export default class Edukit {
     const currentX = this.axes.xAxis2.rotation.y;
     // this.axes.xAxis.rotation.y = -value
     // this.axes.xAxis2.rotation.y = value
-    if (value.toFixed(2) < currentX.toFixed(2)) {
+    if (value < currentX) {
       this.axes.xAxis.rotation.y += MathUtils.degToRad(1);
       this.axes.xAxis2.rotation.y += MathUtils.degToRad(-1);
-    } else if (value.toFixed(2) > currentX.toFixed(2)) {
+    } else if (value > currentX) {
       this.axes.xAxis.rotation.y += MathUtils.degToRad(-1);
       this.axes.xAxis2.rotation.y += MathUtils.degToRad(1);
     }

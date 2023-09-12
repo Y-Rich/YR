@@ -10,16 +10,14 @@ import axios from 'axios';
 import Loading from '../../components/Loading';
 import { useControls } from 'leva';
 import GuiController from './GuiController';
-import Data from './Data';
 import TextSprite from './TextSprite';
 
 const PLC = () => {
   const [loading, setLoading] = useState(true);
-  const [num, setNum] = useState(0); // 권한에 따른 제어를 위한 묵데이터
   const [webSocket, setWebSocket] = useState(null);
   const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState(null);
-  const [messagePayloadEnvironment, setMessagePayloadEnvironment] =
-    useState(null);
+  // const [messagePayloadEnvironment, setMessagePayloadEnvironment] =
+  //   useState(null);
   const canvasRef = useRef(null);
   const [borderColor, setBorderColor] = useState({
     r: 255,
@@ -27,38 +25,8 @@ const PLC = () => {
     b: 255,
     a: 1.0,
   });
-  // const guiRef = useRef(null);
-  // const test = useMemo(() => {
-  //   return {
-  //     num1: {
-  //       value: 0,
-  //       min: -2728,
-  //       max: 53294192312,
-  //       step: 1,
-  //     },
-  //     num2: {
-  //       value: 0,
-  //       min: -2728,
-  //       max: 53294192312,
-  //       step: 1,
-  //     },
-  //   };
-  // }, []);
-  // const model = useControls('test', test);
-  const [m3axis1, setM3axis1] = useState(0);
-  const [m3axis2, setM3axis2] = useState(0);
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:3001/mock/user.json')
-      .then((res) => {
-        const userNum = res.data[1].role;
-        setNum(userNum);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
     const canvas = canvasRef.current;
     const scene = new THREE.Scene();
     const edukit = new Edukit();
@@ -122,6 +90,10 @@ const PLC = () => {
     scene.add(textSpriteC);
     scene.add(textSpriteV);
 
+    // // 테두리 색상을 업데이트한 후 텍스트 업데이트
+    // textSprite1.updateBorderColor({ r: 255, g: 0, b: 255, a: 1.0 });
+    // textSprite1.updateText(message1);
+
     // 카메라
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -177,20 +149,20 @@ const PLC = () => {
     const yAxisFunc = (() => {
       return function () {
         // return ((test.num1.value - min) / (max - min)) * 7;
-        return m3axis1;
+        return M3y;
       };
     })();
     const xAxisFunc = (() => {
       return function () {
         return (
           // ((test.num2.value - min) / (max - min)) * THREE.MathUtils.degToRad(90)
-          m3axis2
+          M3x
         );
       };
     })();
 
-    // dataState.m1OnOff 값이 변경되었을 때에만 textSprite1 업데이트 수행
-    let lastM1OnOff = dataState.m1OnOff; // 초기값으로 설정
+    // // m1OnOff 값이 변경되었을 때에만 textSprite1 업데이트 수행
+    // let lastM1OnOff = m1OnOff; // 초기값으로 설정
 
     const tick = () => {
       renderer.render(scene, camera);
@@ -205,25 +177,25 @@ const PLC = () => {
         edukit.actionX(xAxisFunc());
       }
 
-      if (dataState.m1OnOff !== lastM1OnOff) {
-        lastM1OnOff = dataState.m1OnOff; // 현재 값으로 업데이트
-        if (lastM1OnOff === 1) {
-          textSprite1.updateText('새로운 내용1');
-          textSprite1.updateBorderColor({ r: 255, g: 0, b: 0, a: 1.0 });
-        } else {
-          textSprite1.updateText('새로운 내용2');
-          textSprite1.updateBorderColor({ r: 255, g: 0, b: 0, a: 1.0 });
-        }
-      }
+      // if (m1OnOff !== lastM1OnOff) {
+      //   lastM1OnOff = m1OnOff; // 현재 값으로 업데이트
+      //   console.log('this m1OnOff changed');
+      //   if (lastM1OnOff === 1) {
+      //     textSprite1.updateText('전원On');
+      //     textSprite1.updateBorderColor({ r: 255, g: 0, b: 0, a: 1.0 });
+      //   } else if (lastM1OnOff === 0) {
+      //     textSprite1.updateText('전원Off');
+      //     textSprite1.updateBorderColor({ r: 255, g: 0, b: 255, a: 1.0 });
+      //   }
+      // }
     };
 
     tick();
 
     return () => {
       cancelAnimationFrame(requestId);
-      //   client.end();
     };
-  }, [num]);
+  }, []);
 
   // 웹소켓 설정
   useEffect(() => {
@@ -239,60 +211,45 @@ const PLC = () => {
         setMessagePayloadEdukit1(JSON.parse(receivedMessage.data));
         console.log(JSON.parse(receivedMessage.data));
       }
-      // 환경 데이터
-      if (receivedMessage.topic === 'environment/data') {
-        setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
-        console.log(JSON.parse(receivedMessage.data));
-      }
+      // // 환경 데이터
+      // if (receivedMessage.topic === 'environment/data') {
+      //   setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
+      //   console.log(JSON.parse(receivedMessage.data));
+      // }
     });
 
     return () => {
       ws.close(); // 웹소켓 연결 종료
     };
   }, []);
+  const [M3x, setM3x] = useState(0);
+  const [M3y, setM3y] = useState(0);
+  // const [edukitOnOff, setEdukitOnOff] = useState(0);
+  // const [m1OnOff, setM1OnOff] = useState(0);
 
-  const dataState = Data(
-    messagePayloadEdukit1,
-    webSocket,
-    messagePayloadEnvironment
-  );
-
-  // 3호기 축 값 웹소켓으로 받기
   useEffect(() => {
-    console.log('herere', dataState.m1OnOff);
     if (webSocket) {
-      if (dataState.m1OnOff === 1) {
-        setBorderColor({
-          // 초록색
-          r: 0,
-          g: 245,
-          b: 12,
-          a: 1.0,
-        });
-      } else {
-        setBorderColor({
-          // 빨간색
-          r: 255,
-          g: 0,
-          b: 0,
-          a: 1.0,
-        });
-      }
+      setM3x(0.5);
+      setM3y(20);
+      messagePayloadEdukit1.Wrapper?.forEach((item) => {
+        // if (item.tagId === '21') {
+        //   const convertedValue = parseInt(item.value);
+        //   setM3x(convertedValue);
+        //   console.log(M3x);
+        // }
+        // if (item.tagId === '22') {
+        //   const convertedValue = parseInt(item.value);
+        //   setM3y(convertedValue);
+        //   console.log(M3y);
+        // }
+      });
     }
   }, [messagePayloadEdukit1]);
 
   return (
     <div>
       {loading ? <Loading /> : null}
-      <GuiController
-        messagePayloadEdukit1={messagePayloadEdukit1}
-        webSocket={webSocket}
-      />
-      {/* <Data
-        messagePayloadEdukit1={messagePayloadEdukit1}
-        webSocket={webSocket}
-        messagePayloadEnvironment={messagePayloadEnvironment}
-      /> */}
+      <GuiController />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
