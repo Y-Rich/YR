@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Selector from '../../components/Selector';
 import { Slide } from './style';
-import { F1, Manager } from './F1';
+import { F1 } from './F1';
 
 const Chart = () => {
   const settings = {
@@ -12,8 +12,8 @@ const Chart = () => {
     fade: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   const position = sessionStorage.getItem('position');

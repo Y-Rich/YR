@@ -7,6 +7,7 @@ export const tempHumi = async () => {
       {
         Temperature: ['Day', '2023-08-01'],
         Humidity: ['Day', '2023-08-01'],
+        Particulates: ['Day', '2023-08-01'],
       }
     );
     return response.data;

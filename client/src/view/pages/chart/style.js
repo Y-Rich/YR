@@ -4,7 +4,7 @@ export const Page = styled.main``;
 
 export const Slide = styled.main`
   height: 100vh;
-  background-color: #c2c2c2;
+  background-color: #f6f8f7;
   .slick-dots {
     .slick-active {
       button::before {
@@ -22,23 +22,27 @@ export const Slide = styled.main`
 `;
 
 export const ChartContainer = styled.section`
-  width: 70%;
-  box-shadow: 0px 0px 10px gray;
-  margin: 10vh 15% 0 15%;
-  padding: 3% 3% 3% 3%;
+  /* width: 70%; */
+  /* box-shadow: 0px 0px 10px gray; */
+  margin: 3vh 10% 1% 10%;
+  /* padding: 3% 3% 3% 3%; */
   display: flex;
-  place-items: center;
-  background-color: whitesmoke;
-  border-radius: 5px;
+  flex-direction: column;
+  /* place-items: center; */
+  /* background-color: whitesmoke; */
+  /* border-radius: 5px; */
+  /* align-items: flex-end; */
+  gap: 2vh;
 `;
 
 export const ChartBox = styled.section`
   display: flex;
-  flex-direction: column;
-  gap: 8vh;
+  flex-direction: row;
+  /* width: 1000px; */
+  gap: 2vh;
   align-items: center;
   &.left {
-    align-items: flex-start;
+    /* align-items: flex-start; */
   }
   &::-webkit-scrollbar {
     display: none;
@@ -50,18 +54,25 @@ export const TitleBox = styled.div`
   gap: 2vw;
 `;
 export const CBox = styled.div`
-  display: flex;
-  gap: 5vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* width: 10vw; */
+  /* height: 100%; */
+  gap: 2vh;
   &.title {
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
   }
 `;
 export const GBox = styled.div`
-  width: 20vw;
-  height: 30vh;
+  width: 22.5vw;
+  /* height: 30vh; */
+  padding: 1vh;
   &.do {
-    width: 30vw;
-    height: 50vh;
+    width: 31vw;
+    height: 64vh;
   }
+  background-color: white;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
 `;

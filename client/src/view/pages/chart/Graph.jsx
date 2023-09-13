@@ -15,7 +15,16 @@ import { Pie } from 'react-chartjs-2';
 import axios from 'axios';
 import { tempHumi } from '../../../services/chart';
 
-export const LineGraph = ({ title, labels, label1, label2, data1, data2 }) => {
+export const LineGraph = ({
+  title,
+  labels,
+  label1,
+  label2,
+  label3,
+  data1,
+  data2,
+  data3,
+}) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -25,22 +34,6 @@ export const LineGraph = ({ title, labels, label1, label2, data1, data2 }) => {
     Tooltip,
     Legend
   );
-
-  // const [labels, setLabels] = useState([]);
-
-  // useEffect(() => {
-  //   try {
-  //     tempHumi()
-  //       .then((res) => {
-  //         setLabels(res.dailyAvgHumi.map((v) => v.hour));
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, []);
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -68,12 +61,12 @@ export const LineGraph = ({ title, labels, label1, label2, data1, data2 }) => {
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
-      // {
-      //   label: label3,
-      //   data: data3,
-      //   borderColor: 'rgb(217, 235, 53)',
-      //   backgroundColor: 'rgba(217, 235, 53, 0.5)',
-      // },
+      {
+        label: label3,
+        data: data3,
+        borderColor: 'rgb(217, 235, 53)',
+        backgroundColor: 'rgba(217, 235, 53, 0.5)',
+      },
     ],
   };
 
