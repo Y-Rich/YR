@@ -6,6 +6,7 @@ import Register from './view/pages/user/Register';
 import Admin from './view/pages/admin/Admin';
 import Chart from './view/pages/chart/Chart';
 import Pannel from './view/pages/pannel/Pannel';
+import Main from './view/pages/3d/Main';
 
 export const ROUTE = {
   HOME: {
@@ -61,10 +62,6 @@ export const PUBLIC_ROUTE = {
   },
 };
 export const PRIVATE_ROUTE = {
-  CHART: {
-    path: '/chart',
-    element: Chart,
-  },
   USERMODI: {
     path: '/usermodi',
     element: UserModi,
@@ -73,14 +70,9 @@ export const PRIVATE_ROUTE = {
     path: '/admin',
     element: Admin,
   },
-  PLC: {
-    path: '/plc',
-    element: PLC,
-  },
-
-  PANNEL: {
-    path: '/pannel',
-    element: Pannel,
+  MAIN: {
+    path: '/main',
+    element: Main,
   },
 };
 

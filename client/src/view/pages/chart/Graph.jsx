@@ -13,16 +13,9 @@ import {
 import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
 import axios from 'axios';
+import { tempHumi } from '../../../services/chart';
 
-export const LineGraph = ({
-  title,
-  label1,
-  label2,
-  label3,
-  data1,
-  data2,
-  data3,
-}) => {
+export const LineGraph = ({ title, labels, label1, label2, data1, data2 }) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -33,20 +26,21 @@ export const LineGraph = ({
     Legend
   );
 
-  const [labels, setLabels] = useState([]);
+  // const [labels, setLabels] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/mock/chart1.json')
-      // .get('http://localhost:3000/mock/chart1.json')
-      .then((res) => {
-        const dataArray = res.data.map((v) => v.date);
-        setLabels(dataArray);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     tempHumi()
+  //       .then((res) => {
+  //         setLabels(res.dailyAvgHumi.map((v) => v.hour));
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }, []);
   const options = {
     maintainAspectRatio: false,
     plugins: {

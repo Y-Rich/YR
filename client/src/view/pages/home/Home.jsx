@@ -4,6 +4,7 @@ import Login from '../user/Login';
 import PLC from '../3d/Edukit';
 import Pannel from '../pannel/Pannel';
 import Websocket from '../../../services/Websocket';
+import Main from '../3d/Main';
 
 const Home = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -15,7 +16,7 @@ const Home = () => {
   return (
     <>
       {isLogin ? (
-        <Pannel />
+        <Main />
       ) : (
         <Page>
           <Login />

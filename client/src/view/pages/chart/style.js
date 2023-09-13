@@ -1,11 +1,10 @@
 import { styled } from 'styled-components';
 
-export const Page = styled.main`
+export const Page = styled.main``;
+
+export const Slide = styled.main`
   height: 100vh;
   background-color: #c2c2c2;
-`;
-
-export const Slide = styled.section`
   .slick-dots {
     .slick-active {
       button::before {

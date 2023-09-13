@@ -1,6 +1,5 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { LinkText } from './Components';
 import { GiSewingMachine } from 'react-icons/gi';
 import { AiOutlineBarChart } from 'react-icons/ai';
 import { LiaDigitalTachographSolid } from 'react-icons/lia';
@@ -21,34 +20,39 @@ const SelectorContainer = styled.footer`
   color: #000000;
   gap: 20px;
 `;
+const Btn = styled.button`
+  color: #000000;
+  text-decoration: none;
+  font-weight: 800;
+  &:hover {
+    color: #5498ff;
+  }
+  &:focus {
+    color: #5498ff;
+  }
+  background-color: #5498ff;
+  padding: 15px;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+`;
 
-const Selector = ({ onSelect }) => {
+const Selector = ({ onPageChange }) => {
   return (
     <SelectorContainer>
-      <LinkText
-        to="/chart"
-        className="selector"
-        // onClick={() => onSelect('chart')}
-      >
+      <Btn onClick={() => onPageChange('chart')}>
         <AiOutlineBarChart />
         Charts
-      </LinkText>
-      <LinkText
-        to="/pannel"
-        className="selector"
-        // onClick={() => onSelect('pannel')}
-      >
+      </Btn>
+      <Btn onClick={() => onPageChange('pannel')}>
         <LiaDigitalTachographSolid />
         Status
-      </LinkText>
-      <LinkText
-        to="/plc"
-        className="selector"
-        // onClick={() => onSelect('plc')}
-      >
+      </Btn>
+      <Btn onClick={() => onPageChange('plc')}>
         <GiSewingMachine />
         Edukit
-      </LinkText>
+      </Btn>
     </SelectorContainer>
   );
 };
