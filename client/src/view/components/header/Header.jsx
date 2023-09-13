@@ -27,6 +27,7 @@ const HeaderBox = styled.div`
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
+
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     axios.defaults.headers.common['accessToken'] = `${token}`;

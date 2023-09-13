@@ -31,6 +31,7 @@ const Selector = ({ onSelect }) => {
         // onClick={() => onSelect('chart')}
       >
         <AiOutlineBarChart />
+        Charts
       </LinkText>
       <LinkText
         to="/pannel"
@@ -38,6 +39,7 @@ const Selector = ({ onSelect }) => {
         // onClick={() => onSelect('pannel')}
       >
         <LiaDigitalTachographSolid />
+        Status
       </LinkText>
       <LinkText
         to="/plc"
@@ -45,6 +47,7 @@ const Selector = ({ onSelect }) => {
         // onClick={() => onSelect('plc')}
       >
         <GiSewingMachine />
+        Edukit
       </LinkText>
     </SelectorContainer>
   );
