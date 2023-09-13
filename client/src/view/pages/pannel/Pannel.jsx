@@ -4,7 +4,7 @@ import { Page, Box, Container, Content, Dice, Section, Title } from './style';
 import { info } from '../../../services/user';
 import Loading from '../../components/Loading';
 
-const Pannel = () => {
+const Pannel = (props) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState('');
   const [userName, setUserName] = useState('');
@@ -13,10 +13,8 @@ const Pannel = () => {
   const [lines, setLines] = useState([]);
 
   // 웹소켓 데이터
-  const [webSocket, setWebSocket] = useState(null);
-  const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState(null);
-  const [messagePayloadEnvironment, setMessagePayloadEnvironment] =
-    useState(null);
+  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment } =
+    props.props;
 
   // 받은 데이터
   const [No1Delay, setNo1Delay] = useState('준비중...');
@@ -28,30 +26,6 @@ const Pannel = () => {
   const [DiceComparisonValue, setDiceComparisonValue] = useState('준비중...');
   const [Temperature, setTemperature] = useState('준비중...');
   const [Humidity, setHumidity] = useState('준비중...');
-
-  // 웹소켓 설정
-  useEffect(() => {
-    setLoading(true);
-    const ws = new WebSocket('ws://192.168.0.71:8080');
-
-    setWebSocket(ws);
-
-    ws.addEventListener('message', function (event) {
-      const receivedMessage = JSON.parse(event.data);
-      if (receivedMessage.topic === 'edukit1') {
-        setMessagePayloadEdukit1(JSON.parse(receivedMessage.data));
-        console.log(JSON.parse(receivedMessage.data));
-      }
-      // 환경 데이터
-      if (receivedMessage.topic === 'edukit1/environment/data') {
-        setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
-        console.log(JSON.parse(receivedMessage.data));
-      }
-    });
-    return () => {
-      ws.close(); // 웹소켓 연결 종료
-    };
-  }, []);
 
   //데이터 설정
   useEffect(() => {

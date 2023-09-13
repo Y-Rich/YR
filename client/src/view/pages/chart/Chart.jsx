@@ -9,7 +9,7 @@ import { Page, Slide } from './style';
 import { info } from '../../../services/user';
 import { Manager } from './Manager';
 
-const Chart = () => {
+const Chart = (props) => {
   const [user, setUser] = useState('');
   const [userName, setUserName] = useState('');
   const [position, setPosition] = useState('');
