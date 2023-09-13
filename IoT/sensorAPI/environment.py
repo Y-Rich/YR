@@ -4,7 +4,7 @@ import json
 
 ser = serial.Serial('COM3', 9600)  
 
-mqtt_broker = "192.168.0.44"  
+mqtt_broker = "192.168.0.44"
 mqtt_port = 1883  
 mqtt_topic = "edukit1/environment/data"
 
