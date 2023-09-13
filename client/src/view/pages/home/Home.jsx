@@ -3,7 +3,7 @@ import { Page } from '../../components/Components';
 import Login from '../user/Login';
 import PLC from '../3d/Edukit';
 import Pannel from '../pannel/Pannel';
-import Websocket from '../../../services/Websocket';
+// import Websocket from '../../../services/Websocket';
 
 const Home = () => {
   const [isLogin, setIsLogin] = useState(false);
