@@ -26,12 +26,12 @@ const Main = () => {
       // setMessagePayloadEdukit1(receivedMessage);
       if (receivedMessage.topic === 'edukit1') {
         setMessagePayloadEdukit1(JSON.parse(receivedMessage.data));
-        console.log(JSON.parse(receivedMessage.data));
+        // console.log(JSON.parse(receivedMessage.data));
       }
       // 환경 데이터
       if (receivedMessage.topic === 'environment/data') {
         setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
-        console.log(JSON.parse(receivedMessage.data));
+        // console.log(JSON.parse(receivedMessage.data));
       }
     });
 

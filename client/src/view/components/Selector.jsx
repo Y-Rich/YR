@@ -24,12 +24,13 @@ const Btn = styled.button`
   color: #000000;
   text-decoration: none;
   font-weight: 800;
+  cursor: pointer;
   &:hover {
     color: #5498ff;
   }
-  &:focus {
+  /* &:focus {
     color: #5498ff;
-  }
+  } */
   background-color: #5498ff;
   padding: 15px;
   font-size: 1.5rem;
@@ -43,15 +44,12 @@ const Selector = ({ onPageChange }) => {
     <SelectorContainer>
       <Btn onClick={() => onPageChange('chart')}>
         <AiOutlineBarChart />
-        Charts
       </Btn>
       <Btn onClick={() => onPageChange('pannel')}>
         <LiaDigitalTachographSolid />
-        Status
       </Btn>
       <Btn onClick={() => onPageChange('plc')}>
         <GiSewingMachine />
-        Edukit
       </Btn>
     </SelectorContainer>
   );

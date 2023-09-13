@@ -287,7 +287,7 @@ const PLC = (props) => {
   return (
     <div>
       {loading ? <Loading /> : null}
-      <GuiController />
+      {/* <GuiController /> */}
       <Gui />
       <Selector />
       <div style={{ display: 'flex' }}></div>

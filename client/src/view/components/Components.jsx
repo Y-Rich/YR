@@ -79,8 +79,11 @@ export const Title = styled.div`
   }
   &.label {
     /* margin-top: 20%; */
-    font-size: 4vh;
+    font-size: 2vh;
     align-items: center;
+  }
+  &.mount {
+    font-size: 8vh;
   }
 `;
 export const Box = styled.article`
@@ -112,13 +115,31 @@ export const Box = styled.article`
     align-items: center;
   }
   &.chart {
-    gap: 5vh;
+    display: flex;
+    &.big {
+      width: 12vw;
+      height: 15vh;
+      font-size: 3rem;
+      display: flex;
+      flex-direction: row;
+      /* justify-content: flex-start; */
+      /* align-items: center; */
+      border-radius: 10px;
+      padding: 10px;
+      gap: 5vh;
+      background-color: white;
+      box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    }
+    &.small {
+      flex-direction: column;
+      /* gap: 2vh; */
+    }
     /* align-items: flex-start; */
     &.title {
-      margin-left: 7%;
+      /* margin-left: 7%; */
     }
     &.graph {
-      flex-direction: row;
+      /* flex-direction: row; */
     }
   }
 `;
@@ -214,15 +235,15 @@ export const LinkText = styled(Link)`
   &:hover {
     color: #5498ff;
   }
-  &:focus {
+  /* &:focus {
     color: #5498ff;
-  }
+  } */
   &.logo {
     font-size: 20px;
     font-family: 'CWDangamAsac-Bold';
-    &:focus {
+    /* &:focus {
       color: #000000;
-    }
+    } */
   }
   &.edukit {
     color: #c4c4c4;
