@@ -38,7 +38,7 @@ router.use('/control', isLoggedIn, controlRouter);
 // router.use('/status', isLoggedIn, controlRouter);
 
 //에듀킷에 대한 공정 데이터 조회 [센서 데이터 포함]
-router.use('/data', dataRouter);
+router.use('/data', isLoggedIn, dataRouter);
 
 // 전체관리용 라우트
 router.use('/admin', isLoggedIn, adminRouter);

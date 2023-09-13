@@ -1,20 +1,21 @@
 const mqtt = require('mqtt');
 const logger = require('../lib/logger');
 const edukit1Service = require('./service/edukit1Service');
+const edukit2Service = require('./service/edukit2Service');
 const fs = require('fs');
 const path = require('path');
 
-// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnect = () => {
   const client = mqtt.connect(addr, {
-    clientId: 'client-NodeAPIServer',
+    clientId: 'client-NodeAPIServer-DB',
     protocolVersion: 4,
   });
 
   client.on('connect', function () {
-    logger.debug('[ dataStore ]Connected to MQTT broker...');
+    logger.info('[ dataStore ]Connected to MQTT broker...');
 
     // topic : edukit1                    - 에듀킷 1호기의 전체 데이터
     // topic : edukit1/environment/data   - 1호기 온습도
@@ -28,15 +29,14 @@ const MQTTconnect = () => {
       'edukit2',
       'edukit2/environment/data',
       'edukit2/vision/data',
-      'eduki2/vision/data/image',
-      'test2',
+      'edukit2/vision/data/image',
     ];
 
     client.subscribe(topic_DB, { qos: 1 }, function (err) {
       if (err) {
-        logger.error('[ edukit1/dataStore ] Error subscribing to topic:', err);
+        logger.error('[ dataStore ] Error subscribing to topic:', err);
       } else {
-        logger.info(`[ edukit1/dataStore ] Subscribed to topic: ${topic_DB}`);
+        logger.info(`[ dataStore ] Subscribed to topic: ${topic_DB}`);
       }
     });
   });
@@ -47,29 +47,21 @@ const MQTTconnect = () => {
   client.on('message', async function (topic, message) {
     try {
       const parsedMes = message.toString();
-
-      //토픽 메세지 확인
-      if (
-        topic === 'edukit1/vision/data' ||
-        topic === 'edukit1/environment/data'
-      ) {
-        // logger.debug(
-        //   `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
-        // );
+      // logger.debug(
+      //   `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
+      // );
+      //edukit1 - 센서데이터  - 온습도
+      if (topic === 'edukit1/environment/data') {
         // 비즈니스 로직 호출
         const result = await edukit1Service.saveTempAndHumi(
           JSON.parse(parsedMes),
         );
-        //온습도 데이터 저장
+        logger.debug(
+          `(edukit1Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
+        );
       }
-      // 센서 이미지 저장
-      else if (topic === 'edukit1/vision/data/image') {
-        // console.log(Object.entries(message));
-        saveImageFileLocal(message); //로컬 폴더에 파일저장
-        // saveImageFileDB(message); //mongoDB에 파일저장
-      }
-      // 에듀킷 상태 데이터 저장
-      if (topic === 'test2') {
+      //edukit1 -  에듀킷 상태 데이터
+      if (topic === 'edukit1') {
         let parsedMessage = JSON.parse(parsedMes);
         // tagId 오름차순으로 정렬
         parsedMessage.Wrapper.sort((a, b) => a.tagId - b.tagId);
@@ -87,11 +79,50 @@ const MQTTconnect = () => {
         }
         //1.  비즈니스 로직 호출 [상태데이터 DB저장]
         const result = await edukit1Service.saveStatus(parsedMessage);
-        logger.info(
+        logger.debug(
           `(edukit1Service.saveStatus.result) : data insert successfully on mongoDB server`,
         );
-        // 2. 생산량 DB저장
       }
+      //edukit2 - 센서데이터  - 온습도
+      if (topic === 'edukit2/environment/data') {
+        // 비즈니스 로직 호출
+        const result = await edukit2Service.saveTempAndHumi(
+          JSON.parse(parsedMes),
+        );
+        logger.debug(
+          `(edukit2Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
+        );
+      }
+      //edukit2 -  에듀킷 상태 데이터
+      if (topic === 'edukit2') {
+        let parsedMessage = JSON.parse(parsedMes);
+        // tagId 오름차순으로 정렬
+        parsedMessage.Wrapper.sort((a, b) => a.tagId - b.tagId);
+
+        // date를 최상단으로 이동
+        const dateObj = parsedMessage.Wrapper.find(
+          (item) => item.name === 'DataTime',
+        );
+        if (dateObj) {
+          parsedMessage.DataTime = dateObj.value;
+          parsedMessage.Wrapper = parsedMessage.Wrapper.filter(
+            (item) => item.name !== 'DataTime',
+          );
+          parsedMessage.Wrapper.unshift(dateObj);
+        }
+        //1.  비즈니스 로직 호출 [상태데이터 DB저장]
+        const result = await edukit2Service.saveStatus(parsedMessage);
+        logger.debug(
+          `(edukit2Service.saveStatus.result) : data insert successfully on mongoDB server`,
+        );
+      }
+
+      // // 센서 이미지 저장
+      // else if (topic === 'edukit2/vision/data/image') {
+      //   // console.log(Object.entries(message));
+      //   saveImageFileLocal(message); //로컬 폴더에 파일저장
+      //   // saveImageFileDB(message); //mongoDB에 파일저장
+      // }
     } catch (error) {
       logger.error('[ dataStore ]Error parsing message:', error);
     }

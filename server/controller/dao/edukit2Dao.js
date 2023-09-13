@@ -1,11 +1,10 @@
-// const { Edukit1, Edukit1Sensor } = require('../models/index_mongo');
-const { Edukit_test, Edukit1Sensor } = require('../models/index_mongo');
+const { Edukit2, Edukit2Sensor, Products } = require('../models/index_mongo');
 
 const dao = {
   // 에듀킷 상태 저장
   insertData(params) {
     return new Promise((resolve, reject) => {
-      const data = new Edukit_test(params);
+      const data = new Edukit2(params);
       data
         .save()
         .then((inserted) => {
@@ -17,9 +16,23 @@ const dao = {
     });
   },
 
+  // 생산품 등록
+  insertProduct(params) {
+    return new Promise((resolve, reject) => {
+      const Product = new Products(params);
+      Product.save()
+        .then((inserted) => {
+          resolve(inserted);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
   insertImage(params) {
     return new Promise((resolve, reject) => {
-      const data = new Edukit1Sensor(params);
+      const data = new Edukit2Sensor(params);
       data
         .save()
         .then((inserted) => {
@@ -34,7 +47,7 @@ const dao = {
   //온습도 데이터 저장
   insertSensData1(params) {
     return new Promise((resolve, reject) => {
-      const data = new Edukit1Sensor(params);
+      const data = new Edukit2Sensor(params);
       data
         .save()
         .then((inserted) => {
@@ -52,7 +65,7 @@ const dao = {
       const sensorData = Object.keys(params)[0];
       const startDate = new Date(`${date}T00:00:00.000Z`);
       const endDate = new Date(`${date}T23:59:59.999Z`);
-      // Edukit1Sensor.find({
+      // Edukit2Sensor.find({
       //   $and: [
       //     { createdAt: { $gte: startDate.toISOString() } },
       //     { createdAt: { $lte: endDate.toISOString() } },
@@ -61,7 +74,7 @@ const dao = {
       //   .select('Humidity') // 'Humidity' 필드만 선택
       //   .sort({ createdAt: 1 }) // 'createdAt' 필드를 오름차순으로 정렬
 
-      Edukit1Sensor.aggregate([
+      Edukit2Sensor.aggregate([
         {
           $match: {
             $expr: {
@@ -127,7 +140,7 @@ const dao = {
       const startDate = new Date(
         `${oneWeekAgo.toISOString().split('T')[0]}T00:00:00.000Z`,
       );
-      Edukit1Sensor.aggregate([
+      Edukit2Sensor.aggregate([
         {
           $match: {
             $expr: {
@@ -225,7 +238,7 @@ const dao = {
 
       console.log(`startDate: ${startDate} , endDate: ${endDate}`);
 
-      Edukit1Sensor.aggregate([
+      Edukit2Sensor.aggregate([
         {
           $match: {
             $expr: {

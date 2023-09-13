@@ -1,9 +1,8 @@
 const mqtt = require('mqtt');
 const logger = require('../lib/logger');
-const edukit1Service = require('./service/edukit1Service');
 
-// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnect = () => {
   const client = mqtt.connect(addr, {
@@ -12,14 +11,11 @@ const MQTTconnect = () => {
   });
 
   client.on('connect', function () {
-    logger.debug('[ edukitControl ] Connected to MQTT broker...');
+    logger.info('[ edukitControl ] Connected to MQTT broker...');
 
-    // const topic = 'edukit1'
-    const topic = ['test1', 'test2', '$SYS/broker/version', 'edukit/control'];
-    const topic_control = ['edukit/control'];
-    const topic_dataForDB = ['edukit1'];
+    const topic = ['edukit/control', 'edukit1/control', 'edukit2/control'];
 
-    client.subscribe(topic, { qos: 0 }, function (err) {
+    client.subscribe(topic, { qos: 1 }, function (err) {
       if (err) {
         logger.error('[edukitControl]Error subscribing to topic:', err);
       } else {
@@ -39,11 +35,6 @@ const MQTTconnect = () => {
       logger.debug(
         `[edukitControl]Received message on topic ${topic}: ${parsedMessage}`,
       );
-      if (topic === 'edukit1') {
-        // 비즈니스 로직 호출
-        const result = await edukit1Service.reg(JSON.parse(parsedMessage));
-        // logger.info(`(edukit1.reg.result) : data insert successfully on mongoDB server: ${result}`);
-      }
     } catch (error) {
       logger.error('[edukitControl]Error parsing message:', error);
     }

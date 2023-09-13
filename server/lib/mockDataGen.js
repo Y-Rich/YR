@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
-const sensorDataSchema = require('../controller/models/edukit1_sensor_schema');
+const edukit1SensorDataSchema = require('../controller/models/mongo_edukit1SensorSchema');
+const edukit2SensorDataSchema = require('../controller/models/mongo_edukit2SensorSchema');
 
 function mockDataGen_HumiAndTempAndPar() {
   // 스키마 정의
@@ -10,7 +11,8 @@ function mockDataGen_HumiAndTempAndPar() {
   //   Particulates: Number,
   //   createdAt: Date,
   // });
-  const SensorData = mongoose.model('Edukit1Sensor', sensorDataSchema);
+  const SensorData = mongoose.model('Edukit1Sensor', edukit1SensorDataSchema);
+  // const SensorData = mongoose.model('Edukit2Sensor', edukit2SensorDataSchema);
 
   // 데이터 생성 및 삽입
   const currentDateTime = moment().tz('Asia/Seoul'); // 한국 시간대(KST)를 사용하여 현재 시간을 얻음

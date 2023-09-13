@@ -342,7 +342,7 @@ router.get('/profile/:id', async (req, res) => {
     const params = {
       employeeID: req.params.id,
     };
-    logger.info(`(employee.info.params) ${JSON.stringify(params)}`);
+    logger.debug(`(employee.info.params) ${JSON.stringify(params)}`);
 
     // 비즈니스 로직 호출
     const result = await employeeService.info(params);

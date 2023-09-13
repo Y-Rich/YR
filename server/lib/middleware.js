@@ -6,7 +6,7 @@ const middleware = {
   async isLoggedIn(req, res, next) {
     const token = req.headers && req.headers.accesstoken;
     // console.log(Object.keys(req.headers));
-    logger.debug(`(middleware.isLoggedIn.token) accesstoken:${token}`);
+    logger.info(`(middleware.isLoggedIn.token) accesstoken:${token}`);
 
     // ACCESS TOKEN CHECK - 토큰이 있는 경우 / 검증 수행
     if (token) {
@@ -14,7 +14,6 @@ const middleware = {
       // access validation success / 서명일치,유효기간남음
       // ->  토큰 전달
       if (decoded[0] === false) {
-        console.error(`decoded : ${decoded} , token.expired: {token.expired}`);
         res.set({
           accessToken: token,
         }); // header 세팅`

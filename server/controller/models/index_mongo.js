@@ -3,20 +3,29 @@ const mongoose = require('mongoose');
 const blogSchema = require('./sample_mongo_schema');
 const Blog = mongoose.model('Blog', blogSchema);
 
-//Edukit1 schema and model
-const Edukit1Schema = require('./edukit1schema');
-// const Edukit1 = mongoose.model('Edukit1', Edukit1Schema);
-const Edukit1 = mongoose.model('Edukit_test', Edukit1Schema);
-const Edukit1SensorSchema = require('./edukit1_sensor_schema');
+//schema and model
+const ProductSchema = require('./mongo_productschema');
+const Products = mongoose.model('Products', ProductSchema);
+// Edukit1
+const Edukit1Schema = require('./mongo_edukit1schema');
+const Edukit1 = mongoose.model('Edukit1', Edukit1Schema);
+const Edukit1SensorSchema = require('./mongo_edukit1SensorSchema');
 const Edukit1Sensor = mongoose.model('Edukit1Sensor', Edukit1SensorSchema);
 
-//Edukit2 schema and model -> 작성필요
+//Edukit2
+const Edukit2Schema = require('./mongo_edukit2schema');
+const Edukit2 = mongoose.model('Edukit2', Edukit2Schema);
+const Edukit2SensorSchema = require('./mongo_edukit2SensorSchema');
+const Edukit2Sensor = mongoose.model('Edukit2Sensor', Edukit2SensorSchema);
 
+//컬렉션정의
 const collections = {};
 
 collections.Blog = Blog;
-// collections.Edukit1 = Edukit1;
-collections.Edukit_test = Edukit1;
+collections.Products = Products;
+collections.Edukit1 = Edukit1;
 collections.Edukit1Sensor = Edukit1Sensor;
+collections.Edukit2 = Edukit2;
+collections.Edukit2Sensor = Edukit2Sensor;
 
 module.exports = collections;

@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../lib/logger');
 const adminService = require('../controller/service/adminService');
-const { isLoggedIn } = require('../lib/middleware');
 
 // factory - 공장등록
 router.post('/factory', async (req, res) => {
@@ -103,7 +102,7 @@ router.post('/permission', async (req, res) => {
 });
 
 //employee - 전체 직원 조회
-router.get('/search', isLoggedIn, async (req, res) => {
+router.get('/search', async (req, res) => {
   try {
     const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
 
