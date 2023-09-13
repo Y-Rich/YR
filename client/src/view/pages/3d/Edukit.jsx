@@ -287,8 +287,8 @@ const PLC = (props) => {
   return (
     <div>
       {loading ? <Loading /> : null}
-      <Gui />
       <GuiController />
+      <Gui />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
