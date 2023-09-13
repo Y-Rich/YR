@@ -5,8 +5,8 @@ const edukit2Service = require('./service/edukit2Service');
 const fs = require('fs');
 const path = require('path');
 
-const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnect = () => {
   const client = mqtt.connect(addr, {

@@ -10,7 +10,7 @@ const getCurrentTimeWithOffset = () => {
 
 const ProductSchema = new Schema({
   ProductName: String,
-  Manufacturer: String, // 카테고리
+  Manufacturer: String,
   Category: String, // 카테고리
   createdAt: {
     type: String,
