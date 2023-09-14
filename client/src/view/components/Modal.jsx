@@ -52,6 +52,7 @@ const ModalBtn = styled.button`
 const Modal = ({ setModal, element }) => {
   const closeModal = (href) => {
     setModal(false);
+    window.location.reload('/');
     // window.location.href = `/${href}`;
   };
   const modalRef = useRef(null);
