@@ -158,6 +158,17 @@ export const Input = styled.input`
     height: 3vh;
     margin-right: 0.5vw;
   }
+  &.gui_a {
+    width: 1.7vw;
+    height: 3vh;
+    margin-right: 0.5vw;
+    background-color: #acacac;
+  }
+  &.gui_b {
+    width: 2.8vw;
+    height: 3vh;
+    margin-right: 0.5vw;
+  }
 `;
 
 export const Button = styled.button`

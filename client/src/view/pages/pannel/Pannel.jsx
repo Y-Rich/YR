@@ -13,7 +13,7 @@ const Pannel = (props) => {
   const [lines, setLines] = useState([]);
 
   // 웹소켓 데이터
-  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment } =
+  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
     props.props;
 
   // 받은 데이터
@@ -66,11 +66,11 @@ const Pannel = (props) => {
 
   useEffect(() => {
     if (webSocket) {
-      // console.log('here');
-      setTemperature(messagePayloadEnvironment?.Temperature);
-      setHumidity(messagePayloadEnvironment?.Humidity);
+      // console.log('here', messagePayloadEnvironment1);
+      setTemperature(messagePayloadEnvironment1?.Temperature);
+      setHumidity(messagePayloadEnvironment1?.Humidity);
     }
-  }, [messagePayloadEnvironment]);
+  }, [messagePayloadEnvironment1]);
 
   useEffect(() => {
     try {

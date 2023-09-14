@@ -256,7 +256,7 @@ const GuiController = ({ messagePayloadEdukit1, webSocket }) => {
   const 전체공정_리셋 = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/control/edukit1',
+        'http://192.168.0.127:8000/control/edukit1',
         {
           command: 'Reset',
         }
@@ -265,7 +265,7 @@ const GuiController = ({ messagePayloadEdukit1, webSocket }) => {
       return response.data;
     } catch (error) {
       console.error('Failed to 전체공정_리셋:', error);
-      throw error;
+      // throw error;
     }
   };
 
