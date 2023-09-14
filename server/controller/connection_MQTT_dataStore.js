@@ -5,8 +5,8 @@ const edukit2Service = require('./service/edukit2Service');
 const fs = require('fs');
 const path = require('path');
 
-// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnect = () => {
   const client = mqtt.connect(addr, {
@@ -47,18 +47,23 @@ const MQTTconnect = () => {
   client.on('message', async function (topic, message) {
     try {
       const parsedMes = message.toString();
-      // logger.debug(
-      //   `[ dataStore ]Received message on topic ${topic}: ${parsedMes}`,
-      // );
+      // logger.info(`[ dataStore ]Received message on topic ${topic}`);
       //edukit1 - 센서데이터  - 온습도
       if (topic === 'edukit1/environment/data') {
         // 비즈니스 로직 호출
-        const result = await edukit1Service.saveTempAndHumi(
-          JSON.parse(parsedMes),
-        );
-        logger.debug(
-          `(edukit1Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
-        );
+        let data = JSON.parse(parsedMes);
+        if (!data.Temperature || !data.Humidity || !data.Particulates) {
+          throw new Error(
+            'Property missing....[edukit1] parsedMes.Temperature ||parsedMes.Humidity ||parsedMes.Particulates',
+          );
+        } else {
+          const result = await edukit1Service.saveTempAndHumi(
+            JSON.parse(parsedMes),
+          );
+          logger.debug(
+            `(edukit1Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
+          );
+        }
       }
       //edukit1 -  에듀킷 상태 데이터
       if (topic === 'edukit1') {
@@ -86,12 +91,20 @@ const MQTTconnect = () => {
       //edukit2 - 센서데이터  - 온습도
       if (topic === 'edukit2/environment/data') {
         // 비즈니스 로직 호출
-        const result = await edukit2Service.saveTempAndHumi(
-          JSON.parse(parsedMes),
-        );
-        logger.debug(
-          `(edukit2Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
-        );
+        let data = JSON.parse(parsedMes);
+        if (!data.Temperature || !data.Humidity || !data.Particulates) {
+          throw new Error(
+            'Property missing.... [edukit2] parsedMes.Temperature ||parsedMes.Humidity ||parsedMes.Particulates',
+          );
+        } else {
+          // 비즈니스 로직 호출
+          const result = await edukit2Service.saveTempAndHumi(
+            JSON.parse(parsedMes),
+          );
+          logger.debug(
+            `(edukit2Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
+          );
+        }
       }
       //edukit2 -  에듀킷 상태 데이터
       if (topic === 'edukit2') {

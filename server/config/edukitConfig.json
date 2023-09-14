@@ -21,7 +21,7 @@
     "No1Delay": { "tagId": "14", "value": "80" },
 
     "No2Mode_all": { "tagId": "31", "value": "1" },
-    "No2Mode_color": { "tagId": "3", "value": "0" },
+    "No2Mode_color": { "tagId": "31", "value": "0" },
     "OutputLimit": { "tagId": "36", "value": "5" },
     "DiceComparisonValue": { "tagId": "38", "value": "1" },
     "No3Gripper_ON": { "tagId": "40", "value": "1" },

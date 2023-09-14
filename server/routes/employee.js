@@ -6,6 +6,7 @@ const employeeService = require('../controller/service/employeeService');
 const tokenService = require('../controller/service/tokenService');
 const tokenUtil = require('../lib/tokenUtil');
 const hashUtil = require('../lib/hashUtil');
+const { isLoggedIn } = require('../lib/middleware');
 
 /**
  * @swagger
@@ -307,37 +308,37 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// router - 전체 조회  - 직급에따라 검색
-router.get('/search', async (req, res) => {
-  try {
-    const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
+// // router - 전체 조회  - 직급에따라 검색
+// router.get('/search', async (req, res) => {
+//   try {
+//     const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
 
-    // 모든 쿼리 파라미터가 유효한지 확인
-    for (const queryParam in req.query) {
-      if (!validQueries.includes(queryParam)) {
-        // 유효하지 않은 쿼리가 있을 경우, 400 Bad Request 상태 코드를 반환
-        return res
-          .status(400)
-          .json({ error: `Invalid query parameter: ${queryParam}` });
-      }
-    }
-    const params = {
-      positionID: req.query.positionID,
-    };
-    logger.info(`(employee.list.params) ${JSON.stringify(params)}`);
+//     // 모든 쿼리 파라미터가 유효한지 확인
+//     for (const queryParam in req.query) {
+//       if (!validQueries.includes(queryParam)) {
+//         // 유효하지 않은 쿼리가 있을 경우, 400 Bad Request 상태 코드를 반환
+//         return res
+//           .status(400)
+//           .json({ error: `Invalid query parameter: ${queryParam}` });
+//       }
+//     }
+//     const params = {
+//       positionID: req.query.positionID,
+//     };
+//     logger.info(`(employee.list.params) ${JSON.stringify(params)}`);
 
-    const result = await employeeService.positionList(params);
-    logger.info(`(employee.list.result) ${JSON.stringify(result)}`);
+//     const result = await employeeService.positionList(params);
+//     logger.info(`(employee.list.result) ${JSON.stringify(result)}`);
 
-    // 최종 응답
-    return res.status(200).json(result);
-  } catch (err) {
-    return res.status(500).json({ err: err.toString() });
-  }
-});
+//     // 최종 응답
+//     return res.status(200).json(result);
+//   } catch (err) {
+//     return res.status(500).json({ err: err.toString() });
+//   }
+// });
 
 // router - 직원 상세정보
-router.get('/profile/:id', async (req, res) => {
+router.get('/profile/:id', isLoggedIn, async (req, res) => {
   try {
     const params = {
       employeeID: req.params.id,

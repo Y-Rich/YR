@@ -328,7 +328,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
-              Manufacturer: 'edukit2',
+              // Manufacturer: 'edukit2',
               $expr: {
                 $and: [
                   {
@@ -370,7 +370,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -439,7 +439,7 @@ const dao = {
           {
             $match: {
               Category: searchField, // 특정 Category 값과 일치하는 문서를 필터링
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -521,7 +521,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -563,7 +563,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -632,7 +632,7 @@ const dao = {
           {
             $match: {
               Category: searchField, // 특정 Category 값과 일치하는 문서를 필터링
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -748,7 +748,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -790,7 +790,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -859,7 +859,7 @@ const dao = {
           {
             $match: {
               Category: searchField, // 특정 Category 값과 일치하는 문서를 필터링
-              Manufacturer: 'edukit2',
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {

@@ -2,8 +2,8 @@ const mqtt = require('mqtt');
 const logger = require('../lib/logger');
 const edukit1Service = require('../controller/service/edukit1Service');
 const edukit2Service = require('../controller/service/edukit2Service');
-// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnectForProducts = () => {
   // 기준값 전역으로 설정
@@ -40,29 +40,77 @@ const MQTTconnectForProducts = () => {
         if (topic === 'edukit1') {
           let data = dataParser(message);
           let IsFactoryrunning = data.Wrapper[1].value;
-          let value = Number(data.Wrapper[17].value);
-
+          let No1Count = Number(data.Wrapper[15].value);
+          let No2Count = Number(data.Wrapper[16].value);
+          let No3Count = Number(data.Wrapper[17].value);
+          // console.log(` edukit2 running: ${IsFactoryrunning}`);
           // 가동중이면 생산제품 태그 확인하여 기록하고 투입자재량 , 불량품 , 생산품을 DB 저장한다.
           // 리셋여부를 판단한다. 0-1-2-3-4-5 -0-1-2-3 -0-1-2-3-4
           if (IsFactoryrunning) {
-            if (memo == value) {
+            //1 공정 - 1차 제품 / 재고 반출
+            if (memo1 == No1Count) {
               logger.debug('skip process');
-            } else if (memo < value) {
-              if (memo == -1) {
+            } else if (memo1 < No1Count) {
+              if (memo1 == -1) {
                 logger.debug('skip process.... 서버 시작....');
-                memo = Number(value);
+                memo1 = Number(No1Count);
+              } else {
+                const params = {
+                  ProductName: `product - ${Date.now()}`,
+                  Manufacturer: 'edukit2',
+                  Category: 'line1',
+                };
+                const product = await edukit2Service.regProduct(params);
+                logger.info(`(edukit2Service.regProduct) edukit2 자재 반출`);
+                logger.info(`${product}`);
+                memo1 = Number(No1Count);
+              }
+            } else if (memo1 > No1Count) {
+              memo1 = Number(No1Count);
+            }
+
+            //2 공정 - 1차 제품  가공 / 재고 반출
+            if (memo2 == No2Count) {
+              logger.debug('skip process');
+            } else if (memo2 < No2Count) {
+              if (memo2 == -1) {
+                logger.debug('skip process.... 서버 시작....');
+                memo2 = Number(No2Count);
               } else {
                 const params = {
                   ProductName: `product - ${Date.now()}`,
                   Manufacturer: 'edukit1',
+                  Category: 'line2',
                 };
                 const product = await edukit1Service.regProduct(params);
-                logger.info(`(edukit1Service.regProduct)  edukit1 생산 등록`);
+                logger.info(`(edukit1Service.regProduct) edukit1 가공 완료`);
                 logger.info(`${product}`);
-                memo = Number(value);
+                memo2 = Number(No2Count);
               }
-            } else if (memo > value) {
-              memo = Number(value);
+            } else if (memo2 > No2Count) {
+              memo2 = Number(No2Count);
+            }
+
+            //3공정  - 완제품 카운트
+            if (memo3 == No3Count) {
+              logger.debug('skip process');
+            } else if (memo3 < No3Count) {
+              if (memo3 == -1) {
+                logger.debug('skip process.... 서버 시작....');
+                memo3 = Number(No3Count);
+              } else {
+                const params = {
+                  ProductName: `product - ${Date.now()}`,
+                  Manufacturer: 'edukit1',
+                  Category: 'line3',
+                };
+                const product = await edukit1Service.regProduct(params);
+                logger.info(`(edukit1Service.regProduct) edukit1 완제품 출하`);
+                logger.info(`${product}`);
+                memo3 = Number(No3Count);
+              }
+            } else if (memo3 > No3Count) {
+              memo3 = Number(No3Count);
             }
           }
         }

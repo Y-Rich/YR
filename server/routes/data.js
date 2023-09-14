@@ -268,21 +268,6 @@ router.post('/edukit1/search/production-data', async (req, res) => {
   }
 });
 
-// - 라인별 생산량(lineProdRate) -> 라인별로 집계된 결과 조회
-// - 자재 출하량(input) -> 일자별로 "line1"의 전체 데이터 조회
-// - 일별 1호기 불량률(line1defectRate) -> 당일 1공정 생산량 - 2공정 생산량
-// - 일별 2호기 불량률(line2defectRate) -> 당일 2공정 생산량 - 3공정 생산량
-// - [ 실제로는 1호기 불량인데 3호기에서 피킹하는 경우가 있으나 1호기 불량이면 3호기에서
-// 피킹 안한다고 가정한다.]
-// - 일별 생산량(output) -> category "line3"의 전체 데이터 조회
-
-// [요청 예시]
-// {
-// "LineProdRate" : ["Day" , "2023-09-11"],
-// "FacProdRate" : ["Week" , "2023-09-11"],
-// "Output":["Month" , "2023-09-11"]
-// }
-
 // router - edukit2 - 센서 데이터 조회
 router.post('/edukit2/search', async (req, res) => {
   try {

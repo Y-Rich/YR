@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
-// const edukit1SensorDataSchema = require('../controller/models/mongo_edukit1SensorSchema');
-const edukit2SensorDataSchema = require('../controller/models/mongo_edukit2SensorSchema');
+const edukit1SensorDataSchema = require('../controller/models/mongo_edukit1SensorSchema');
+// const edukit2SensorDataSchema = require('../controller/models/mongo_edukit2SensorSchema');
 const ProductSchema = require('../controller/models/mongo_productschema');
 
 function mockDataGen_HumiAndTempAndPar() {
@@ -12,15 +12,19 @@ function mockDataGen_HumiAndTempAndPar() {
   //   Particulates: Number,
   //   createdAt: Date,
   // });
-  // const SensorData = mongoose.model('Edukit1Sensor', edukit1SensorDataSchema);
-  const SensorData = mongoose.model('Edukit2Sensor', edukit2SensorDataSchema);
+  const SensorData = mongoose.model('Edukit1Sensor', edukit1SensorDataSchema);
+  // const SensorData = mongoose.model('Edukit2Sensor', edukit2SensorDataSchema);
 
   // 데이터 생성 및 삽입
-  const currentDateTime = moment().tz('Asia/Seoul'); // 한국 시간대(KST)를 사용하여 현재 시간을 얻음
+  // const currentDateTime = moment().tz('Asia/Seoul'); // 한국 시간대(KST)를 사용하여 현재 시간을 얻음
 
-  // 60일 전부터 현재까지의 데이터 생성
-  const startDate = moment(currentDateTime).subtract(60, 'days');
-  const endDate = currentDateTime;
+  // // 60일 전부터 현재까지의 데이터 생성
+  // const startDate = moment(currentDateTime).subtract(60, 'days');
+  // const endDate = currentDateTime;
+
+  // 원하는 시작 날짜와 종료 날짜 설정
+  let startDate = moment('2023-07-01T00:00:00').tz('Asia/Seoul'); // 시작 날짜 설정
+  const endDate = moment('2023-09-15T15:59:59').tz('Asia/Seoul'); // 종료 날짜 설정
 
   const dataToInsert = [];
 
@@ -55,49 +59,50 @@ function mockDataGen_HumiAndTempAndPar() {
 function mockDataGen_Products() {
   const Product = mongoose.model('Products', ProductSchema);
 
-  // 데이터 생성 및 삽입
-  const currentDateTime = moment().tz('Asia/Seoul'); // 한국 시간대(KST)를 사용하여 현재 시간을 얻음
-
-  // 60일 전부터 현재까지의 데이터 생성
-  const startDate = moment(currentDateTime).subtract(60, 'days');
-  const endDate = currentDateTime;
-
+  // // 데이터 생성 및 삽입
+  // const currentDateTime = moment().tz('Asia/Seoul'); // 한국 시간대(KST)를 사용하여 현재 시간을 얻음
+  // // 60일 전부터 현재까지의 데이터 생성
+  // let startDate = moment(currentDateTime).subtract(60, 'days');
+  // const endDate = currentDateTime;
   const dataToInsert = [];
 
-  let currentDate = startDate;
-  let text1 = ['edukit2', 'edukit1'];
-  let text2 = ['line1', 'line2', 'line3'];
+  // 원하는 시작 날짜와 종료 날짜 설정
+  let startDate = moment('2023-08-01T00:00:00').tz('Asia/Seoul'); // 시작 날짜 설정
+  const endDate = moment('2023-09-13T23:59:59').tz('Asia/Seoul'); // 종료 날짜 설정
 
   // 데이터 생성 및 배열에 추가
-  while (currentDate.isBefore(endDate)) {
-    let num = Math.random();
-    let tx1, tx2;
-    if (num >= 0.45) {
-      tx1 = text1[0];
-    } else {
-      tx1 = text1[1];
-    }
-    // 라인별 생산량 - line1>=line2>=line3
-    if (num >= 0.6) {
-      tx2 = text2[0];
+  function getRandomCategory() {
+    const categories = ['line1', 'line2', 'line3'];
+    // 라인별 생산량 - line1 >= line2 >= line3
+    const num = Math.random();
+    if (num >= 0.63) {
+      return categories[0];
     } else if (num >= 0.3) {
-      tx2 = text2[1];
+      return categories[1];
     } else {
-      tx2 = text2[2];
+      return categories[2];
     }
+  }
+  function generateProduct(factory, currentDate) {
     const ProductName = `product - ${Date.now()}`;
-    const Manufacturer = `${tx1}`;
-    const Category = `${tx2}`;
-
-    dataToInsert.push({
+    const Manufacturer = factory;
+    const Category = getRandomCategory();
+    const createdAt = currentDate.format('YYYY-MM-DDTHH:mm:ss.SSS+09:00');
+    return {
       ProductName,
       Manufacturer,
       Category,
-      createdAt: currentDate.format('YYYY-MM-DDTHH:mm:ss.SSS+09:00'), // YYYY-MM-DD HH:mm:ss   KST 형식으로 포맷팅
-    });
-    // 다음 데이터를 15초 후로 설정
-    // 24*60*60 초 = 86400 , 3등분 ->28800 , 1일 웨이퍼 평균 생산량 약 2000개 ->약 15초마다 생산
-    currentDate = currentDate.add(15, 'seconds');
+      createdAt,
+    };
+  }
+  while (startDate.isBefore(endDate)) {
+    // Factory 1
+    dataToInsert.push(generateProduct('edukit1', startDate));
+    // Factory 2
+    dataToInsert.push(generateProduct('edukit2', startDate));
+
+    // 24*60*60 =86400초 / 라인3-> 86400/3 = 28800초  / 일평균 전체 공장에서 생산되는양 2000개 ->약 15초
+    startDate = startDate.add(15, 'seconds');
   }
 
   // 데이터 배열을 일괄 삽입

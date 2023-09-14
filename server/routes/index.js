@@ -6,7 +6,10 @@ const dataRouter = require('./data');
 const employeeRouter = require('./employee');
 const adminRouter = require('./admin');
 const { isLoggedIn } = require('../lib/middleware');
-const { mockDataGen_Products } = require('../lib/mockDataGen');
+const {
+  mockDataGen_Products,
+  mockDataGen_HumiAndTempAndPar,
+} = require('../lib/mockDataGen');
 
 const router = express.Router();
 
@@ -19,7 +22,7 @@ router.get('/test', (req, res) => {
 });
 
 router.get('/mockData', (req, res) => {
-  mockDataGen_Products();
+  mockDataGen_HumiAndTempAndPar();
   res.json('mockDataGen_Products');
 });
 

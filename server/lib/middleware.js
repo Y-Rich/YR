@@ -71,7 +71,7 @@ const middleware = {
       // access validation fail  - 서명불일치 or 기타
       // -> 401 재로그인
       else {
-        console.error('sdadsadsadasdsadasdsad');
+        console.error('access validation fail  - 서명불일치 or 기타');
         const err = new Error(
           'Unauthorized token please login and try again - validation fail ',
         );
