@@ -11,7 +11,7 @@ const Main = () => {
   };
   const [webSocket, setWebSocket] = useState(null);
   const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState(null);
-  const [messagePayloadEnvironment, setMessagePayloadEnvironment] =
+  const [messagePayloadEnvironment1, setMessagePayloadEnvironment1] =
     useState(null);
 
   // 웹소켓 설정
@@ -30,7 +30,7 @@ const Main = () => {
       }
       // 환경 데이터
       if (receivedMessage.topic === 'edukit1/environment/data') {
-        setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
+        setMessagePayloadEnvironment1(JSON.parse(receivedMessage.data));
         // console.log(JSON.parse(receivedMessage.data));
       }
     });
@@ -43,7 +43,7 @@ const Main = () => {
   const props = {
     webSocket,
     messagePayloadEdukit1,
-    messagePayloadEnvironment,
+    messagePayloadEnvironment1,
   };
 
   return (

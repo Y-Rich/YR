@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class TextSprite extends THREE.Sprite {
-  constructor(message, parameters = {}) {
+  constructor(parameters = {}) {
     // 기본 매개변수 설정
     const {
       fontsize = 32, // 텍스트 글꼴 크기 (기본값: 32)
@@ -12,12 +12,13 @@ class TextSprite extends THREE.Sprite {
       canvasY = 0, // 캔버스의 Y 좌표 위치 (기본값: 0)
       canvasZ = 0, // 캔버스의 Z 좌표 위치 (기본값: 0)
       width = 3, // 스프라이트 폭 (기본값: 3)
-      height = 2, // 스프라이트 높이 (기본값: 2)
+      height = 1.2, // 스프라이트 높이 (기본값: 2)
+      message = 'Loading...',
     } = parameters;
 
     // 캔버스 해상도 설정
     const canvasWidth = 150;
-    const canvasHeight = 100;
+    const canvasHeight = 60;
 
     const canvas = document.createElement('canvas');
     canvas.width = canvasWidth;
@@ -63,12 +64,13 @@ class TextSprite extends THREE.Sprite {
     context.fillStyle = `rgba(${textColor.r},${textColor.g},${textColor.b},${textColor.a})`;
 
     // 메시지를 줄바꿈 문자("\n")로 분리하여 처리
-    const lines = message.split('\n');
+    // const lines = message.split('\n');
     const lineHeight = fontsize + borderThickness;
     // 텍스트를 캔버스에 그림
-    lines.forEach((line, index) => {
-      context.fillText(line, borderThickness, (index + 1) * lineHeight);
-    });
+    // lines.forEach((line, index) => {
+    //   context.fillText(line, borderThickness, (index + 1) * lineHeight);
+    // });
+    context.fillText(message, borderThickness, lineHeight);
 
     const texture = new THREE.CanvasTexture(canvas);
 
@@ -87,7 +89,7 @@ class TextSprite extends THREE.Sprite {
     // 클래스 내 다른 메서드에서 접근할 수 있도록 설정 옵션 저장
     this.canvas = canvas;
     this.parameters = parameters;
-    this.message = message;
+    // this.message = message;
   }
 
   // // 메세지와 테두리 색상을 업데이트하는 메서드
@@ -197,13 +199,14 @@ class TextSprite extends THREE.Sprite {
     context.fillStyle = `rgba(${textColor.r},${textColor.g},${textColor.b},${textColor.a})`;
 
     // 메시지를 줄바꿈 문자("\n")로 분리하여 처리
-    const lines = this.message.split('\n');
+    // const lines = this.message.split('\n');
     const lineHeight = fontsize + borderThickness;
 
     // 텍스트를 캔버스에 그림
-    lines.forEach((line, index) => {
-      context.fillText(line, borderThickness, (index + 1) * lineHeight);
-    });
+    // lines.forEach((line, index) => {
+    //   context.fillText(line, borderThickness, (index + 1) * lineHeight);
+    // });
+    context.fillText(this.parameters.message, borderThickness, lineHeight);
 
     // 스프라이트를 업데이트
     const texture = new THREE.CanvasTexture(this.canvas);

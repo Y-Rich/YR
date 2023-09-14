@@ -3,13 +3,9 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import Selector from '../../components/Selector';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GUI } from 'dat.gui';
-import Stats from 'three/examples/jsm/libs/stats.module';
 import Edukit from './loader';
 import axios from 'axios';
 import Loading from '../../components/Loading';
-import { useControls } from 'leva';
-import GuiController from './GuiController';
 import TextSprite from './TextSprite';
 import Gui from './Gui';
 
@@ -22,81 +18,114 @@ const PLC = (props) => {
   // const [messagePayloadEnvironment, setMessagePayloadEnvironment] =
   //   useState(null);
   const canvasRef = useRef(null);
-  const textSprite1Ref = useRef(null); // useRef로 textSprite1 참조 변수 생성
-  const [borderColor, setBorderColor] = useState({
-    r: 255,
-    g: 255,
-    b: 255,
-    a: 1.0,
-  }); // 비교를 위해 초깃값은 하얀색
+
+  // textSprite Ref
+  const textSprite1_1Ref = useRef(null);
+  const textSprite1_2Ref = useRef(null);
+  const textSprite2_1Ref = useRef(null);
+  const textSprite2_2Ref = useRef(null);
+  const textSprite3Ref = useRef(null);
+  const textSpriteC_1Ref = useRef(null);
+  const textSpriteC_2Ref = useRef(null);
+  const textSpriteVRef = useRef(null);
+
   const [m3axis1, setM3axis1] = useState(0);
   const [m3axis2, setM3axis2] = useState(0);
   const [m1OnOff, setM1OnOff] = useState(0);
+  const [m2OnOff, setM2OnOff] = useState(0);
+  const [m3OnOff, setM3OnOff] = useState(0);
+  const [COnOff, setCOnOff] = useState(0);
+  const [VOnOff, setVOnOff] = useState(0);
+  const [m1Pal, setM1Pal] = useState(0);
+  const [m2Pal, setM2Pal] = useState(0);
+  const [CFilter, setCFilter] = useState(0);
+
+  // 에듀킷 실시간 변수
+  const currentm3axis1 = useRef(m3axis1);
+  const currentm3axis2 = useRef(m3axis2);
+  const currentm1OnOff = useRef(m1OnOff);
+  const currentm2OnOff = useRef(m2OnOff);
+  const currentm3OnOff = useRef(m3OnOff);
+  const currentCOnOff = useRef(COnOff);
+  const currentVOnOff = useRef(VOnOff);
+  const currentm1Pal = useRef(m1Pal);
+  const currentm2Pal = useRef(m2Pal);
+  const currentCFilter = useRef(CFilter);
+
+  const edukitRef = useRef(null);
+
   useEffect(() => {
     setLoading(true);
     const canvas = canvasRef.current;
     const scene = new THREE.Scene();
     const edukit = new Edukit();
     edukit.fileload(scene);
+    edukitRef.current = edukit;
 
     // TEXT SPRITE
     // 1호기
-    const message1 = 'ON\n자재정상';
-    textSprite1Ref.current = new TextSprite(message1, {
-      borderColor: borderColor,
+    const textSprite1_1 = new TextSprite({
       canvasX: 10, // X 좌표 설정
-      canvasY: 9, // Y 좌표 설정
+      canvasY: 9.5, // Y 좌표 설정
+      canvasZ: -9, // Z 좌표 설정
+    });
+    const textSprite1_2 = new TextSprite({
+      canvasX: 10, // X 좌표 설정
+      canvasY: 8, // Y 좌표 설정
       canvasZ: -9, // Z 좌표 설정
     });
     // 2호기
-    const message2 = 'ON\n부품정상';
-    const textSprite2 = new TextSprite(message2, {
-      borderColor: { r: 0, g: 245, b: 12, a: 1.0 },
+    const textSprite2_1 = new TextSprite({
       canvasX: 1.5, // X 좌표 설정
-      canvasY: 11, // Y 좌표 설정
+      canvasY: 11.5, // Y 좌표 설정
+      canvasZ: -9, // Z 좌표 설정
+    });
+    const textSprite2_2 = new TextSprite({
+      canvasX: 1.5, // X 좌표 설정
+      canvasY: 10, // Y 좌표 설정
       canvasZ: -9, // Z 좌표 설정
     });
     // 3호기
-    const message3 = 'OFF';
-    const textSprite3 = new TextSprite(message3, {
-      borderColor: { r: 255, g: 0, b: 0, a: 1.0 },
+    const textSprite3 = new TextSprite({
       canvasX: -7, // X 좌표 설정
-      canvasY: 14, // Y 좌표 설정
+      canvasY: 13, // Y 좌표 설정
       canvasZ: -7, // Z 좌표 설정
     });
     // 컬러센서
-    const messageC = 'ON\n색선별';
-    const textSpriteC = new TextSprite(messageC, {
-      borderColor: { r: 0, g: 245, b: 12, a: 1.0 },
+    const textSpriteC_1 = new TextSprite({
       canvasX: 5.5, // X 좌표 설정
-      canvasY: 4.5, // Y 좌표 설정
+      canvasY: 5, // Y 좌표 설정
+      canvasZ: -12, // Z 좌표 설정
+    });
+    const textSpriteC_2 = new TextSprite({
+      canvasX: 5.5, // X 좌표 설정
+      canvasY: 3.5, // Y 좌표 설정
       canvasZ: -12, // Z 좌표 설정
     });
     // 비전센서
-    const messageV = 'ON\n';
-    const textSpriteV = new TextSprite(messageV, {
-      borderColor: { r: 0, g: 245, b: 12, a: 1.0 },
+    const textSpriteV = new TextSprite({
       canvasX: -3, // X 좌표 설정
       canvasY: 9, // Y 좌표 설정
       canvasZ: -12, // Z 좌표 설정
     });
 
-    scene.add(textSprite1Ref.current); // textSprite1을 scene에 추가
-    scene.add(textSprite2);
+    scene.add(textSprite1_1);
+    scene.add(textSprite1_2);
+    scene.add(textSprite2_1);
+    scene.add(textSprite2_2);
     scene.add(textSprite3);
-    scene.add(textSpriteC);
+    scene.add(textSpriteC_1);
+    scene.add(textSpriteC_2);
     scene.add(textSpriteV);
 
-    // 테두리 색상과 텍스트 업데이트
-    // textSprite1.updateParameters({
-    //   borderColor: {
-    //     r: 255,
-    //     g: 0,
-    //     b: 255,
-    //     a: 1.0,
-    //   },
-    //   message: messageC,
-    // });
+    textSprite1_1Ref.current = textSprite1_1;
+    textSprite1_2Ref.current = textSprite1_2;
+    textSprite2_1Ref.current = textSprite2_1;
+    textSprite2_2Ref.current = textSprite2_2;
+    textSprite3Ref.current = textSprite3;
+    textSpriteC_1Ref.current = textSpriteC_1;
+    textSpriteC_2Ref.current = textSpriteC_2;
+    textSpriteVRef.current = textSpriteV;
 
     // 카메라
     const camera = new THREE.PerspectiveCamera(
@@ -147,23 +176,19 @@ const PLC = (props) => {
 
     let requestId = null;
 
-    const [min, max] = [-2728, 53294192312];
+    const [minY, maxY] = [0, 18000000];
+    const [minX, maxX] = [0, 1030000];
 
-    // 3호기 축 움직이기
-    const yAxisFunc = (() => {
-      return function () {
-        // return ((test.num1.value - min) / (max - min)) * 7;
-        return M3y;
-      };
-    })();
-    const xAxisFunc = (() => {
-      return function () {
-        return (
-          // ((test.num2.value - min) / (max - min)) * THREE.MathUtils.degToRad(90)
-          M3x
-        );
-      };
-    })();
+    // yAxisFunc 함수는 num 속성 값을 슬라이더의 높이로 변환하는 함수입니다.
+    // 해당 슬라이더는 min에서 max 사이의 값을 0에서 7 사이의 값으로 변환합니다.
+    const yAxisFunc = (value) => {
+      return ((value - minY) / (maxY - minY)) * 7;
+    };
+    //xAxisFunc 함수는 num2 속성 값을 슬라이더의 각도로 변환하는 함수입니다.
+    //해당 슬라이더는 min에서 max 사이의 값을 0에서 90도 사이의 각도로 변환합니다.
+    const xAxisFunc = (value) => {
+      return ((value - minX) / (maxX - minX)) * THREE.MathUtils.degToRad(90);
+    };
 
     // // m1OnOff 값이 변경되었을 때에만 textSprite1 업데이트 수행
     // let lastM1OnOff = m1OnOff; // 초기값으로 설정
@@ -176,25 +201,26 @@ const PLC = (props) => {
 
       camera.updateMatrixWorld();
       camera.updateProjectionMatrix();
-
-      if (edukit.loaded) {
+      if (edukitRef.current.loaded) {
         setLoading(false);
-        edukit.actionY(yAxisFunc());
-        edukit.actionX(xAxisFunc());
       }
-      // lastM1OnOff = m1OnOff;
-      // console.log('[tick]m1OnOff =', m1OnOff);
-      // if (m1OnOff !== lastM1OnOff) {
-      //   lastM1OnOff = m1OnOff; // 현재 값으로 업데이트
-      //   console.log('this m1OnOff changed');
-      //   if (lastM1OnOff === 1) {
-      //     textSprite1.updateText('전원On');
-      //     textSprite1.updateBorderColor({ r: 255, g: 0, b: 0, a: 1.0 });
-      //   } else if (lastM1OnOff === 0) {
-      //     textSprite1.updateText('전원Off');
-      //     textSprite1.updateBorderColor({ r: 255, g: 0, b: 255, a: 1.0 });
-      //   }
-      // }
+
+      if (edukitRef.current && edukitRef.current.loaded) {
+        // console.log('-------------------Y', currentm3axis2);
+        // console.log('-------------------X', currentm3axis1.current);
+        edukitRef.current.actionY(yAxisFunc(currentm3axis2.current));
+        edukitRef.current.actionX(xAxisFunc(currentm3axis1.current));
+
+        // textSprite 업데이트
+        textSprite1_1Ref.current.updateParameters(currentm1OnOff.current);
+        textSprite1_2Ref.current.updateParameters(currentm1Pal.current);
+        textSprite2_1Ref.current.updateParameters(currentm2OnOff.current);
+        textSprite2_2Ref.current.updateParameters(currentm2Pal.current);
+        textSprite3Ref.current.updateParameters(currentm3OnOff.current);
+        textSpriteC_1Ref.current.updateParameters(currentCOnOff.current);
+        textSpriteC_2Ref.current.updateParameters(currentCFilter.current);
+        textSpriteVRef.current.updateParameters(currentVOnOff.current);
+      }
     };
 
     tick();
@@ -203,82 +229,178 @@ const PLC = (props) => {
       cancelAnimationFrame(requestId);
     };
   }, []);
-
-  // useFrame(() => {
-  //   // 여기에 매 프레임마다 업데이트할 로직을 추가
-  //   // 특정 조건에 따라 TextSprite의 내용 또는 테두리 색상을 변경
-  //   if (m1OnOff === 1) {
-  //     textSprite1Ref.current.updateParameters({
-  //       borderColor: {
-  //         r: 0,
-  //         g: 255,
-  //         b: 0,
-  //         a: 1.0,
-  //       },
-  //       message: 'ON\n색선별',
-  //     });
-  //   } else if (m1OnOff === 0) {
-  //     textSprite1Ref.current.updateParameters({
-  //       borderColor: {
-  //         r: 255,
-  //         g: 0,
-  //         b: 0,
-  //         a: 1.0,
-  //       },
-  //       message: 'OFF\n색선별',
-  //     });
-  //   }
-  // }, [m1OnOff]);
-
-  // 웹소켓 설정
-  // useEffect(() => {
-  //   const ws = new WebSocket('ws://192.168.0.71:8080');
-
-  //   setWebSocket(ws);
-
-  //   ws.addEventListener('message', function (event) {
-  //     const receivedMessage = JSON.parse(event.data);
-  //     // console.log(receivedMessage);
-  //     // setMessagePayloadEdukit1(receivedMessage);
-  //     if (receivedMessage.topic === 'edukit1') {
-  //       setMessagePayloadEdukit1(JSON.parse(receivedMessage.data));
-  //       console.log(JSON.parse(receivedMessage.data));
-  //     }
-  //     // // 환경 데이터
-  //     // if (receivedMessage.topic === 'environment/data') {
-  //     //   setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
-  //     //   console.log(JSON.parse(receivedMessage.data));
-  //     // }
-  //   });
-
-  //   return () => {
-  //     ws.close(); // 웹소켓 연결 종료
-  //   };
-  // }, []);
-  const [M3x, setM3x] = useState(0);
-  const [M3y, setM3y] = useState(0);
-  // const [edukitOnOff, setEdukitOnOff] = useState(0);
-
   useEffect(() => {
-    // console.log('hiuvc', messagePayloadEdukit1);
+    const switchOn = {
+      borderColor: {
+        r: 0,
+        g: 255,
+        b: 0,
+        a: 1.0,
+      },
+      message: '   ON',
+    };
+    const switchOff = {
+      borderColor: {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: 1.0,
+      },
+      message: '   OFF',
+    };
+    const PalleteFull = {
+      borderColor: {
+        r: 0,
+        g: 255,
+        b: 0,
+        a: 1.0,
+      },
+      message: '자재정상',
+    };
+    const PalleteLack = {
+      borderColor: {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: 1.0,
+      },
+      message: '자재없음',
+    };
+    const DiceFull = {
+      borderColor: {
+        r: 0,
+        g: 255,
+        b: 0,
+        a: 1.0,
+      },
+      message: '부품정상',
+    };
+    const DiceLack = {
+      borderColor: {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: 1.0,
+      },
+      message: '부품없음',
+    };
+    const colorOn = {
+      borderColor: {
+        r: 0,
+        g: 255,
+        b: 0,
+        a: 1.0,
+      },
+      message: ' 분류중',
+    };
+    const colorOff = {
+      borderColor: {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: 1.0,
+      },
+      message: '분류안함',
+    };
     if (webSocket) {
-      setM3x(0.5);
-      setM3y(20);
       messagePayloadEdukit1.Wrapper?.forEach((item) => {
-        // if (item.tagId === '21') {
-        //   const convertedValue = parseInt(item.value);
-        //   setM3x(convertedValue);
-        //   console.log(M3x);
-        // }
-        // if (item.tagId === '22') {
-        //   const convertedValue = parseInt(item.value);
-        //   setM3y(convertedValue);
-        //   console.log(M3y);
-        // }
+        if (item.tagId === '21') {
+          const convertedValue = parseInt(item.value);
+          setM3axis1(convertedValue);
+          currentm3axis1.current = convertedValue;
+        }
+        if (item.tagId === '22') {
+          const convertedValue = parseInt(item.value);
+          setM3axis2(convertedValue);
+          currentm3axis2.current = convertedValue;
+        }
+        // 1호기 On/off
         if (item.tagId === '9') {
           const convertedValue = item.value ? 1 : 0;
-          setM1OnOff(convertedValue);
-          console.log('m1OnOff =', m1OnOff);
+          if (convertedValue) {
+            setM1OnOff(switchOn);
+            currentm1OnOff.current = switchOn;
+          } else {
+            setM1OnOff(switchOff);
+            currentm1OnOff.current = switchOff;
+          }
+        }
+        // 1호기 자재정상
+        if (item.tagId === '23') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setM1Pal(switchOn);
+            currentm1Pal.current = PalleteFull;
+          } else {
+            setM1Pal(switchOff);
+            currentm1Pal.current = PalleteLack;
+          }
+        }
+        // 2호기 On/off
+        if (item.tagId === '10') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setM2OnOff(switchOn);
+            currentm2OnOff.current = switchOn;
+          } else {
+            setM2OnOff(switchOff);
+            currentm2OnOff.current = switchOff;
+          }
+        }
+        // 2호기 부품정상
+        if (item.tagId === '25') {
+          const convertedValue = item.value ? 1 : 0;
+          if (!convertedValue) {
+            setM2Pal(DiceFull);
+            currentm2Pal.current = DiceFull;
+          } else {
+            setM2Pal(DiceLack);
+            currentm2Pal.current = DiceLack;
+          }
+        }
+        // 3호기 On/off
+        if (item.tagId === '11') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setM3OnOff(switchOn);
+            currentm3OnOff.current = switchOn;
+          } else {
+            setM3OnOff(switchOff);
+            currentm3OnOff.current = switchOff;
+          }
+        }
+        // 칼라센서 On/Off
+        if (item.tagId === '12') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setCOnOff(switchOn);
+            currentCOnOff.current = switchOn;
+          } else {
+            setCOnOff(switchOff);
+            currentCOnOff.current = switchOff;
+          }
+        }
+        // 칼라센서 색모두/색선별
+        if (item.tagId === '31') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setCFilter(colorOff);
+            currentCFilter.current = colorOff;
+          } else {
+            setCFilter(colorOn);
+            currentCFilter.current = colorOn;
+          }
+        }
+        // 비전센서 On/off
+        if (item.tagId === '13') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setVOnOff(switchOn);
+            currentVOnOff.current = switchOn;
+          } else {
+            setVOnOff(switchOff);
+            currentVOnOff.current = switchOff;
+          }
         }
       });
     }
@@ -287,8 +409,7 @@ const PLC = (props) => {
   return (
     <div>
       {loading ? <Loading /> : null}
-      {/* <GuiController /> */}
-      <Gui />
+      <Gui props={props.props} />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>

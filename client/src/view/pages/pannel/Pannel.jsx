@@ -19,7 +19,7 @@ const Pannel = (props) => {
   const [loading, setLoading] = useState(true);
 
   // 웹소켓 데이터
-  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment } =
+  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
     props.props;
 
   // 받은 데이터
@@ -79,7 +79,7 @@ const Pannel = (props) => {
       setHumidity(messagePayloadEnvironment?.Humidity);
       setParticulates(messagePayloadEnvironment?.Particulates);
     }
-  }, [messagePayloadEnvironment]);
+  }, [messagePayloadEnvironment1]);
 
   return (
     <Page>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 import { AiFillCaretRight } from 'react-icons/ai';
 import { Box, Container, Title, ToggleBtn } from './style';
@@ -17,13 +17,37 @@ import {
   M3Simulation,
   Reset,
   Vision,
+  Emergency,
 } from './GuiControl';
 
-const Gui = () => {
+const Gui = (props) => {
+  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment } =
+    props.props;
+
+  // // tagID 값에 대한 변수 선언
+  // const [m1OnOff, setM1OnOff] = useState(0);
+  // const [m2OnOff, setM2OnOff] = useState(0);
+  // const [m3OnOff, setM3OnOff] = useState(0);
+  // const [COnOff, setCOnOff] = useState(0);
+  // const [VOnOff, setVOnOff] = useState(0);
+  // const [m1Pal, setM1Pal] = useState(0);
+  // const [m2Pal, setM2Pal] = useState(0);
+  // const [CFilter, setCFilter] = useState(0);
+
+  // // 에듀킷 실시간 변수
+  // const currentm1OnOff = useRef(m1OnOff);
+  // const currentm2OnOff = useRef(m2OnOff);
+  // const currentm3OnOff = useRef(m3OnOff);
+  // const currentCOnOff = useRef(COnOff);
+  // const currentVOnOff = useRef(VOnOff);
+  // const currentm1Pal = useRef(m1Pal);
+  // const currentm2Pal = useRef(m2Pal);
+  // const currentCFilter = useRef(CFilter);
+
   //   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [Opacity, setOpacity] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isOn, setIsOn] = useState({
+  const [ison, setison] = useState({
     eduKit: false,
     m1: false,
     m2: false,
@@ -37,13 +61,15 @@ const Gui = () => {
     m1_simulation: false,
     m3_simulation: false,
   });
-  const position = sessionStorage.getItem('position');
+
+  // const position = sessionStorage.getItem('position');
+  const position = 'manager'; // 권한 개발을 위한 설정
   const facilities = sessionStorage.getItem('facilities');
   const lines = sessionStorage.getItem('lines');
-  const toggleHandler = (key) => {
-    setIsOn((prevIsOn) => ({
-      ...prevIsOn,
-      [key]: !prevIsOn[key],
+  const togglehandler = (key) => {
+    setison((previson) => ({
+      ...previson,
+      [key]: !previson[key],
     }));
   };
   const toggleMenu = () => {
@@ -58,6 +84,95 @@ const Gui = () => {
   //   const trackPos = (data) => {
   //     setPosition({ x: data.x, y: data.y });
   //   };
+
+  // tagID 설정
+  useEffect(() => {
+    if (webSocket) {
+      messagePayloadEdukit1.Wrapper?.forEach((item) => {
+        // 에듀킷 On/off
+        if (item.tagId === '1') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            eduKit: convertedValue,
+          }));
+        }
+
+        // 1호기 On/off
+        if (item.tagId === '9') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            m1: convertedValue,
+          }));
+        }
+        // 2호기 On/off
+        if (item.tagId === '10') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            m2: convertedValue,
+          }));
+        }
+        // 3호기 On/off
+        if (item.tagId === '11') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            m3: convertedValue,
+          }));
+        }
+        // 칼라센서 On/Off
+        if (item.tagId === '12') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            color: convertedValue,
+          }));
+        }
+        // 칼라센서 색모두/색선별
+        if (item.tagId === '31') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            color_check: !convertedValue,
+          }));
+        }
+        // 비전센서 On/off
+        if (item.tagId === '13') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            vision: convertedValue,
+          }));
+        }
+        // 공정반복시간
+        if (item.tagId === '14') {
+          const convertedValue = parseFloat(item.value) * 10;
+          setison((previson) => ({
+            ...previson,
+            duration_time: convertedValue,
+          }));
+        }
+        // 생산량리미트
+        if (item.tagId === '36') {
+          const convertedValue = parseFloat(item.value);
+          setison((previson) => ({
+            ...previson,
+            limit: convertedValue,
+          }));
+        }
+        // 3호기 시운전
+        if (item.tagId === '40') {
+          const convertedValue = item.value ? 1 : 0;
+          setison((previson) => ({
+            ...previson,
+            m3_simulation: convertedValue,
+          }));
+        }
+      });
+    }
+  }, [messagePayloadEdukit1]);
 
   return (
     <Draggable
@@ -78,138 +193,150 @@ const Gui = () => {
           >
             {position === 'manager' && (
               <>
-                <Edukit
-                  isOn={isOn.eduKit}
-                  toggleHandler={() => toggleHandler('eduKit')}
+                <Emergency
+                  className="gui"
+                  togglehandler={() => togglehandler('emergency')}
                 />
-                <M1 isOn={isOn.m1} toggleHandler={() => toggleHandler('m1')} />
-                <M2 isOn={isOn.m2} toggleHandler={() => toggleHandler('m2')} />
-                <M3 isOn={isOn.m3} toggleHandler={() => toggleHandler('m3')} />
+                <Edukit
+                  ison={ison.eduKit}
+                  togglehandler={() => togglehandler('eduKit')}
+                />
+                <M1 ison={ison.m1} togglehandler={() => togglehandler('m1')} />
+                <M2 ison={ison.m2} togglehandler={() => togglehandler('m2')} />
+                <M3 ison={ison.m3} togglehandler={() => togglehandler('m3')} />
                 <Reset
                   className="gui reset"
-                  isOn={isOn.reset}
-                  toggleHandler={() => toggleHandler('reset')}
+                  ison={ison.reset}
+                  togglehandler={() => togglehandler('reset')}
                 />
-                <DurationTime isOn={isOn.duration_time} className="gui" />
+                <DurationTime ison={ison.duration_time} className="gui" />
                 <ColorCheck
-                  isOn={isOn.color_check}
-                  toggleHandler={() => toggleHandler('color_check')}
+                  ison={ison.color_check}
+                  togglehandler={() => togglehandler('color_check')}
                 />
-                <Limit isOn={isOn.limit} className="gui" />
+                <Limit ison={ison.limit} className="gui" />
                 <Color
-                  isOn={isOn.color}
-                  toggleHandler={() => toggleHandler('color')}
+                  ison={ison.color}
+                  togglehandler={() => togglehandler('color')}
                 />
                 <Vision
-                  isOn={isOn.vision}
-                  toggleHandler={() => toggleHandler('vision')}
+                  ison={ison.vision}
+                  togglehandler={() => togglehandler('vision')}
                 />
                 <M1Simulation
                   className="gui"
-                  isOn={isOn.m1_simulation}
-                  toggleHandler={() => toggleHandler('m1_simulation')}
+                  ison={ison.m1_simulation}
+                  togglehandler={() => togglehandler('m1_simulation')}
                 />
                 <M3Simulation
-                  isOn={isOn.m3_simulation}
-                  toggleHandler={() => toggleHandler('m3_simulation')}
+                  ison={ison.m3_simulation}
+                  togglehandler={() => togglehandler('m3_simulation')}
                 />
               </>
             )}
             {position === 'supervisior' && (
               <>
-                {facilities == 'fac1' && (
+                {facilities === 'fac1' && (
                   <>
+                    <Emergency
+                      className="gui"
+                      togglehandler={() => togglehandler('emergency')}
+                    />
                     <Edukit
-                      isOn={isOn.eduKit}
-                      toggleHandler={() => toggleHandler('eduKit')}
+                      ison={ison.eduKit}
+                      togglehandler={() => togglehandler('eduKit')}
                     />
                     <M1
-                      isOn={isOn.m1}
-                      toggleHandler={() => toggleHandler('m1')}
+                      ison={ison.m1}
+                      togglehandler={() => togglehandler('m1')}
                     />
                     <M2
-                      isOn={isOn.m2}
-                      toggleHandler={() => toggleHandler('m2')}
+                      ison={ison.m2}
+                      togglehandler={() => togglehandler('m2')}
                     />
                     <M3
-                      isOn={isOn.m3}
-                      toggleHandler={() => toggleHandler('m3')}
+                      ison={ison.m3}
+                      togglehandler={() => togglehandler('m3')}
                     />
                     <Reset
                       className="gui reset"
-                      isOn={isOn.reset}
-                      toggleHandler={() => toggleHandler('reset')}
+                      ison={ison.reset}
+                      togglehandler={() => togglehandler('reset')}
                     />
-                    <DurationTime isOn={isOn.duration_time} className="gui" />
+                    <DurationTime ison={ison.duration_time} className="gui" />
                     <ColorCheck
-                      isOn={isOn.color_check}
-                      toggleHandler={() => toggleHandler('color_check')}
+                      ison={ison.color_check}
+                      togglehandler={() => togglehandler('color_check')}
                     />
-                    <Limit isOn={isOn.limit} className="gui" />
+                    <Limit ison={ison.limit} className="gui" />
                     <Color
-                      isOn={isOn.color}
-                      toggleHandler={() => toggleHandler('color')}
+                      ison={ison.color}
+                      togglehandler={() => togglehandler('color')}
                     />
                     <Vision
-                      isOn={isOn.vision}
-                      toggleHandler={() => toggleHandler('vision')}
+                      ison={ison.vision}
+                      togglehandler={() => togglehandler('vision')}
                     />
                     <M1Simulation
                       className="gui"
-                      isOn={isOn.m1_simulation}
-                      toggleHandler={() => toggleHandler('m1_simulation')}
+                      ison={ison.m1_simulation}
+                      togglehandler={() => togglehandler('m1_simulation')}
                     />
                     <M3Simulation
-                      isOn={isOn.m3_simulation}
-                      toggleHandler={() => toggleHandler('m3_simulation')}
+                      ison={ison.m3_simulation}
+                      togglehandler={() => togglehandler('m3_simulation')}
                     />
                   </>
                 )}
-                {facilities == 'fac2' && (
+                {facilities === 'fac2' && (
                   <>
+                    <Emergency
+                      className="gui"
+                      togglehandler={() => togglehandler('emergency')}
+                    />
                     <Edukit
-                      isOn={isOn.eduKit}
-                      toggleHandler={() => toggleHandler('eduKit')}
+                      ison={ison.eduKit}
+                      togglehandler={() => togglehandler('eduKit')}
                     />
                     <M1
-                      isOn={isOn.m1}
-                      toggleHandler={() => toggleHandler('m1')}
+                      ison={ison.m1}
+                      togglehandler={() => togglehandler('m1')}
                     />
                     <M2
-                      isOn={isOn.m2}
-                      toggleHandler={() => toggleHandler('m2')}
+                      ison={ison.m2}
+                      togglehandler={() => togglehandler('m2')}
                     />
                     <M3
-                      isOn={isOn.m3}
-                      toggleHandler={() => toggleHandler('m3')}
+                      ison={ison.m3}
+                      togglehandler={() => togglehandler('m3')}
                     />
                     <Reset
                       className="gui reset"
-                      isOn={isOn.reset}
-                      toggleHandler={() => toggleHandler('reset')}
+                      ison={ison.reset}
+                      togglehandler={() => togglehandler('reset')}
                     />
-                    <DurationTime isOn={isOn.duration_time} className="gui" />
+                    <DurationTime ison={ison.duration_time} className="gui" />
                     <ColorCheck
-                      isOn={isOn.color_check}
-                      toggleHandler={() => toggleHandler('color_check')}
+                      ison={ison.color_check}
+                      togglehandler={() => togglehandler('color_check')}
                     />
-                    <Limit isOn={isOn.limit} className="gui" />
+                    <Limit ison={ison.limit} className="gui" />
                     <Color
-                      isOn={isOn.color}
-                      toggleHandler={() => toggleHandler('color')}
+                      ison={ison.color}
+                      togglehandler={() => togglehandler('color')}
                     />
                     <Vision
-                      isOn={isOn.vision}
-                      toggleHandler={() => toggleHandler('vision')}
+                      ison={ison.vision}
+                      togglehandler={() => togglehandler('vision')}
                     />
                     <M1Simulation
                       className="gui"
-                      isOn={isOn.m1_simulation}
-                      toggleHandler={() => toggleHandler('m1_simulation')}
+                      ison={ison.m1_simulation}
+                      togglehandler={() => togglehandler('m1_simulation')}
                     />
                     <M3Simulation
-                      isOn={isOn.m3_simulation}
-                      toggleHandler={() => toggleHandler('m3_simulation')}
+                      ison={ison.m3_simulation}
+                      togglehandler={() => togglehandler('m3_simulation')}
                     />
                   </>
                 )}
@@ -217,101 +344,109 @@ const Gui = () => {
             )}
             {position === 'worker' && (
               <>
-                {facilities == 'fac1' && (
+                {facilities === 'fac1' && (
                   <>
-                    {lines == 'line1' && (
+                    <Emergency
+                      className="gui"
+                      togglehandler={() => togglehandler('emergency')}
+                    />
+                    {lines === 'line1' && (
                       <>
                         <Edukit
-                          isOn={isOn.eduKit}
-                          toggleHandler={() => toggleHandler('eduKit')}
+                          ison={ison.eduKit}
+                          togglehandler={() => togglehandler('eduKit')}
                         />
                         <M1
-                          isOn={isOn.m1}
-                          toggleHandler={() => toggleHandler('m1')}
+                          ison={ison.m1}
+                          togglehandler={() => togglehandler('m1')}
                         />
                         <M1Simulation
                           className="gui"
-                          isOn={isOn.m1_simulation}
-                          toggleHandler={() => toggleHandler('m1_simulation')}
+                          ison={ison.m1_simulation}
+                          togglehandler={() => togglehandler('m1_simulation')}
                         />
                       </>
                     )}
-                    {lines == 'line2' && (
+                    {lines === 'line2' && (
                       <>
                         <Edukit
-                          isOn={isOn.eduKit}
-                          toggleHandler={() => toggleHandler('eduKit')}
+                          ison={ison.eduKit}
+                          togglehandler={() => togglehandler('eduKit')}
                         />
                         <M2
-                          isOn={isOn.m2}
-                          toggleHandler={() => toggleHandler('m2')}
+                          ison={ison.m2}
+                          togglehandler={() => togglehandler('m2')}
                         />
                       </>
                     )}
-                    {lines == 'line3' && (
+                    {lines === 'line3' && (
                       <>
                         <Edukit
-                          isOn={isOn.eduKit}
-                          toggleHandler={() => toggleHandler('eduKit')}
+                          ison={ison.eduKit}
+                          togglehandler={() => togglehandler('eduKit')}
                         />
                         <M3
-                          isOn={isOn.m3}
-                          toggleHandler={() => toggleHandler('m3')}
+                          ison={ison.m3}
+                          togglehandler={() => togglehandler('m3')}
                         />
                         <M3Simulation
                           className="gui"
-                          isOn={isOn.m3_simulation}
-                          toggleHandler={() => toggleHandler('m3_simulation')}
+                          ison={ison.m3_simulation}
+                          togglehandler={() => togglehandler('m3_simulation')}
                         />
                       </>
                     )}
                   </>
                 )}
-                {facilities == 'fac2' && (
+                {facilities === 'fac2' && (
                   <>
-                    {lines == 'line1' && (
+                    <Emergency
+                      className="gui"
+                      togglehandler={() => togglehandler('emergency')}
+                    />
+                    {lines === 'line1' && (
                       <>
                         <Edukit
-                          isOn={isOn.eduKit}
-                          toggleHandler={() => toggleHandler('eduKit')}
+                          ison={ison.eduKit}
+                          togglehandler={() => togglehandler('eduKit')}
                         />
                         <M1
-                          isOn={isOn.m1}
-                          toggleHandler={() => toggleHandler('m1')}
+                          ison={ison.m1}
+                          togglehandler={() => togglehandler('m1')}
                         />
                         <M1Simulation
                           className="gui"
-                          isOn={isOn.m1_simulation}
-                          toggleHandler={() => toggleHandler('m1_simulation')}
+                          ison={ison.m1_simulation}
+                          togglehandler={() => togglehandler('m1_simulation')}
                         />
                       </>
                     )}
-                    {lines == 'line2' && (
+                    {lines === 'line2' && (
                       <>
                         <Edukit
-                          isOn={isOn.eduKit}
-                          toggleHandler={() => toggleHandler('eduKit')}
+                          ison={ison.eduKit}
+                          togglehandler={() => togglehandler('eduKit')}
                         />
                         <M2
-                          isOn={isOn.m2}
-                          toggleHandler={() => toggleHandler('m2')}
+                          ison={ison.m2}
+                          togglehandler={() => togglehandler('m2')}
                         />
                       </>
                     )}
-                    {lines == 'line3' && (
+                    {lines === 'line3' && (
                       <>
                         <Edukit
-                          isOn={isOn.eduKit}
-                          toggleHandler={() => toggleHandler('eduKit')}
+                          ison={ison.eduKit}
+                          togglehandler={() => togglehandler('eduKit')}
                         />
                         <M3
-                          isOn={isOn.m3}
-                          toggleHandler={() => toggleHandler('m3')}
+                          ison={ison.m3}
+                          togglehandler={() => togglehandler('m3')}
                         />
                         <M3Simulation
                           className="gui"
-                          isOn={isOn.m3_simulation}
-                          toggleHandler={() => toggleHandler('m3_simulation')}
+                          ison={ison.m3_simulation}
+                          togglehandler={() => togglehandler('m3_simulation')}
                         />
                       </>
                     )}
