@@ -25,15 +25,15 @@ while True:
     data = ser.readline().decode().strip()  # 아두이노로부터 응답 받음
     print(data)
     
-    humidity, temperature, particulate = data.split(',')
+    humidity, temperature, particulates = data.split(',')
     humidity = humidity.split(':')[1].strip() 
     temperature = temperature.split(':')[1].strip() 
-    particulate = particulate.split(':')[1].strip()
+    particulates = particulates.split(':')[1].strip()
 
     payload = {
         "Humidity": humidity,
         "Temperature": temperature,
-        "Particulate": particulate,
+        "Particulates": particulates,
     }
     json_data = json.dumps(payload)
     
