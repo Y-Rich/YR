@@ -1,11 +1,8 @@
 import Home from './view/pages/home/Home';
 import UserModi from './view/pages/user/UserModi';
 import Find from './view/pages/user/Find';
-import PLC from './view/pages/3d/Edukit';
 import Register from './view/pages/user/Register';
 import Admin from './view/pages/admin/Admin';
-import Chart from './view/pages/chart/Chart';
-import Pannel from './view/pages/pannel/Pannel';
 import Main from './view/pages/3d/Main';
 
 export const ROUTE = {
@@ -25,29 +22,8 @@ export const ROUTE = {
     path: '/find',
     element: Find,
   },
-  PLC: {
-    path: '/plc',
-    element: PLC,
-  },
-  CHART: {
-    path: '/chart',
-    element: Chart,
-  },
-  PANNEL: {
-    path: '/pannel',
-    element: Pannel,
-  },
 };
 export const PUBLIC_ROUTE = {
-  CHART: {
-    path: '/chart',
-    element: Chart,
-  },
-
-  PANNEL: {
-    path: '/pannel',
-    element: Pannel,
-  },
   HOME: {
     path: '/',
     element: Home,

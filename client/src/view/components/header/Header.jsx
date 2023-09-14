@@ -98,19 +98,14 @@ const Header = () => {
       sessionStorage.clear();
       setIsLogin(false);
       await new Promise((res) => setTimeout(res, 1000));
-      window.location.reload('/');
+      // window.location.reload('/');
     };
     return (
       <HeaderBox>
         <Text>
-          <p>담당자: {userName}</p>
-          {facilities ? (
-            <p>
-              {position} {facilities} - {lines}
-            </p>
-          ) : (
-            <p>{position}</p>
-          )}
+          <p>
+            {position} {userName}
+          </p>
         </Text>
 
         <LinkText to="/admin">ADMIN</LinkText>

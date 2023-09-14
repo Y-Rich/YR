@@ -29,7 +29,7 @@ const Main = () => {
         // console.log(JSON.parse(receivedMessage.data));
       }
       // 환경 데이터
-      if (receivedMessage.topic === 'environment/data') {
+      if (receivedMessage.topic === 'edukit1/environment/data') {
         setMessagePayloadEnvironment(JSON.parse(receivedMessage.data));
         // console.log(JSON.parse(receivedMessage.data));
       }

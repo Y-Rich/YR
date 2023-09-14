@@ -81,9 +81,11 @@ export const Title = styled.div`
     /* margin-top: 20%; */
     font-size: 2vh;
     align-items: center;
+    color: white;
   }
   &.mount {
     font-size: 8vh;
+    color: white;
   }
 `;
 export const Box = styled.article`
@@ -117,18 +119,19 @@ export const Box = styled.article`
   &.chart {
     display: flex;
     &.big {
-      width: 12vw;
-      height: 15vh;
+      width: 11.2vw;
+      height: 12vh;
       font-size: 3rem;
       display: flex;
       flex-direction: row;
       /* justify-content: flex-start; */
       /* align-items: center; */
-      border-radius: 10px;
+      border-radius: 5px;
       padding: 10px;
       gap: 5vh;
       background-color: white;
-      box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+      color: white;
     }
     &.small {
       flex-direction: column;
@@ -267,4 +270,26 @@ export const LinkText = styled(Link)`
   &.smallbox {
     font-weight: normal;
   }
+`;
+
+export const Progress = styled.div`
+  width: 10vw;
+  height: 2.5vh;
+  background-color: #d7d7d7;
+  border-radius: 10px;
+  &.pannel {
+    &.top {
+      width: 25vw;
+    }
+    &.bottom {
+      width: 20vw;
+    }
+  }
+`;
+
+export const ProgressBar = styled.div`
+  height: 100%;
+  background-color: #007bff;
+  border-radius: 10px;
+  transition: width 0.3s ease-in-out;
 `;
