@@ -28,7 +28,7 @@ const ModalContent = styled.div`
 
 const ModalBtn = styled.button`
   background-color: #d9d9d9;
-  border: none;
+  border: 2mm outset black;
   border-radius: 5px;
   font-size: 1rem;
   font-weight: bold;
@@ -36,12 +36,24 @@ const ModalBtn = styled.button`
   height: 15%;
   position: absolute;
   bottom: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: #a9a9a9;
+  }
+  &:active {
+    border-style: 1mm inset black;
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #fbfbfb,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
+
+    /* box-shadow: 2px 3px 0 rgb(0, 0, 0, 0.5); */
+  }
 `;
 
 const Modal = ({ setModal, element }) => {
   const closeModal = (href) => {
     setModal(false);
-    window.location.href = `/${href}`;
+    window.location.reload('/');
+    // window.location.href = `/${href}`;
   };
   const modalRef = useRef(null);
   const handleOutsideClick = (e) => {

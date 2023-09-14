@@ -18,11 +18,12 @@ export const HeaderBox = styled.section`
   padding: 0 5% 0 5%;
 `;
 export const Text = styled.div`
+  background-color: aliceblue;
+  padding: 2px;
   position: absolute;
-  right: 30%;
+  right: 50vw;
   display: flex;
   flex-direction: row;
   gap: 10px;
-  font-size: 1rem;
   font-weight: bold;
 `;

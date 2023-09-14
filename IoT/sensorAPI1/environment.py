@@ -6,7 +6,7 @@ ser = serial.Serial('COM3', 9600)
 
 mqtt_broker = "192.168.0.44"
 mqtt_port = 1883  
-mqtt_topic = "edukit2/environment/data"
+mqtt_topic = "edukit1/environment/data"
 
 def on_connect(client, userdata, flags, rc):
     print("[environment] Connected with result code "+str(rc))

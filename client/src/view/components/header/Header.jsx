@@ -17,7 +17,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   padding: 1% 0 1% 0;
 
-  background-color: #d9d9d9;
+  background-color: #f8f9fb;
   color: #000000;
 `;
 
@@ -45,10 +45,6 @@ const Header = () => {
     const navigate = useNavigate();
     const [modal, setModal] = useState(false);
     const [modalContent, setModalContent] = useState('');
-    // const userName = sessionStorage.getItem('userName');
-    // const position = sessionStorage.getItem('position');
-    // const facilities = sessionStorage.getItem('facilities');
-    // const lines = sessionStorage.getItem('lines');
     const [user, setUser] = useState('');
     const [userName, setUserName] = useState('');
     const [position, setPosition] = useState('');
@@ -81,8 +77,10 @@ const Header = () => {
 
     sessionStorage.setItem('userName', userName);
     sessionStorage.setItem('position', position);
-    sessionStorage.setItem('facilities', facilities);
-    sessionStorage.setItem('lines', lines);
+    if (position !== 'manager') {
+      sessionStorage.setItem('facilities', facilities);
+      sessionStorage.setItem('lines', lines);
+    }
     const openModal = (content) => {
       setModalContent(content);
       setModal(true);
@@ -100,19 +98,14 @@ const Header = () => {
       sessionStorage.clear();
       setIsLogin(false);
       await new Promise((res) => setTimeout(res, 1000));
-      window.location.reload('/');
+      // window.location.reload('/');
     };
     return (
       <HeaderBox>
         <Text>
-          <p>담당자: {userName}</p>
-          {facilities ? (
-            <p>
-              {position} {facilities} - {lines}
-            </p>
-          ) : (
-            <p>{position}</p>
-          )}
+          <p>
+            {position} {userName}
+          </p>
         </Text>
 
         <LinkText to="/admin">ADMIN</LinkText>

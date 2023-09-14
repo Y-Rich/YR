@@ -4,7 +4,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Selector from '../../components/Selector';
 import { Slide } from './style';
-import { F1, Manager } from './F1';
+import { F1 } from './F1';
+import { F2 } from './F2';
 
 const Chart = () => {
   const settings = {
@@ -12,11 +13,12 @@ const Chart = () => {
     fade: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
-  const position = sessionStorage.getItem('position');
+  // const position = sessionStorage.getItem('position');
+  const position = 'manager';
   const facilities = sessionStorage.getItem('facilities');
 
   return (
@@ -24,13 +26,13 @@ const Chart = () => {
       {position === 'manager' && (
         <Slider {...settings}>
           <F1 />
-          <F1 />
+          <F2 />
         </Slider>
       )}
       {(position === 'supervisior' || position === 'worker') && (
         <Slider {...settings}>
           {facilities === 'fac1' && <F1 />}
-          {facilities === 'fac2' && <F1 />}
+          {facilities === 'fac2' && <F2 />}
         </Slider>
       )}
       <Selector />

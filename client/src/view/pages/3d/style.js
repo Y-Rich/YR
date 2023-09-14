@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.section`
   width: 18vw;
   position: absolute;
+  right: 0vw;
   cursor: move;
   color: black;
   border-radius: 5px;
@@ -77,6 +78,10 @@ export const ToggleBtn = styled.button`
   font-size: 12px;
   transition: transform 0.5s;
   cursor: pointer;
+
+  &:hover {
+    color: rgb(233, 233, 234);
+  }
 
   -webkit-user-select: all;
   -moz-user-select: all;
