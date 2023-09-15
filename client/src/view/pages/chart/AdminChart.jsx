@@ -36,8 +36,6 @@ export const AdminChart = () => {
             res.monthlyAvgLine2defectRate.map((v) => v.DefectRatio)
           );
           setMonthM1ProdRate(res.monthlyAvgLineProdRate);
-          console.log(res);
-          console.log(monthM1Input);
           setLoading(false);
         })
         .catch((err) => {
@@ -54,7 +52,6 @@ export const AdminChart = () => {
             res.monthlyAvgLine2defectRate.map((v) => v.DefectRatio)
           );
           setMonthM2ProdRate(res.monthlyAvgLineProdRate);
-          console.log(res);
           setLoading(false);
         })
         .catch((err) => {

@@ -22,6 +22,9 @@ export const F1 = () => {
   const [dailyOutput, setDailyOutput] = useState([]);
   const [dailyLine1Defect, setDailyLine1Defect] = useState([]);
   const [dailyLine2Defect, setDailyLine2Defect] = useState([]);
+
+  const [dailyLine1DefectRatio, setDailyLine1DefectRatio] = useState([]);
+  const [dailyLine2DefectRatio, setDailyLine2DefectRatio] = useState([]);
   const [dailyProdRate, setDailyProdRate] = useState([]);
   const handleClick = () => {
     setModal(true);
@@ -46,19 +49,29 @@ export const F1 = () => {
           // setMonthlyM2(res.monthlyAvgLine2defectRate);
           setDailyInput(res.dailyAvgInput.map((v) => v.total));
           setDailyOutput(res.dailyAvgOutput.map((v) => v.total));
-          setDailyLine1Defect(res.dailyAvgLine1DefectRate);
-          setDailyLine2Defect(res.dailyAvgLine2DefectRate);
-          setDailyProdRate(res.dailyAvgLineProdRate);
-          // console.log(res);
+          setDailyLine1Defect(
+            res.dailyAvgLine1DefectRate[0]?.Detail?.map((v) => v.DefectProducts)
+          );
+          setDailyLine2Defect(
+            res.dailyAvgLine2DefectRate[0]?.Detail?.map((v) => v.DefectProducts)
+          );
+          setDailyLine1DefectRatio(
+            res.dailyAvgLine1DefectRate[0]?.Detail?.map((v) => v.DefectRatio)
+          );
+          setDailyLine2DefectRatio(
+            res.dailyAvgLine2DefectRate[0]?.Detail?.map((v) => v.DefectRatio)
+          );
           setLoading(false);
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
+          setLoading(false);
         });
     } catch (err) {
       console.error(err);
     }
-  }, [time]);
+  }, []);
   const input = dailyInput.reduce((acc, item) => acc + item, 0);
   const output = dailyOutput.reduce((acc, item) => acc + item, 0);
   const err = Math.round(((input - output) / input) * 100);
@@ -166,8 +179,8 @@ export const F1 = () => {
               labels={time}
               label1="1호기"
               label2="2호기"
-              data1={dailyInput}
-              data2={dailyOutput}
+              data1={dailyLine1Defect}
+              data2={dailyLine2Defect}
               borderColor1="#3d5a7f"
               borderColor2="#50a753"
               backgroundColor1="#2c405a"
@@ -180,8 +193,8 @@ export const F1 = () => {
               labels={time}
               label1="1호기"
               label2="2호기"
-              data1={dailyInput}
-              data2={dailyOutput}
+              data1={dailyLine1DefectRatio}
+              data2={dailyLine1DefectRatio}
               borderColor1="#3d5a7f"
               borderColor2="#50a753"
               backgroundColor1="#2c405a"
