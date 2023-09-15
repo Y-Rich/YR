@@ -215,7 +215,11 @@ const dao = {
           },
           {
             $group: {
-              _id: null,
+              _id: {
+                hour: {
+                  $hour: { $dateFromString: { dateString: '$createdAt' } },
+                },
+              },
               t1Sum: {
                 $sum: {
                   $cond: {
@@ -237,8 +241,14 @@ const dao = {
             },
           },
           {
+            $sort: { '_id.hour': 1 },
+          },
+          {
             $project: {
               _id: 0,
+              hour: '$_id.hour',
+              t1Sum: '$t1Sum',
+              t2Sum: '$t2Sum',
               DefectProducts: { $subtract: ['$t1Sum', '$t2Sum'] }, //t1MinusT2
               DefectRatio: {
                 $cond: {
@@ -249,6 +259,45 @@ const dao = {
                   },
                 },
               },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              total_t1sum: { $sum: '$t1Sum' },
+              total_t2sum: { $sum: '$t2Sum' },
+              Detail: {
+                $push: {
+                  hour: '$hour',
+                  t1Sum: '$t1Sum',
+                  t2Sum: '$t2Sum',
+                  DefectProducts: '$DefectProducts',
+                  DefectRatio: '$DefectRatio',
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              total_t1sum: 1,
+              total_t2sum: 1,
+              total_DefectProducts: {
+                $subtract: ['$total_t1sum', '$total_t2sum'],
+              }, //t1MinusT2
+              total_DefectRatio: {
+                $cond: {
+                  if: { $eq: ['$total_t1sum', 0] },
+                  then: 0,
+                  else: {
+                    $divide: [
+                      { $subtract: ['$total_t1sum', '$total_t2sum'] },
+                      '$total_t1sum',
+                    ],
+                  },
+                },
+              },
+              Detail: 1,
             },
           },
         ])
@@ -405,7 +454,19 @@ const dao = {
           },
           {
             $group: {
-              _id: null,
+              _id: {
+                year: {
+                  $year: { $dateFromString: { dateString: '$createdAt' } },
+                },
+                month: {
+                  $month: { $dateFromString: { dateString: '$createdAt' } },
+                },
+                day: {
+                  $dayOfMonth: {
+                    $dateFromString: { dateString: '$createdAt' },
+                  },
+                },
+              },
               t1Sum: {
                 $sum: {
                   $cond: {
@@ -427,8 +488,18 @@ const dao = {
             },
           },
           {
+            $sort: {
+              '_id.year': 1,
+              '_id.month': 1,
+              '_id.day': 1,
+            },
+          },
+          {
             $project: {
               _id: 0,
+              day: '$_id.day',
+              t1Sum: '$t1Sum',
+              t2Sum: '$t2Sum',
               DefectProducts: { $subtract: ['$t1Sum', '$t2Sum'] }, //t1MinusT2
               DefectRatio: {
                 $cond: {
@@ -439,6 +510,45 @@ const dao = {
                   },
                 },
               },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              total_t1sum: { $sum: '$t1Sum' },
+              total_t2sum: { $sum: '$t2Sum' },
+              Detail: {
+                $push: {
+                  day: '$day',
+                  t1Sum: '$t1Sum',
+                  t2Sum: '$t2Sum',
+                  DefectProducts: '$DefectProducts',
+                  DefectRatio: '$DefectRatio',
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              total_t1sum: 1,
+              total_t2sum: 1,
+              total_DefectProducts: {
+                $subtract: ['$total_t1sum', '$total_t2sum'],
+              }, //t1MinusT2
+              total_DefectRatio: {
+                $cond: {
+                  if: { $eq: ['$total_t1sum', 0] },
+                  then: 0,
+                  else: {
+                    $divide: [
+                      { $subtract: ['$total_t1sum', '$total_t2sum'] },
+                      '$total_t1sum',
+                    ],
+                  },
+                },
+              },
+              Detail: 1,
             },
           },
         ])
@@ -516,7 +626,7 @@ const dao = {
       }
     });
   },
-  // 생산 관련 주간 데이터 조회
+  // 생산 관련 월간 데이터 조회
   monthlyProdData1(params) {
     return new Promise((resolve, reject) => {
       let searchField, date;
@@ -629,7 +739,19 @@ const dao = {
           },
           {
             $group: {
-              _id: null,
+              _id: {
+                year: {
+                  $year: { $dateFromString: { dateString: '$createdAt' } },
+                },
+                month: {
+                  $month: { $dateFromString: { dateString: '$createdAt' } },
+                },
+                day: {
+                  $dayOfMonth: {
+                    $dateFromString: { dateString: '$createdAt' },
+                  },
+                },
+              },
               t1Sum: {
                 $sum: {
                   $cond: {
@@ -651,8 +773,18 @@ const dao = {
             },
           },
           {
+            $sort: {
+              '_id.year': 1,
+              '_id.month': 1,
+              '_id.day': 1,
+            },
+          },
+          {
             $project: {
               _id: 0,
+              day: '$_id.day',
+              t1Sum: '$t1Sum',
+              t2Sum: '$t2Sum',
               DefectProducts: { $subtract: ['$t1Sum', '$t2Sum'] }, //t1MinusT2
               DefectRatio: {
                 $cond: {
@@ -663,6 +795,45 @@ const dao = {
                   },
                 },
               },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              total_t1sum: { $sum: '$t1Sum' },
+              total_t2sum: { $sum: '$t2Sum' },
+              Detail: {
+                $push: {
+                  day: '$day',
+                  t1Sum: '$t1Sum',
+                  t2Sum: '$t2Sum',
+                  DefectProducts: '$DefectProducts',
+                  DefectRatio: '$DefectRatio',
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              total_t1sum: 1,
+              total_t2sum: 1,
+              total_DefectProducts: {
+                $subtract: ['$total_t1sum', '$total_t2sum'],
+              }, //t1MinusT2
+              total_DefectRatio: {
+                $cond: {
+                  if: { $eq: ['$total_t1sum', 0] },
+                  then: 0,
+                  else: {
+                    $divide: [
+                      { $subtract: ['$total_t1sum', '$total_t2sum'] },
+                      '$total_t1sum',
+                    ],
+                  },
+                },
+              },
+              Detail: 1,
             },
           },
         ])

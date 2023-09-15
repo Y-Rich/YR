@@ -42,7 +42,9 @@ const middleware = {
         //  기간 남아있다면 액세스토큰 갱신해서 클라이언트에 전송
         if (tokenCheck[0] === false) {
           const accessToken = await tokenUtil.renewAccessToken(tokenCheck[1]);
-          logger.debug(`(middleware.makeToken.result) ${accessToken[1]}`);
+          logger.debug(
+            `(middleware.makeToken.result) accessToken: ${accessToken}`,
+          );
           res.set({
             accessToken: accessToken,
           }); // header 세팅`
