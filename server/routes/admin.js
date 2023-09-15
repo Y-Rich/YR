@@ -1,5 +1,4 @@
 const express = require('express');
-
 const router = express.Router();
 const logger = require('../lib/logger');
 const adminService = require('../controller/service/adminService');
@@ -26,7 +25,7 @@ router.post('/position', async (req, res) => {
 });
 
 //permission - 권한 등록
-router.post('/permission', async (req, res) => {
+router.post('/permission/:id', async (req, res) => {
   try {
     const params = {
       positionID: req.body.positionID,
@@ -75,7 +74,50 @@ router.get('/search', async (req, res) => {
   }
 });
 
+// 매니저 직급미만은 권한 수정 못해야함 -> auth 미들웨어 처리
 //permission - 직원 권한 수정
+router.put('/permission', async (req, res) => {
+  try {
+    //유효성 검사
+    // 1. body properties check
+    if (!req.body.id || !req.body.positionID) {
+      return res.status(400).json({
+        error:
+          '[params check] Invalid parameter... allow :[id, positionID] , required: both ',
+      });
+    }
+
+    // 2. :id 파라미터 유효성 검사
+    const employeeID = parseInt(req.body.id);
+    const positionID = parseInt(req.body.positionID);
+    if (isNaN(employeeID) || employeeID <= 0) {
+      return res
+        .status(400)
+        .json({ error: '[params check] Invalid employee ID......' });
+    }
+    if (isNaN(positionID) || positionID <= 0) {
+      return res
+        .status(400)
+        .json({ error: '[params check] Invalid employee ID......' });
+    }
+
+    // 로직 진행.
+    const params = { employeeID: employeeID, positionID: positionID };
+
+    logger.debug(`(adminService.edit.params) ${JSON.stringify(params)}`);
+    // 비즈니스 로직 호출
+    const result = await adminService.edit(params);
+    logger.info(`(adminService.edit.result) ${JSON.stringify(result)}`);
+
+    // 최종 응답
+    return res.status(200).json({
+      message: 'Employee information updated successfully',
+      result: result,
+    });
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
 
 // management - factory
 

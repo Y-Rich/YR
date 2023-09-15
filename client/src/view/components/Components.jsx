@@ -185,6 +185,11 @@ export const Input = styled.input`
     width: 2.8vw;
     height: 3vh;
     margin-right: 0.5vw;
+    &:focus {
+      // outline: none;
+      // box-shadow: none;
+      background-color: #dde998;
+    }
   }
 `;
 
@@ -221,15 +226,23 @@ export const Button = styled.button`
     width: 5vw;
     background-color: #d9d9d9;
     border: 2mm outset rgba(133, 133, 117, 0.6);
+    &:active {
+      background-color: rgb(0, 200, 102);
+      border: 2mm ridge rgba(0, 133, 117, 0.6);
+    }
     &.reset {
       &:active {
         background-color: rgb(255, 1, 1);
         border: 2mm ridge rgba(141, 0, 0, 0.6);
       }
     }
-    &:active {
-      background-color: rgb(0, 200, 102);
-      border: 2mm ridge rgba(0, 133, 117, 0.6);
+    &.emergency {
+      background-color: rgb(255, 1, 1);
+      color: #eee;
+      &:active {
+        background-color: rgb(255, 50, 50);
+        border: 2mm ridge rgba(141, 0, 0, 0.6);
+      }
     }
   }
 `;

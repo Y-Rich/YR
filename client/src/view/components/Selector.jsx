@@ -42,6 +42,12 @@ const Btn = styled.button`
 `;
 
 const Selector = ({ onPageChange }) => {
+  // 권한 가져오기
+
+  const fac = sessionStorage.getItem('facilities');
+  const position = sessionStorage.getItem('position');
+  // console.log('현재 속한 공장은', facilities);
+
   return (
     <SelectorContainer>
       <Btn onClick={() => onPageChange('chart')}>
@@ -50,9 +56,27 @@ const Selector = ({ onPageChange }) => {
       <Btn onClick={() => onPageChange('pannel')}>
         <LiaDigitalTachographSolid />
       </Btn>
-      <Btn onClick={() => onPageChange('plc')}>
-        <GiSewingMachine />
-      </Btn>
+      {position === 'manager' ? (
+        <>
+          <Btn onClick={() => onPageChange('plc1')}>
+            <GiSewingMachine />
+          </Btn>
+          <Btn onClick={() => onPageChange('plc2')}>
+            <GiSewingMachine />
+          </Btn>
+        </>
+      ) : (
+        (fac === 'fac1' && (
+          <Btn onClick={() => onPageChange('plc1')}>
+            <GiSewingMachine />
+          </Btn>
+        )) ||
+        (fac === 'fac2' && (
+          <Btn onClick={() => onPageChange('plc2')}>
+            <GiSewingMachine />
+          </Btn>
+        ))
+      )}
     </SelectorContainer>
   );
 };
