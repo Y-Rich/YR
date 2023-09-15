@@ -80,6 +80,26 @@ const service = {
     });
   },
 
+  //회원정보 수정
+  async edit(params) {
+    let result = null;
+
+    try {
+      result = await adminDao.update(params);
+      logger.debug(`(adminService.edit) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(adminService.edit) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   // service - 조회
 
   // 전체 공장 및 전체 공정 조회
