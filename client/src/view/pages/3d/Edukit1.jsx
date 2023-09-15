@@ -6,9 +6,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Edukit from './loader';
 import Loading from '../../components/Loading';
 import TextSprite from './TextSprite';
-import Gui from './ManagerGui';
 import ManagerGui from './ManagerGui';
 import WorkerGui from './WorkerGui';
+import { Log, Order, OrderBtn } from './Components';
 
 const PLC = (props) => {
   const position = sessionStorage.getItem('position');
@@ -423,6 +423,9 @@ const PLC = (props) => {
         </>
       )}
       <Selector />
+      <Order />
+      <OrderBtn />
+      <Log />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
     </div>

@@ -9,6 +9,8 @@ import TextSprite from './TextSprite';
 import ManagerGui from './ManagerGui';
 import WorkerGui from './WorkerGui';
 
+import { Log, Order } from './Components';
+
 const PLC = (props) => {
   const position = sessionStorage.getItem('position');
   const { messagePayloadEdukit2, webSocket, messagePayloadEnvironment2 } =
@@ -422,6 +424,7 @@ const PLC = (props) => {
         </>
       )}
       <Selector />
+      <Log />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
     </div>
