@@ -99,15 +99,21 @@ const visionGoHandleOnClick = (ison) => {
   }
 };
 
+// 공정 3 시운영 1
+const m3Simulator1HandleOnClick = () => {
+  console.log('m3Simulator1 clicked');
+};
+
+// 공정 3 시운영 2
+const m3Simulator2HandleOnClick = () => {
+  console.log('m3Simulator2 clicked');
+};
+
 export const Emergency = ({ ison, togglehandler }) => {
   return (
     <Box className="guiDetail reset">
       <Title>비상정지</Title>
-      <Button
-        className="gui reset"
-        ison={ison}
-        onClick={() => emergencyHandleOnClick()}
-      >
+      <Button className="gui reset" onClick={() => emergencyHandleOnClick()}>
         Press
       </Button>
     </Box>
@@ -149,11 +155,7 @@ export const Reset = ({ ison, togglehandler }) => {
   return (
     <Box className="guiDetail reset">
       <Title>리셋</Title>
-      <Button
-        className="gui reset"
-        ison={ison}
-        onClick={() => resetHandleOnClick()}
-      >
+      <Button className="gui reset" onClick={() => resetHandleOnClick()}>
         Press
       </Button>
     </Box>
@@ -216,11 +218,7 @@ export const M1Simulation = ({ ison, togglehandler }) => {
   return (
     <Box className="guiDetail reset">
       <Title>1번 공정 시운전</Title>
-      <Button
-        className="gui"
-        ison={ison}
-        onClick={() => m1SimulatorHandleOnClick()}
-      >
+      <Button className="gui" onClick={() => m1SimulatorHandleOnClick()}>
         Press
       </Button>
     </Box>
@@ -230,7 +228,13 @@ export const M3Simulation = ({ ison, togglehandler }) => {
   return (
     <Box className="guiDetail">
       <Title>3번 공정 시운전</Title>
-      <GuiDetail ison={ison} togglehandler={togglehandler} />
+      {/* <GuiDetail ison={ison} togglehandler={togglehandler} /> */}
+      <Button className="gui" onClick={() => m3Simulator1HandleOnClick()}>
+        Grip
+      </Button>
+      <Button className="gui" onClick={() => m3Simulator2HandleOnClick()}>
+        Return
+      </Button>
     </Box>
   );
 };
