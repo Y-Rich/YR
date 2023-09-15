@@ -58,6 +58,22 @@ const dao = {
     });
   },
 
+  // dao - 직원 권한 수정
+  update(params) {
+    return new Promise((resolve, reject) => {
+      Employee.update(params, {
+        // id를 조건으로 검색하여 update
+        where: { employeeID: params.employeeID },
+      })
+        .then((updated) => {
+          resolve({ updatedCount: updated });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
   // dao - 공장 전체 공정 조회
   selectList(params) {
     // where 검색 조건
