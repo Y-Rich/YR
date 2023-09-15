@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,9 +12,15 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
-import axios from 'axios';
-import { tempHumi } from '../../../services/chart';
-export const LineGraph1 = ({ title, labels, label1, data1 }) => {
+
+export const LineGraph1 = ({
+  title,
+  labels,
+  label,
+  datas,
+  borderColors,
+  backgroundColors,
+}) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -40,17 +46,28 @@ export const LineGraph1 = ({ title, labels, label1, data1 }) => {
     labels,
     datasets: [
       {
-        label: label1,
-        data: data1,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        label: label,
+        data: datas,
+        borderColor: borderColors,
+        backgroundColor: backgroundColors,
       },
     ],
   };
 
   return <Line options={options} data={data} />;
 };
-export const LineGraph2 = ({ title, labels, label1, label2, data1, data2 }) => {
+export const LineGraph2 = ({
+  title,
+  labels,
+  label1,
+  label2,
+  data1,
+  data2,
+  borderColor1,
+  borderColor2,
+  backgroundColor1,
+  backgroundColor2,
+}) => {
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -78,14 +95,14 @@ export const LineGraph2 = ({ title, labels, label1, label2, data1, data2 }) => {
       {
         label: label1,
         data: data1,
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: borderColor1,
+        backgroundColor: backgroundColor1,
       },
       {
         label: label2,
         data: data2,
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        borderColor: borderColor2,
+        backgroundColor: backgroundColor2,
       },
     ],
   };
@@ -129,19 +146,19 @@ export const LineGraph3 = ({
       {
         label: label1,
         data: data1,
-        borderColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(251, 32, 79)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: label2,
         data: data2,
-        borderColor: 'rgb(53, 162, 235)',
+        borderColor: 'rgb(36, 164, 249)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
         label: label3,
         data: data3,
-        borderColor: 'rgb(217, 235, 53)',
+        borderColor: 'rgb(194, 213, 25)',
         backgroundColor: 'rgba(217, 235, 53, 0.5)',
       },
     ],

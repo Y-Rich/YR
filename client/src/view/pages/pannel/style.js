@@ -7,6 +7,20 @@ export const Page = styled.main`
   display: flex;
   flex-direction: column;
   color: #d9d9d9;
+  .slick-dots {
+    .slick-active {
+      button::before {
+        /* color: #c1c1c1; */
+        color: #293242;
+        z-index: 999;
+      }
+    }
+    button::before {
+      /* color: #e9e9e9; */
+      color: #3d5a7f;
+      z-index: 999;
+    }
+  }
 `;
 
 export const Container = styled.section`
@@ -58,8 +72,10 @@ export const Box = styled.section`
       gap: 10px;
     }
     &.middle {
+      width: 30vw;
     }
     &.right {
+      width: 40vw;
     }
   }
 `;
@@ -84,6 +100,9 @@ export const Section = styled.section`
     }
   }
   &.bottom {
+    &.right {
+      gap: 10px;
+    }
   }
 `;
 
@@ -95,6 +114,11 @@ export const Title = styled.article`
   background-color: aliceblue;
   margin: 5px;
   padding: 5px;
+  &.fac {
+    position: absolute;
+    top: 1vh;
+    color: #3d5a7f;
+  }
   &.top {
     &.right {
       background-color: aliceblue;
@@ -106,8 +130,10 @@ export const Title = styled.article`
     &.left {
     }
     &.middle {
+      margin-bottom: 10px;
     }
     &.right {
+      margin-bottom: 10px;
     }
   }
 `;
@@ -144,5 +170,5 @@ export const Content = styled.div`
 
 export const Dice = styled.img`
   width: 20vh;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  /* box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); */
 `;

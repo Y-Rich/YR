@@ -9,13 +9,13 @@ export const Slide = styled.main`
     .slick-active {
       button::before {
         /* color: #c1c1c1; */
-        color: pink;
+        color: #293242;
         z-index: 999;
       }
     }
     button::before {
       /* color: #e9e9e9; */
-      color: blueviolet;
+      color: #3d5a7f;
       z-index: 999;
     }
   }
@@ -62,9 +62,10 @@ export const CBox = styled.div`
   }
 `;
 export const GBox = styled.div`
-  width: 23.8vw;
+  width: 23vw;
   height: 30vh;
   padding: 1vh;
+  z-index: 888;
   &.do {
     width: 31vw;
     height: 64vh;

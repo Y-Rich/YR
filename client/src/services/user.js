@@ -70,6 +70,9 @@ export const info = async () => {
 export const logout = async () => {
   try {
     const res = await axios.get(`http://192.168.0.127:8000/users/logout`);
+    const token = sessionStorage.getItem('token');
+    axios.defaults.headers.common['accessToken'] = `${token}`;
+    sessionStorage.clear();
     return res.data;
   } catch (error) {
     console.error('Failed to logout:', error);

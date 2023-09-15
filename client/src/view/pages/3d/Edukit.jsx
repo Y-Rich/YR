@@ -4,7 +4,6 @@ import Selector from '../../components/Selector';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Edukit from './loader';
-import axios from 'axios';
 import Loading from '../../components/Loading';
 import TextSprite from './TextSprite';
 import Gui from './Gui';
