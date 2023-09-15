@@ -4,7 +4,6 @@ import Selector from '../../components/Selector';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Edukit from './loader';
-import axios from 'axios';
 import Loading from '../../components/Loading';
 import TextSprite from './TextSprite';
 import Gui from './Gui';
@@ -12,6 +11,7 @@ import Gui from './Gui';
 const PLC = (props) => {
   const { messagePayloadEdukit2, webSocket, messagePayloadEnvironment2 } =
     props.props;
+  const page = 2;
   const [loading, setLoading] = useState(true);
   // const [webSocket, setWebSocket] = useState(null);
   // const [messagePayloadEdukit2, setMessagePayloadEdukit2] = useState(null);
@@ -178,13 +178,13 @@ const PLC = (props) => {
 
     // const [minY, maxY] = [0, 18000000];
     // const [minX, maxX] = [0, 1030000];
-    const [minY, maxY] = [0, 1250000];
-    const [minX, maxX] = [0, 25000000];
+    const [minY, maxY] = [0, 25000000];
+    const [minX, maxX] = [0, 1250000];
 
     // yAxisFunc 함수는 num 속성 값을 슬라이더의 높이로 변환하는 함수입니다.
     // 해당 슬라이더는 min에서 max 사이의 값을 0에서 7 사이의 값으로 변환합니다.
     const yAxisFunc = (value) => {
-      return ((value - minY) / (maxY - minY)) * 7;
+      return ((value - minY) / (maxY - minY)) * 9;
     };
     //xAxisFunc 함수는 num2 속성 값을 슬라이더의 각도로 변환하는 함수입니다.
     //해당 슬라이더는 min에서 max 사이의 값을 0에서 90도 사이의 각도로 변환합니다.
@@ -411,7 +411,7 @@ const PLC = (props) => {
   return (
     <div>
       {loading ? <Loading /> : null}
-      <Gui props={props.props} />
+      <Gui props={props.props} page={page} />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>

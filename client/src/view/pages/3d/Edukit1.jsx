@@ -11,6 +11,7 @@ import Gui from './Gui';
 const PLC = (props) => {
   const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
     props.props;
+  const page = 1;
   const [loading, setLoading] = useState(true);
   // const [webSocket, setWebSocket] = useState(null);
   // const [messagePayloadEdukit1, setMessagePayloadEdukit1] = useState(null);
@@ -410,7 +411,7 @@ const PLC = (props) => {
   return (
     <div>
       {loading ? <Loading /> : null}
-      <Gui props={props.props} />
+      <Gui props={props.props} page={page} />
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
