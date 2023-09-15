@@ -1,11 +1,31 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Page } from '../../components/Components';
-import { Table, Tbody, Td, Th, Thead, Tr } from './style';
+import {
+  Title,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Scroll,
+  AuthButton,
+} from './style';
 import axios from 'axios';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
+import Modal from './Modal';
 
 const Admin = () => {
   const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -13,9 +33,9 @@ const Admin = () => {
 
   const fetchData = () => {
     axios
-      .get('http://localhost:3001/mock/user.json')
+      .get('http://192.168.0.127:8000/admin/search/?positionID=all')
       .then((res) => {
-        setData(res.data);
+        setData(res.data.rows);
         console.log(res.data);
       })
       .catch((error) => {
@@ -26,40 +46,67 @@ const Admin = () => {
   const columns = useMemo(
     () => [
       {
+        Header: '사번',
+        accessor: 'employeeID',
+        sortType: 'basic',
+        defaultCanSort: true,
+      },
+      {
         Header: '이름',
         accessor: 'name',
       },
       {
-        Header: '번호',
-        accessor: 'number',
+        Header: '직급',
+        accessor: (row) => {
+          const part = row.Position.positionName.split('_');
+          const jobTitle = part[0];
+          return `${jobTitle}`;
+        },
+      },
+      {
+        Header: '소속',
+        accessor: (row) => {
+          const part = row.Position.positionName.split('_');
+          const department = part.slice(1).join('_');
+          return ` ${department}`;
+        },
+      },
+      {
+        Header: '연락처',
+        accessor: 'phone',
       },
       {
         Header: '이메일',
         accessor: 'email',
       },
-      {
-        Header: '소속',
-        accessor: 'belong',
-      },
-      {
-        Header: '역할',
-        accessor: 'role',
-      },
     ],
     []
   );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data,
-    });
+    useTable(
+      {
+        columns,
+        data,
+        initialState: {
+          sortBy: [{ id: 'employeeID', desc: false }],
+        },
+      },
+      useSortBy
+    );
   const TableHead = () => {
     return (
       <Thead>
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+              <Th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className={
+                  column.isSorted ? (column.isSortedDesc ? 'desc' : 'asc') : ''
+                }
+              >
+                {column.render('Header')}
+              </Th>
             ))}
           </Tr>
         ))}
@@ -84,10 +131,20 @@ const Admin = () => {
   };
   return (
     <Page className="admin">
-      <Table {...getTableProps()}>
-        <TableHead />
-        <Tablebody />
-      </Table>
+      <Title>인사 관리 및 로그</Title>
+      <AuthButton onClick={openModal}>권한 관리</AuthButton>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        data={data}
+        reloadData={fetchData} // fetchData 함수를 전달
+      />
+      <Scroll>
+        <Table {...getTableProps()}>
+          <TableHead />
+          <Tablebody />
+        </Table>
+      </Scroll>
     </Page>
   );
 };
