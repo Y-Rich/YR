@@ -2,10 +2,10 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Selector from '../../components/Selector';
 import { Slide } from './style';
 import { F1 } from './F1';
 import { F2 } from './F2';
+import { AdminChart } from './AdminChart';
 
 const Chart = () => {
   const settings = {
@@ -25,6 +25,7 @@ const Chart = () => {
     <Slide>
       {position === 'manager' && (
         <Slider {...settings}>
+          <AdminChart />
           <F1 />
           <F2 />
         </Slider>
@@ -35,7 +36,6 @@ const Chart = () => {
           {facilities === 'fac2' && <F2 />}
         </Slider>
       )}
-      <Selector />
     </Slide>
   );
 };
