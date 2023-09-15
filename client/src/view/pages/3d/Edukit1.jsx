@@ -6,9 +6,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Edukit from './loader';
 import Loading from '../../components/Loading';
 import TextSprite from './TextSprite';
-import Gui from './Gui';
+import Gui from './ManagerGui';
+import ManagerGui from './ManagerGui';
+import WorkerGui from './WorkerGui';
 
 const PLC = (props) => {
+  const position = sessionStorage.getItem('position');
   const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
     props.props;
   const page = 1;
@@ -411,7 +414,14 @@ const PLC = (props) => {
   return (
     <div>
       {loading ? <Loading /> : null}
-      <Gui props={props.props} page={page} />
+      {position === 'worker' ? (
+        <WorkerGui props={props.props} page={page} />
+      ) : (
+        <>
+          <ManagerGui props={props.props} page={page} />
+          <WorkerGui props={props.props} page={page} />
+        </>
+      )}
       <Selector />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>

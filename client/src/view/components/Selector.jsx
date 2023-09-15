@@ -19,6 +19,7 @@ const SelectorContainer = styled.footer`
   /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); */
   color: #000000;
   gap: 20px;
+  z-index: 999;
 `;
 const Btn = styled.button`
   color: #000000;
@@ -37,6 +38,7 @@ const Btn = styled.button`
   border-radius: 5px;
   border: none;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;
 
 const Selector = ({ onPageChange }) => {
