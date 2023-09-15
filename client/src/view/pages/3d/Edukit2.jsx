@@ -180,13 +180,13 @@ const PLC = (props) => {
 
     // const [minY, maxY] = [0, 18000000];
     // const [minX, maxX] = [0, 1030000];
-    const [minY, maxY] = [0, 1250000];
-    const [minX, maxX] = [0, 25000000];
+    const [minY, maxY] = [0, 25000000];
+    const [minX, maxX] = [0, 1250000];
 
     // yAxisFunc 함수는 num 속성 값을 슬라이더의 높이로 변환하는 함수입니다.
     // 해당 슬라이더는 min에서 max 사이의 값을 0에서 7 사이의 값으로 변환합니다.
     const yAxisFunc = (value) => {
-      return ((value - minY) / (maxY - minY)) * 7;
+      return ((value - minY) / (maxY - minY)) * 9;
     };
     //xAxisFunc 함수는 num2 속성 값을 슬라이더의 각도로 변환하는 함수입니다.
     //해당 슬라이더는 min에서 max 사이의 값을 0에서 90도 사이의 각도로 변환합니다.

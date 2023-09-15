@@ -17,6 +17,7 @@ const Main = () => {
   const [messagePayloadEdukit2, setMessagePayloadEdukit2] = useState(null);
   const [messagePayloadEnvironment2, setMessagePayloadEnvironment2] =
     useState(null);
+  // const [test, setTest] = useState([]);
 
   // 웹소켓 설정
   useEffect(() => {
@@ -36,6 +37,11 @@ const Main = () => {
       if (receivedMessage.topic === 'edukit1/environment/data') {
         setMessagePayloadEnvironment1(JSON.parse(receivedMessage.data));
         // console.log('1공장', JSON.parse(receivedMessage.data));
+
+        // websocket array 테스트
+        // const newData = JSON.parse(receivedMessage.data);
+        // test.push(newData);
+        // setTest([...test]);
       }
 
       // 공장2
@@ -61,6 +67,7 @@ const Main = () => {
     messagePayloadEnvironment1,
     messagePayloadEdukit2,
     messagePayloadEnvironment2,
+    // test,
   };
 
   // 권한 가져오기

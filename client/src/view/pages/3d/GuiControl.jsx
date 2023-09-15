@@ -135,6 +135,7 @@ const limitHandleOnEnter = (e, fac) => {
 };
 
 export const Emergency = ({ ison, togglehandler, fac }) => {
+  console.log('here', fac);
   return (
     <Box className="guiDetail reset">
       <Title>비상정지</Title>
