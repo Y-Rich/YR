@@ -11,6 +11,10 @@ export const Container = styled.section`
   color: whitesmoke;
   font-size: 12px;
 
+  &.manager {
+    top: 12.2%;
+  }
+
   cursor: auto;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -24,6 +28,7 @@ export const Box = styled.div`
     width: 100%;
     height: 5vh;
     display: flex;
+    align-items: center;
     cursor: grab;
     background-color: #a9a9a9;
     border-radius: 5px 5px 0 0;
