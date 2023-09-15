@@ -1,54 +1,12 @@
-const {
-  Factory,
-  ProductionLine,
-  Position,
-  Permission,
-  Employee,
-} = require('../models/index');
-
-const { Products } = require('../models/index_mongo');
+const { Edukit1Sensor, Products, Edukit1 } = require('../models/index_mongo');
 
 const dao = {
-  // dao - 공장 등록
-  insertFactory(params) {
+  // 에듀킷 상태 저장
+  insertData(params) {
     return new Promise((resolve, reject) => {
-      Factory.create(params)
-        .then((inserted) => {
-          resolve(inserted);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  },
-  // dao - 공정라인 등록
-  insertLine(params) {
-    return new Promise((resolve, reject) => {
-      ProductionLine.create(params)
-        .then((inserted) => {
-          resolve(inserted);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  },
-  // dao - 직급 등록
-  insertPosition(params) {
-    return new Promise((resolve, reject) => {
-      Position.create(params)
-        .then((inserted) => {
-          resolve(inserted);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  },
-  // dao - 권한 등록
-  insertPermission(params) {
-    return new Promise((resolve, reject) => {
-      Permission.create(params)
+      const data = new Edukit1(params);
+      data
+        .save()
         .then((inserted) => {
           resolve(inserted);
         })
@@ -58,32 +16,176 @@ const dao = {
     });
   },
 
-  // dao - 공장 전체 공정 조회
-  selectList(params) {
-    // where 검색 조건
-    const setQuery = {};
-    if (params.factoryID) {
-      setQuery.where = {
-        ...setQuery.where,
-        factoryID: { [Op.like]: `%${params.factoryID}%` }, // like검색
-      };
-    }
-
-    // order by 정렬 조건
-    setQuery.order = [['factoryID', 'ASC']];
-
+  // 생산품 등록
+  insertProduct(params) {
     return new Promise((resolve, reject) => {
-      Factory.findAndCountAll({
-        ...setQuery,
-        include: [
-          {
-            model: ProductionLine,
-            // attributes: ProductionLine.includeAttributes,
+      const Product = new Products(params);
+      Product.save()
+        .then((inserted) => {
+          resolve(inserted);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  insertImage(params) {
+    return new Promise((resolve, reject) => {
+      const data = new Edukit1Sensor(params);
+      data
+        .save()
+        .then((inserted) => {
+          resolve(inserted);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  //온습도 데이터 저장
+  insertSensData1(params) {
+    return new Promise((resolve, reject) => {
+      const data = new Edukit1Sensor(params);
+      data
+        .save()
+        .then((inserted) => {
+          resolve(inserted);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+  // 에듀킷 일간 센서데이터 조회 - 2호기도 추가해야함.
+  dailySensList1(params) {
+    return new Promise((resolve, reject) => {
+      const date = Object.values(params)[0];
+      const sensorData = Object.keys(params)[0];
+      const startDate = new Date(`${date}T00:00:00.000Z`);
+      const endDate = new Date(`${date}T23:59:59.999Z`);
+      Edukit1Sensor.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $gte: [
+                    { $dateFromString: { dateString: '$createdAt' } },
+                    { $toDate: startDate },
+                  ],
+                },
+                {
+                  $lte: [
+                    { $dateFromString: { dateString: '$createdAt' } },
+                    { $toDate: endDate },
+                  ],
+                },
+              ],
+            },
           },
-        ],
-      })
-        .then((selectedList) => {
-          resolve(selectedList);
+        },
+        {
+          $group: {
+            _id: {
+              hour: {
+                $hour: { $dateFromString: { dateString: '$createdAt' } },
+              },
+            },
+            average: { $avg: `$${sensorData}` },
+          },
+        },
+        {
+          $sort: {
+            '_id.hour': 1, // "hour" 값을 오름차순으로 정렬
+          },
+        },
+        {
+          $project: {
+            _id: 0, // _id 필드 제거
+            hour: '$_id.hour', // 시간대 필드 재설정
+            average: 1, // average 필드 유지
+          },
+        },
+      ])
+        .then((inserted) => {
+          resolve(inserted);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+  // 에듀킷 주간 센서데이터 조회 - 2호기도 추가해야함.
+  weeklySensList1(params) {
+    return new Promise((resolve, reject) => {
+      const date = Object.values(params)[0]; //2023-09-11
+      const sensorData = Object.keys(params)[0];
+      // 기준 날짜를 가져옵니다.
+      const endDate = new Date(`${date}T23:59:59.999Z`);
+      // 현재 날짜에서 7일을 뺍니다.
+      const oneWeekAgo = new Date(endDate);
+      oneWeekAgo.setDate(endDate.getDate() - 7);
+      // 시작 날짜를 설정합니다 (일주일 전의 시작).
+      const startDate = new Date(
+        `${oneWeekAgo.toISOString().split('T')[0]}T00:00:00.000Z`,
+      );
+      Edukit1Sensor.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $gte: [
+                    { $dateFromString: { dateString: '$createdAt' } },
+                    { $toDate: startDate },
+                  ],
+                },
+                {
+                  $lte: [
+                    { $dateFromString: { dateString: '$createdAt' } },
+                    { $toDate: endDate },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              // year: {
+              //   $year: { $dateFromString: { dateString: '$createdAt' } },
+              // },
+              // month: {
+              //   $month: { $dateFromString: { dateString: '$createdAt' } },
+              // },
+              day: {
+                $dayOfMonth: { $dateFromString: { dateString: '$createdAt' } },
+              },
+              // hour: {
+              //   $hour: { $dateFromString: { dateString: '$createdAt' } },
+              // },
+            },
+            average: { $avg: `$${sensorData}` },
+          },
+        },
+        {
+          $sort: {
+            '_id.day': 1, // "day" 값을 오름차순으로 정렬
+          },
+        },
+        {
+          $project: {
+            _id: 0, // _id 필드 제거
+            day: '$_id.day', // 시간대 필드 재설정
+            average: 1, // average 필드 유지
+          },
+        },
+      ])
+        .then((inserted) => {
+          resolve(inserted);
         })
         .catch((err) => {
           reject(err);
@@ -91,40 +193,98 @@ const dao = {
     });
   },
 
-  // dao - 전체 직원 조회
-  employeeList(params) {
-    // where 검색 조건
-    const setQuery = {};
-    // if (params.positionID) {
-    //   setQuery.where = {
-    //     ...setQuery.where,
-    //     positionID: { [Op.like]: `%${params.positionID}%` }, // like검색
-    //   };
-    // }
-    // if (params.userid) {
-    //   setQuery.where = {
-    //     ...setQuery.where,
-    //     userid: params.userid, // '='검색
-    //   };
-    // }
-
-    // order by 정렬 조건
-    setQuery.order = [['employeeID', 'DESC']];
-
+  // 에듀킷 월간 센서데이터 조회 - 2호기도 추가해야함.
+  monthlySensList1(params) {
     return new Promise((resolve, reject) => {
-      Employee.findAndCountAll({
-        ...setQuery,
-        attributes: { exclude: ['password'] }, // password 필드 제외
-        include: [
-          {
-            model: Position,
-            as: 'Position',
-            attributes: ['positionName', 'description'],
+      const date = Object.values(params)[0]; //2023-08-11
+      const sensorData = Object.keys(params)[0];
+      // 기준 날짜를 가져옵니다.
+      const currentDate = new Date(`${date}T00:00:00.000Z`);
+      // 해당 월의 첫 번째 날짜를 구합니다.
+      const firstDayOfMonth = new Date(
+        currentDate.getUTCFullYear(),
+        // 월은 0부터 시작하므로 현재 월을 그대로 사용
+        currentDate.getUTCMonth(),
+        1,
+      );
+      // 해당 월의 마지막 날짜를 구합니다.
+      const lastDayOfMonth = new Date(
+        currentDate.getUTCFullYear(),
+        // 월은 0부터 시작하므로 다음 월의 0일을 마지막 날짜로 사용 //1일 보정
+        currentDate.getUTCMonth() + 1,
+        1,
+      );
+
+      // UTC 시간 차이를 보정합니다.
+      const utcOffset = currentDate.getTimezoneOffset();
+      firstDayOfMonth.setMinutes(
+        firstDayOfMonth.getMinutes() + utcOffset + 18 * 60,
+      );
+      lastDayOfMonth.setMinutes(
+        lastDayOfMonth.getMinutes() + utcOffset + 18 * 60,
+      );
+
+      const startDate = firstDayOfMonth;
+      const endDate = lastDayOfMonth;
+
+      console.log(`startDate: ${startDate} , endDate: ${endDate}`);
+
+      Edukit1Sensor.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $gte: [
+                    { $dateFromString: { dateString: '$createdAt' } },
+                    startDate,
+                  ],
+                },
+                {
+                  $lte: [
+                    { $dateFromString: { dateString: '$createdAt' } },
+                    endDate,
+                  ],
+                },
+              ],
+            },
           },
-        ],
-      })
-        .then((selectedList) => {
-          resolve(selectedList);
+        },
+        {
+          $group: {
+            _id: {
+              year: {
+                $year: { $dateFromString: { dateString: '$createdAt' } },
+              },
+              month: {
+                $month: { $dateFromString: { dateString: '$createdAt' } },
+              },
+              day: {
+                $dayOfMonth: { $dateFromString: { dateString: '$createdAt' } },
+              },
+            },
+            average: { $avg: `$${sensorData}` },
+          },
+        },
+        {
+          $sort: {
+            '_id.year': 1,
+            '_id.month': 1,
+            '_id.day': 1,
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            year: '$_id.year',
+            month: '$_id.month',
+            day: '$_id.day',
+            average: 1,
+          },
+        },
+      ])
+        .then((inserted) => {
+          resolve(inserted);
         })
         .catch((err) => {
           reject(err);
@@ -146,6 +306,11 @@ const dao = {
         searchField = params.Defect; //data example : ["line1","line2","line3"]   [string]
         date = params.date; // data example : "2023-09-11"  [string]
       }
+      // else
+      // {
+      //   date = Object.values(params)[0];
+      //   searchField = Object.keys(params)[0];
+      // }
       const startDate = new Date(`${date}T00:00:00.000Z`);
       const endDate = new Date(`${date}T23:59:59.999Z`);
       // prodData 필드
@@ -154,6 +319,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -195,6 +361,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -301,6 +468,7 @@ const dao = {
             },
           },
         ])
+
           .then((inserted) => {
             resolve(inserted);
           })
@@ -312,6 +480,7 @@ const dao = {
           {
             $match: {
               Category: searchField, // 특정 Category 값과 일치하는 문서를 필터링
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -393,6 +562,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -434,6 +604,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -563,6 +734,7 @@ const dao = {
           {
             $match: {
               Category: searchField, // 특정 Category 값과 일치하는 문서를 필터링
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -678,6 +850,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -719,6 +892,7 @@ const dao = {
           {
             $match: {
               Category: { $in: searchField },
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -847,7 +1021,8 @@ const dao = {
         Products.aggregate([
           {
             $match: {
-              Category: searchField,
+              Category: searchField, // 특정 Category 값과 일치하는 문서를 필터링
+              Manufacturer: 'edukit1',
               $expr: {
                 $and: [
                   {
@@ -881,7 +1056,7 @@ const dao = {
                   },
                 },
               },
-              total: { $sum: 1 },
+              total: { $sum: 1 }, // 일자별로 문서 수를 합산하여 "total" 필드에 저장
             },
           },
           {
@@ -898,20 +1073,6 @@ const dao = {
               month: '$_id.month',
               day: '$_id.day',
               total: 1,
-            },
-          },
-          {
-            $group: {
-              _id: null, // null을 사용하여 모든 결과를 하나로 그룹화합니다.
-              totalsum: { $sum: '$total' }, // "total" 필드를 합산하여 "totalsum" 필드에 저장
-              results: { $push: '$$ROOT' }, // 모든 결과를 "results" 필드에 저장
-            },
-          },
-          {
-            $project: {
-              _id: 0,
-              totalsum: 1,
-              results: 1,
             },
           },
         ])

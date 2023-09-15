@@ -68,7 +68,7 @@ const dao = {
             as: 'Position',
           },
         ],
-        // attributes: { exclude: ['password'] }, // password 필드 제외
+        attributes: { exclude: ['password'] }, // password 필드 제외
       })
         .then((selectedInfo) => {
           resolve(selectedInfo);
