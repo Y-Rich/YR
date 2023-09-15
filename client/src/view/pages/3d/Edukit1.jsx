@@ -10,7 +10,7 @@ import TextSprite from './TextSprite';
 import Gui from './Gui';
 
 const PLC = (props) => {
-  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment } =
+  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
     props.props;
   const [loading, setLoading] = useState(true);
   // const [webSocket, setWebSocket] = useState(null);
@@ -176,13 +176,15 @@ const PLC = (props) => {
 
     let requestId = null;
 
-    const [minY, maxY] = [0, 18000000];
-    const [minX, maxX] = [0, 1030000];
+    // const [minY, maxY] = [0, 18000000];
+    // const [minX, maxX] = [0, 1030000];
+    const [minY, maxY] = [0, 25000000];
+    const [minX, maxX] = [0, 1250000];
 
     // yAxisFunc 함수는 num 속성 값을 슬라이더의 높이로 변환하는 함수입니다.
     // 해당 슬라이더는 min에서 max 사이의 값을 0에서 7 사이의 값으로 변환합니다.
     const yAxisFunc = (value) => {
-      return ((value - minY) / (maxY - minY)) * 7;
+      return ((value - minY) / (maxY - minY)) * 9;
     };
     //xAxisFunc 함수는 num2 속성 값을 슬라이더의 각도로 변환하는 함수입니다.
     //해당 슬라이더는 min에서 max 사이의 값을 0에서 90도 사이의 각도로 변환합니다.
@@ -282,7 +284,7 @@ const PLC = (props) => {
         b: 0,
         a: 1.0,
       },
-      message: '부품없음',
+      message: '조정중..',
     };
     const colorOn = {
       borderColor: {
@@ -326,14 +328,14 @@ const PLC = (props) => {
           }
         }
         // 1호기 자재정상
-        if (item.tagId === '23') {
+        if (item.tagId === '2') {
           const convertedValue = item.value ? 1 : 0;
           if (convertedValue) {
-            setM1Pal(switchOn);
-            currentm1Pal.current = PalleteFull;
-          } else {
-            setM1Pal(switchOff);
+            setM1Pal(PalleteLack);
             currentm1Pal.current = PalleteLack;
+          } else {
+            setM1Pal(PalleteFull);
+            currentm1Pal.current = PalleteFull;
           }
         }
         // 2호기 On/off

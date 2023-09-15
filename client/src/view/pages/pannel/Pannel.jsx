@@ -73,8 +73,7 @@ const Pannel = (props) => {
 
   useEffect(() => {
     if (webSocket) {
-      // console.log('here');
-      console.log(messagePayloadEnvironment1);
+      // console.log(messagePayloadEnvironment1);
       setTemperature(messagePayloadEnvironment1?.Temperature);
       setHumidity(messagePayloadEnvironment1?.Humidity);
       setParticulates(messagePayloadEnvironment1?.Particulates);
