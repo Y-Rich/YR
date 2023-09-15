@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const doControl = async (commandId, name) => {
+export const doControl = async (fac, commandId, name) => {
   try {
     const response = await axios.post(
-      'http://192.168.0.127:8000/control/edukit1',
+      `http://192.168.0.127:8000/control/edukit${fac}`,
       {
         command: commandId,
       }
@@ -16,10 +16,10 @@ export const doControl = async (commandId, name) => {
   }
 };
 
-export const doControlValue = async (commandId, commandValue, name) => {
+export const doControlValue = async (fac, commandId, commandValue, name) => {
   try {
     const response = await axios.post(
-      'http://192.168.0.127:8000/control/edukit1',
+      `http://192.168.0.127:8000/control/edukit${fac}`,
       {
         command: commandId,
         value: commandValue,
