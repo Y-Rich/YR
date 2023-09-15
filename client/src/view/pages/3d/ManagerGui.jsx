@@ -180,8 +180,8 @@ const ManagerGui = (props) => {
           <ToggleBtn onClick={toggleMenu}>
             <AiFillCaretRight size="20" alt="햄버거 버튼" />
           </ToggleBtn>
-          {facilities === 'fac1' && `제1공장 - ${position}`}
-          {facilities === 'fac2' && `제2공장 - ${position}`}
+          {facNum === 1 && `제1공장 - ${position}`}
+          {facNum === 2 && `제2공장 - ${position}`}
         </Box>
         {isMenuOpen && (
           <Box className="gui">

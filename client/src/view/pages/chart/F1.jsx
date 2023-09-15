@@ -49,6 +49,10 @@ export const F1 = () => {
           // setMonthlyM2(res.monthlyAvgLine2defectRate);
           setDailyInput(res.dailyAvgInput.map((v) => v.total));
           setDailyOutput(res.dailyAvgOutput.map((v) => v.total));
+          console.log('1', res);
+          if (res.dailyAvgLine1defectRate.length > 0) {
+            console.log('2', res.dailyAvgLine1DefectRate[0].Detail);
+          }
           setDailyLine1Defect(
             res.dailyAvgLine1DefectRate[0]?.Detail?.map((v) => v.DefectProducts)
           );
@@ -62,7 +66,6 @@ export const F1 = () => {
             res.dailyAvgLine2DefectRate[0]?.Detail?.map((v) => v.DefectRatio)
           );
           setLoading(false);
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
