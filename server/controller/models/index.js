@@ -1,4 +1,4 @@
-const { sequelize } = require('../batabase/connection_mysql');
+const { sequelize } = require('../connection_mysql');
 const Sample = require('./sample');
 const Factory = require('./factory');
 const ProductionLine = require('./productionLine');

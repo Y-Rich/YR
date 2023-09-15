@@ -13,7 +13,7 @@ import {
   validatePhone,
 } from '../../../utils/userFunc';
 import { info, modi } from '../../../services/user';
-import Modal from '../../components/Modal';
+import { AlertModal, RefreshModal } from '../../components/Modal';
 
 const UserModi = () => {
   const [userInfo, setUserInfo] = useState({
@@ -22,8 +22,10 @@ const UserModi = () => {
     password: '',
     password2: '',
   });
-  const [modal, setModal] = useState(false);
-  const [modalContent, setModalContent] = useState('');
+  const [refreshModal, setRefreshModal] = useState(false);
+  const [refreshModalContent, setRefreshModalContent] = useState('');
+  const [alertmodal, setAlertModal] = useState(false);
+  const [alertmodalContent, setAlertModalContent] = useState('');
 
   const updateUserInfo = (fieldName, value) => {
     setUserInfo((prevUserInfo) => ({
@@ -31,9 +33,13 @@ const UserModi = () => {
       [fieldName]: value,
     }));
   };
-  const openModal = (content) => {
-    setModalContent(content);
-    setModal(true);
+  const openRefreshModal = (content) => {
+    setRefreshModalContent(content);
+    setRefreshModal(true);
+  };
+  const openAlertModal = (content) => {
+    setAlertModalContent(content);
+    setAlertModal(true);
   };
   useEffect(() => {
     try {
@@ -55,40 +61,44 @@ const UserModi = () => {
     await new Promise((res) => setTimeout(res, 1000));
     const { name, phone, password, password2 } = userInfo;
     if (!name || !phone) {
-      openModal('정보를 전부 입력해주세요!');
+      openAlertModal('정보를 전부 입력해주세요!');
       return;
     }
     if (!validateName(name)) {
-      openModal('이름을 한글로 입력해주세요');
+      openAlertModal('이름을 한글로 입력해주세요');
       return;
     }
     if (!validatePhone(phone)) {
-      openModal('정확한 핸드폰 번호를 입력해주세요');
+      openAlertModal('정확한 핸드폰 번호를 입력해주세요');
       return;
     }
     if (password.length > 0 || password2.length > 0) {
       if (!validatePassword(password)) {
-        openModal('8자 이상의 비밀번호를 입력해주세요!');
+        openAlertModal('8자 이상의 비밀번호를 입력해주세요!');
         return;
       }
       return;
     }
     if (password !== password2) {
-      openModal('비밀번호를 재확인해주세요!');
+      openAlertModal('비밀번호를 재확인해주세요!');
       return;
     }
     try {
       await modi(name, phone, password);
-      openModal('회원 수정이 완료되었습니다.');
+      openRefreshModal('회원 수정이 완료되었습니다.');
       window.location.reload('/usermodi');
     } catch (error) {
       console.error('Failed to register:', error);
-      openModal('회원 수정에 실패하였습니다.');
+      openRefreshModal('회원 수정에 실패하였습니다.');
     }
   };
-  const closeModal = () => {
-    setModal(false);
-    setModalContent('');
+  const closeRefreshModal = () => {
+    setRefreshModal(false);
+    setRefreshModalContent('');
+  };
+  const closeAlertModal = () => {
+    setAlertModal(false);
+    setAlertModalContent('');
   };
   return (
     <Page>
@@ -132,7 +142,18 @@ const UserModi = () => {
         <Button className="submit" onClick={handleSubmit}>
           Submit
         </Button>
-        {modal && <Modal setModal={closeModal} element={modalContent} />}
+        {refreshModal && (
+          <RefreshModal
+            setRefreshModal={closeRefreshModal}
+            element={refreshModalContent}
+          />
+        )}
+        {alertmodal && (
+          <AlertModal
+            setAlertModal={closeAlertModal}
+            element={alertmodalContent}
+          />
+        )}
       </Container>
     </Page>
   );

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const env = require('dotenv');
-const logger = require('../../lib/logger');
+const logger = require('../lib/logger');
 
 env.config();
 const { DB_MONGO_ID, DB_MONGO_PASS } = process.env;
@@ -9,7 +9,7 @@ const connect = () => {
   const MONGO_DB_URI = `mongodb+srv://${DB_MONGO_ID}:${DB_MONGO_PASS}@cluster0.o1o8pkd.mongodb.net/?retryWrites=true&w=majority`;
 
   if (process.env.NODE_ENV !== 'production') {
-    mongoose.set('debug', true);
+    mongoose.set('debug', false);
   }
   mongoose
     .connect(MONGO_DB_URI, {

@@ -4,7 +4,7 @@ export const validateName = (nickname) => {
 };
 
 export const validateEmail = (email) => {
-  const uvcDomainRegex = /@uvc\.co\.kr$/;
+  const uvcDomainRegex = /@gmail\.com$/;
   return uvcDomainRegex.test(email);
 };
 

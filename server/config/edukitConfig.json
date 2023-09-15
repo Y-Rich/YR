@@ -1,0 +1,41 @@
+{
+  "controlSet": {
+    "start": { "tagId": "1", "value": "1" },
+    "stop": { "tagId": "1", "value": "0" },
+    "No1_Action": { "tagId": "3", "value": "1" },
+    "Reset": { "tagId": "8", "value": "1" },
+
+    "No1_ON": { "tagId": "9", "value": "1" },
+    "No1_OFF": { "tagId": "9", "value": "0" },
+    "No2_ON": { "tagId": "10", "value": "1" },
+    "No2_OFF": { "tagId": "10", "value": "0" },
+    "No3_ON": { "tagId": "11", "value": "1" },
+    "No3_OFF": { "tagId": "11", "value": "0" },
+
+    "sen1_ON": { "tagId": "12", "value": "1" },
+    "sen1_OFF": { "tagId": "12", "value": "0" },
+
+    "sen2_ON": { "tagId": "13", "value": "1" },
+    "sen2_OFF": { "tagId": "13", "value": "0" },
+
+    "No1Delay": { "tagId": "14", "value": "80" },
+
+    "No2Mode_all": { "tagId": "31", "value": "1" },
+    "No2Mode_color": { "tagId": "31", "value": "0" },
+    "OutputLimit": { "tagId": "36", "value": "5" },
+    "DiceComparisonValue": { "tagId": "38", "value": "1" },
+    "No3Gripper_ON": { "tagId": "40", "value": "1" },
+    "No3Gripper_OFF": { "tagId": "40", "value": "0" }
+  },
+  "statusSet": {
+    "15": { "tag": "No1Count" },
+    "16": { "tag": "No2Count" },
+    "17": { "tag": "No3Count" },
+    "18": { "tag": "lamp_green" },
+    "19": { "tag": "lamp_yellow" },
+    "20": { "tag": "lamp_red" },
+    "21": { "tag": "No3Motor1_upDown" },
+    "22": { "tag": "No3Motor2_armMove" },
+    "37": { "tag": "DiceValue" }
+  }
+}

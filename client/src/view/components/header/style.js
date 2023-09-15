@@ -18,12 +18,13 @@ export const HeaderBox = styled.section`
   padding: 0 5% 0 5%;
 `;
 export const Text = styled.div`
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
+  font-size: 15px;
   padding: 2px;
   position: absolute;
-  right: 50vw;
+  right: 30%;
   display: flex;
   flex-direction: row;
   gap: 10px;
-  font-weight: bold;
+  /* font-weight: bold; */
 `;

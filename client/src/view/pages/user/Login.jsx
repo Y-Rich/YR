@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import {
   Title,
   Input,
@@ -10,13 +9,15 @@ import {
 } from '../../components/Components';
 import { validateEmail, validatePassword } from '../../../utils/userFunc';
 import { info, login } from '../../../services/user';
-import Modal from '../../components/Modal';
+import { AlertModal, RefreshModal } from '../../components/Modal';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [modal, setModal] = useState(false);
-  const [modalContent, setModalContent] = useState('');
+  const [refreshModal, setRefreshModal] = useState(false);
+  const [refreshModalContent, setRefreshModalContent] = useState('');
+  const [alertmodal, setAlertModal] = useState(false);
+  const [alertmodalContent, setAlertModalContent] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,30 +28,38 @@ const Login = () => {
     }
   };
 
-  const openModal = (content) => {
-    setModalContent(content);
-    setModal(true);
+  const openRefreshModal = (content) => {
+    setRefreshModalContent(content);
+    setRefreshModal(true);
+  };
+  const openAlertModal = (content) => {
+    setAlertModalContent(content);
+    setAlertModal(true);
   };
   const handleOnClick = async () => {
     try {
       if (!email || !password) {
-        openModal('이메일 또는 비밀번호를 입력해주세요!');
+        openAlertModal('이메일 또는 비밀번호를 입력해주세요!');
         return;
       }
-      if (!validateEmail(email)) {
-        openModal('유효한 이메일 주소를 입력해주세요!');
+      if (!validatePassword(password)) {
+        openAlertModal('비밀번호 8자리를 입력해주세요!');
         return;
       }
       await login(email, password);
-      openModal(`어서오세요, ${email}님!`);
+      openRefreshModal(`어서오세요, ${email}님!`);
     } catch (error) {
       console.error('Failed to login:', error);
-      openModal('로그인에 실패하였습니다.');
+      openRefreshModal('로그인에 실패하였습니다.');
     }
   };
-  const closeModal = () => {
-    setModal(false);
-    setModalContent('');
+  const closeRefreshModal = () => {
+    setRefreshModal(false);
+    setRefreshModalContent('');
+  };
+  const closeAlertModal = () => {
+    setAlertModal(false);
+    setAlertModalContent('');
   };
   return (
     <Container className="login">
@@ -82,7 +91,18 @@ const Login = () => {
       <Button onClick={handleOnClick} className="submit">
         SUBMIT
       </Button>
-      {modal && <Modal setModal={closeModal} element={modalContent} />}
+      {refreshModal && (
+        <RefreshModal
+          setRefreshModal={closeRefreshModal}
+          element={refreshModalContent}
+        />
+      )}
+      {alertmodal && (
+        <AlertModal
+          setAlertModal={closeAlertModal}
+          element={alertmodalContent}
+        />
+      )}
     </Container>
   );
 };

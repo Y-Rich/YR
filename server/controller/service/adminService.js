@@ -80,6 +80,26 @@ const service = {
     });
   },
 
+  //회원정보 수정
+  async edit(params) {
+    let result = null;
+
+    try {
+      result = await adminDao.update(params);
+      logger.debug(`(adminService.edit) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(adminService.edit) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   // service - 조회
 
   // 전체 공장 및 전체 공정 조회
@@ -117,6 +137,56 @@ const service = {
 
     return new Promise((resolve) => {
       resolve(result);
+    });
+  },
+
+  //생산관련 서비스 로직
+  async searchDailyAvg_Prod(params) {
+    let inserted = null;
+    try {
+      inserted = await adminDao.dailyProdData1(params);
+      // logger.debug(`(adminDao.dailyProdData1) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(adminDao.dailyProdData1) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+  async searchWeeklyAvg_Prod(params) {
+    let inserted = null;
+    try {
+      inserted = await adminDao.weeklyProdData1(params);
+      // logger.debug(`(adminDao.weeklyProdData1) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(adminDao.weeklyProdData1) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+  async searchMonthlyAvg_Prod(params) {
+    let inserted = null;
+    try {
+      inserted = await adminDao.monthlyProdData1(params);
+      // logger.debug(`(adminDao.monthlyProdData1) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(adminDao.monthlyProdData1) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
     });
   },
 };

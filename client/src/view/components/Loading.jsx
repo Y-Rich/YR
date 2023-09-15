@@ -18,13 +18,18 @@ const Background = styled.div`
 const LoadingText = styled.div`
   font: 1rem 'Noto Sans KR';
   text-align: center;
+  z-index: 999;
+`;
+
+const Img = styled.img`
+  z-index: 999;
 `;
 
 const Loading = () => {
   return (
     <Background>
       <LoadingText>잠시만 기다려 주세요.</LoadingText>
-      <img src="/assets/Blocks.gif" alt="로딩 중" width="5%" />{' '}
+      <Img src="/assets/Blocks.gif" alt="로딩 중" width="5%" />{' '}
     </Background>
   );
 };

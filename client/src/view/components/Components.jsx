@@ -84,7 +84,7 @@ export const Title = styled.div`
     color: white;
   }
   &.mount {
-    font-size: 8vh;
+    font-size: 6vh;
     color: white;
   }
 `;
@@ -119,7 +119,7 @@ export const Box = styled.article`
   &.chart {
     display: flex;
     &.big {
-      width: 11.2vw;
+      min-width: 11vw;
       height: 12vh;
       font-size: 3rem;
       display: flex;
@@ -127,8 +127,8 @@ export const Box = styled.article`
       /* justify-content: flex-start; */
       /* align-items: center; */
       border-radius: 5px;
-      padding: 10px;
-      gap: 5vh;
+      padding: 8px;
+      gap: 3vh;
       background-color: white;
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
       color: white;
@@ -136,13 +136,6 @@ export const Box = styled.article`
     &.small {
       flex-direction: column;
       /* gap: 2vh; */
-    }
-    /* align-items: flex-start; */
-    &.title {
-      /* margin-left: 7%; */
-    }
-    &.graph {
-      /* flex-direction: row; */
     }
   }
 `;

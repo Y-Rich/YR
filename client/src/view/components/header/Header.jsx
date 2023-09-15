@@ -3,7 +3,7 @@ import { LinkText } from '../Components';
 import { styled } from 'styled-components';
 import axios from 'axios';
 import { info, logout } from '../../../services/user';
-import Modal from '../Modal';
+import { RefreshModal } from '../Modal';
 import { useNavigate } from 'react-router-dom';
 import { Text } from './style';
 
@@ -43,8 +43,8 @@ const Header = () => {
   };
   const User = () => {
     const navigate = useNavigate();
-    const [modal, setModal] = useState(false);
-    const [modalContent, setModalContent] = useState('');
+    const [refreshModal, setRefreshModal] = useState(false);
+    const [refreshModalContent, setRefreshModalContent] = useState('');
     const [user, setUser] = useState('');
     const [userName, setUserName] = useState('');
     const [position, setPosition] = useState('');
@@ -81,24 +81,20 @@ const Header = () => {
       sessionStorage.setItem('facilities', facilities);
       sessionStorage.setItem('lines', lines);
     }
-    const openModal = (content) => {
-      setModalContent(content);
-      setModal(true);
+    const openRefreshModal = (content) => {
+      setRefreshModalContent(content);
+      setRefreshModal(true);
     };
-    const closeModal = () => {
-      setModal(false);
-      setModalContent('');
+    const closeRefreshModal = () => {
+      setRefreshModal(false);
+      setRefreshModalContent('');
     };
     const handleLogout = async () => {
-      openModal('로그아웃합니다!');
-      const token = sessionStorage.getItem('token');
-      axios.defaults.headers.common['accessToken'] = `${token}`;
-      logout();
+      // openRefreshModal('로그아웃합니다!');
+      await logout();
       // sessionStorage.removeItem('token');
-      sessionStorage.clear();
       setIsLogin(false);
-      await new Promise((res) => setTimeout(res, 1000));
-      // window.location.reload('/');
+      window.location.reload('/');
     };
     return (
       <HeaderBox>
@@ -114,7 +110,12 @@ const Header = () => {
           Log out
         </LinkText>
 
-        {modal && <Modal setModal={closeModal} element={modalContent} />}
+        {/* {refreshModal && (
+          <RefreshModal
+            setRefreshModal={closeRefreshModal}
+            element={refreshModalContent}
+          />
+        )} */}
       </HeaderBox>
     );
   };
