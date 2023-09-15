@@ -38,7 +38,7 @@ const Pannel = (props) => {
   useEffect(() => {
     if (webSocket) {
       setLoading(false);
-      messagePayloadEdukit1.Wrapper?.forEach((item) => {
+      messagePayloadEdukit1?.Wrapper?.forEach((item) => {
         if (item.tagId === '14') {
           const convertedValue = parseInt(item.value) * 10;
           setNo1Delay(convertedValue.toString());
@@ -74,10 +74,10 @@ const Pannel = (props) => {
   useEffect(() => {
     if (webSocket) {
       // console.log('here');
-      console.log(messagePayloadEnvironment);
-      setTemperature(messagePayloadEnvironment?.Temperature);
-      setHumidity(messagePayloadEnvironment?.Humidity);
-      setParticulates(messagePayloadEnvironment?.Particulates);
+      console.log(messagePayloadEnvironment1);
+      setTemperature(messagePayloadEnvironment1?.Temperature);
+      setHumidity(messagePayloadEnvironment1?.Humidity);
+      setParticulates(messagePayloadEnvironment1?.Particulates);
     }
   }, [messagePayloadEnvironment1]);
 

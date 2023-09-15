@@ -88,7 +88,7 @@ const Gui = (props) => {
   // tagID 설정
   useEffect(() => {
     if (webSocket) {
-      messagePayloadEdukit1.Wrapper?.forEach((item) => {
+      messagePayloadEdukit1?.Wrapper?.forEach((item) => {
         // 에듀킷 On/off
         if (item.tagId === '1') {
           const convertedValue = item.value ? 1 : 0;

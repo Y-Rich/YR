@@ -303,7 +303,7 @@ const PLC = (props) => {
       message: '분류안함',
     };
     if (webSocket) {
-      messagePayloadEdukit1.Wrapper?.forEach((item) => {
+      messagePayloadEdukit1?.Wrapper?.forEach((item) => {
         if (item.tagId === '21') {
           const convertedValue = parseInt(item.value);
           setM3axis1(convertedValue);
