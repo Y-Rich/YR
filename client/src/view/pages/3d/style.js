@@ -9,7 +9,7 @@ export const Container = styled.section`
   border-radius: 5px;
   user-select: none;
   color: whitesmoke;
-  font-size: 12px;
+  font-size: 15px;
 
   &.manager {
     top: 12.2%;

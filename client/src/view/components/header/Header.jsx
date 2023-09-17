@@ -23,6 +23,8 @@ const HeaderContainer = styled.header`
 
 const HeaderBox = styled.div`
   padding: 0 5% 0 5%;
+  // font-family: 'Nanum Myeongjo', sans-serif;
+  // font-weight: 700;
 `;
 
 const Header = () => {

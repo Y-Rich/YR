@@ -1,44 +1,23 @@
 import styled from 'styled-components';
 
-export const Page = styled.main`
-  width: 100%;
-  height: 100vh;
-  background-color: #f6f8f7;
-  display: flex;
-  flex-direction: column;
-  color: #d9d9d9;
-  .slick-dots {
-    .slick-active {
-      button::before {
-        /* color: #c1c1c1; */
-        color: #293242;
-        z-index: 999;
-      }
-    }
-    button::before {
-      /* color: #e9e9e9; */
-      color: #3d5a7f;
-      z-index: 999;
-    }
-  }
-`;
-
 export const Container = styled.section`
-  /* gap: 10px; */
-  margin: 1vh 10% 1% 12%;
+  margin: 1.5% 10% 1% 12%;
+  width: 100%;
   &.top {
-    gap: 2vw;
     display: grid;
-    width: 100%;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 4.1fr 1fr 1fr 1fr;
+    grid-column-gap: 20px;
   }
   &.bottom {
-    gap: 1vw;
-    display: flex;
-    flex-direction: row;
+    // gap: 1vw;
+    // display: flex;
+    // flex-direction: row;
+    width: 78.5%;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.2fr;
+    grid-column-gap: 1%;
   }
-  /* gap: 8vh; */
-  /* padding: 5%; */
 `;
 
 export const Box = styled.section`
@@ -49,14 +28,12 @@ export const Box = styled.section`
     height: 30vh;
     gap: 1vw;
     &.left {
-      width: 80vh;
       background-color: white;
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
       border-radius: 5px;
       flex-direction: column;
     }
     &.right {
-      gap: 2vw;
       flex-direction: row;
     }
   }
@@ -65,17 +42,18 @@ export const Box = styled.section`
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     height: 50vh;
-    width: 50vw;
-    justify-content: space-evenly;
     flex-direction: column;
     &.left {
-      gap: 10px;
+      width: 35vw;
+      gap: 10%;
     }
     &.middle {
-      width: 30vw;
+      // width: 20vw;
+      justify-content: space-evenly;
     }
     &.right {
-      width: 40vw;
+      // width: 25vw;
+      justify-content: space-evenly;
     }
   }
 `;
@@ -89,19 +67,18 @@ export const Section = styled.section`
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      gap: 1vw;
     }
     &.right {
-      width: 10.2vw;
+      height: 90%;
       background-color: white;
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
       border-radius: 5px;
-      padding: 10px;
+      padding: 15px;
     }
   }
   &.bottom {
     &.right {
-      gap: 10px;
+      gap: 20px;
     }
   }
 `;
@@ -116,7 +93,7 @@ export const Title = styled.article`
   padding: 5px;
   &.fac {
     position: absolute;
-    top: 1vh;
+    top: 5%;
     color: #3d5a7f;
   }
   &.top {
@@ -133,7 +110,7 @@ export const Title = styled.article`
       margin-bottom: 10px;
     }
     &.right {
-      margin-bottom: 10px;
+      margin: 10px 0 10px 0;
     }
   }
 `;
@@ -141,7 +118,6 @@ export const Title = styled.article`
 export const ContentBox = styled.div`
   display: flex;
   flex-direction: row;
-  /* gap: 1vw; */
   padding: 10px;
   justify-content: space-between;
 `;

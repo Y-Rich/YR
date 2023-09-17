@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { CBox, ChartBox, ChartContainer, GBox } from './style';
 import { DoughnutGraph, LineGraph1, LineGraph2, LineGraph3 } from './Graph';
-import { Box, Title } from '../../components/Components';
 import { dailyM1Data, tempHumi } from '../../../services/chart';
-import { AiFillAndroid, AiFillAppstore, AiFillSetting } from 'react-icons/ai';
 import Loading from '../../components/Loading';
-import { ChartModal } from '../../components/Modal';
+import { NavContent, ChartModal } from './ChartComponent';
 
 export const F1 = () => {
   const [loading, setLoading] = useState(true);
@@ -53,9 +51,10 @@ export const F1 = () => {
           if (res.dailyAvgLine1defectRate.length > 0) {
             console.log('2', res.dailyAvgLine1DefectRate[0].Detail);
           }
-          setDailyLine1Defect(
-            res.dailyAvgLine1DefectRate[0]?.Detail?.map((v) => v.DefectProducts)
-          );
+          const line1DefectsProducts = res.dailyAvgLine1DefectRate
+            .map((item) => item.Detail.map((detail) => detail.DefectProducts))
+            .flat();
+          setDailyLine1Defect(line1DefectsProducts);
           setDailyLine2Defect(
             res.dailyAvgLine2DefectRate[0]?.Detail?.map((v) => v.DefectProducts)
           );
@@ -81,56 +80,20 @@ export const F1 = () => {
 
   return (
     <ChartContainer>
-      {loading ? <Loading /> : null}
+      {/* {loading ? <Loading /> : null} */}
       <ChartBox className="top">
-        <Box className="chart big" style={{ backgroundColor: '#293242' }}>
-          <div>
-            <AiFillSetting style={{ color: '#7f83a0' }} />
-          </div>
-          <Box className="chart small">
-            <Title className="label">공장 : 서울특별시 강남구</Title>
-            <Title className="mount">Fac1{/* {monthly[2].count} */}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#50a753' }}>
-          <AiFillAndroid style={{ color: '#adefaf' }} />
-          <Box className="chart small">
-            <Title className="label">총 생산량</Title>
-            <Title className="mount">{output}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#3d5a7f' }}>
-          <AiFillAppstore style={{ color: '#e2ecf6' }} />
-          <Box className="chart small">
-            <Title className="label">총 투입량</Title>
-            <Title className="mount">{input}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#ef6e4e' }}>
-          <AiFillSetting style={{ color: '#f4dada' }} />
-          <Box className="chart small">
-            <Title className="label">오류 발생률</Title>
-            <Title className="mount">{err}%</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#97c0db' }}>
-          <AiFillSetting style={{ color: '#f9f0dd' }} />
-          <Box className="chart small">
-            <Title className="label">Line1 불량</Title>
-            <Title className="mount">
-              99
-              {/* {monthly[0].count} */}
-            </Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#321fd9' }}>
-          <AiFillSetting style={{ color: '#dad8f2' }} />
-          <Box className="chart small">
-            <Title className="label">Line2 불량</Title>
-            <Title className="mount">1{/* {monthly[1].count} */}</Title>
-          </Box>
-        </Box>
-        {/* </CBox> */}
+        <NavContent
+          location="서울"
+          factory="Fac1"
+          output={output}
+          input={input}
+          errName="오류 발생률"
+          err={err}
+          right1Title="Line1 불량"
+          right1Num="99"
+          right2Title="Line2 불량"
+          right2Num="1"
+        />
       </ChartBox>
       <ChartBox className="bottom">
         <GBox className="do">
@@ -184,10 +147,10 @@ export const F1 = () => {
               label2="2호기"
               data1={dailyLine1Defect}
               data2={dailyLine2Defect}
-              borderColor1="#3d5a7f"
-              borderColor2="#50a753"
-              backgroundColor1="#2c405a"
-              backgroundColor2="#458d47"
+              borderColor1="#97c0db"
+              borderColor2="#321fd9"
+              backgroundColor1="#97c0db"
+              backgroundColor2="#321fd9"
             />
           </GBox>
           <GBox>
@@ -198,10 +161,10 @@ export const F1 = () => {
               label2="2호기"
               data1={dailyLine1DefectRatio}
               data2={dailyLine1DefectRatio}
-              borderColor1="#3d5a7f"
-              borderColor2="#50a753"
-              backgroundColor1="#2c405a"
-              backgroundColor2="#458d47"
+              borderColor1="#97c0db"
+              borderColor2="#321fd9"
+              backgroundColor1="#97c0db"
+              backgroundColor2="#321fd9"
             />
           </GBox>
         </CBox>
