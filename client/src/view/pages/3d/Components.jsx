@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { AiFillNotification } from 'react-icons/ai';
 
 const Container = styled.nav`
   position: absolute;
@@ -37,8 +38,9 @@ const Container = styled.nav`
   }
 `;
 const Box = styled.div`
-  font-size: 0.7rem;
-  padding-bottom: 3px;
+  font-size: 12px;
+  // font-size: 0.7rem;
+  padding-bottom: 2px;
 `;
 
 const Btn = styled.button`
@@ -67,7 +69,10 @@ export const Log = () => {
 export const Order = () => {
   return (
     <Container className="order">
-      <Box className="log">[제 1공장]: 정다슬 - 1호기 제어</Box>
+      <Box className="log">
+        <AiFillNotification style={{ marginRight: '10px' }} />
+        [제 1공장]: 정다슬 - 1호기 제어
+      </Box>
     </Container>
   );
 };
@@ -75,10 +80,10 @@ export const Order = () => {
 export const OrderBtn = () => {
   return (
     <Container className="btn">
-      <Btn>dkdkdk</Btn>
-      <Btn>dkdkdk</Btn>
-      <Btn>dkdkdk</Btn>
-      <Btn>dkdkdk</Btn>
+      <Btn>이게</Btn>
+      <Btn>무슨</Btn>
+      <Btn>버튼</Btn>
+      <Btn>이였지</Btn>
     </Container>
   );
 };

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { CBox, ChartBox, ChartContainer, GBox } from './style';
 import { DoughnutGraph, LineGraph1, LineGraph2, LineGraph3 } from './Graph';
-import { Box, Title } from '../../components/Components';
 import { dailyM2Data, tempHumi } from '../../../services/chart';
-import { AiFillAndroid, AiFillAppstore, AiFillSetting } from 'react-icons/ai';
-import { ChartModal } from '../../components/Modal';
+import { NavContent, ChartModal } from './ChartComponent';
 
 export const F2 = () => {
   const [modal, setModal] = useState(false);
@@ -63,52 +61,18 @@ export const F2 = () => {
   return (
     <ChartContainer>
       <ChartBox className="top">
-        <Box className="chart big" style={{ backgroundColor: '#293242' }}>
-          <AiFillSetting style={{ color: '#7f83a0' }} />
-          <Box className="chart small">
-            <Title className="label">공장 : 세종특별자치시 연기면</Title>
-            <Title className="mount">Fac2{/* {monthly[2].count} */}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#55af58' }}>
-          <AiFillAndroid style={{ color: '#adefaf' }} />
-          <Box className="chart small">
-            <Title className="label">총 생산량</Title>
-            <Title className="mount">{output}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#3d5a7f' }}>
-          <AiFillAppstore style={{ color: '#e2ecf6' }} />
-          <Box className="chart small">
-            <Title className="label">총 투입량</Title>
-            <Title className="mount">{input}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#ef6e4e' }}>
-          <AiFillSetting style={{ color: '#f4dada' }} />
-          <Box className="chart small">
-            <Title className="label">오류 발생률</Title>
-            <Title className="mount">{err}%</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#97c0db' }}>
-          <AiFillSetting style={{ color: '#f9f0dd' }} />
-          <Box className="chart small">
-            <Title className="label">Line1 총 생산량</Title>
-            <Title className="mount">
-              99
-              {/* {monthly[0].count} */}
-            </Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#321fd9' }}>
-          <AiFillSetting style={{ color: '#dad8f2' }} />
-          <Box className="chart small">
-            <Title className="label">Line2 총 생산량</Title>
-            <Title className="mount">1{/* {monthly[1].count} */}</Title>
-          </Box>
-        </Box>
-        {/* </CBox> */}
+        <NavContent
+          location="세종"
+          factory="Fac2"
+          output={output}
+          input={input}
+          errName="오류 발생률"
+          err={err}
+          right1Title="Line1 불량"
+          right1Num="99"
+          right2Title="Line2 불량"
+          right2Num="1"
+        />
       </ChartBox>
       <ChartBox className="bottom">
         <GBox className="do">
@@ -162,10 +126,10 @@ export const F2 = () => {
               label2="2호기"
               data1={dailyInput}
               data2={dailyOutput}
-              borderColor1="#3d5a7f"
-              borderColor2="#50a753"
-              backgroundColor1="#2c405a"
-              backgroundColor2="#458d47"
+              borderColor1="#97c0db"
+              borderColor2="#321fd9"
+              backgroundColor1="#97c0db"
+              backgroundColor2="#321fd9"
             />
           </GBox>
           <GBox>
@@ -176,10 +140,10 @@ export const F2 = () => {
               label2="2호기"
               data1={dailyInput}
               data2={dailyOutput}
-              borderColor1="#3d5a7f"
-              borderColor2="#50a753"
-              backgroundColor1="#2c405a"
-              backgroundColor2="#458d47"
+              borderColor1="#97c0db"
+              borderColor2="#321fd9"
+              backgroundColor1="#97c0db"
+              backgroundColor2="#321fd9"
             />
           </GBox>
         </CBox>

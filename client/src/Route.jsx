@@ -1,6 +1,6 @@
 import Home from './view/pages/home/Home';
 import UserModi from './view/pages/user/UserModi';
-import Find from './view/pages/user/Find';
+import Password from './view/pages/user/Password';
 import Register from './view/pages/user/Register';
 import Admin from './view/pages/admin/Admin';
 import Main from './view/pages/3d/Main';
@@ -18,9 +18,9 @@ export const ROUTE = {
     path: '/usermodi',
     element: UserModi,
   },
-  FIND: {
-    path: '/find',
-    element: Find,
+  PASSWORD: {
+    path: '/password',
+    element: Password,
   },
 };
 export const PUBLIC_ROUTE = {
@@ -32,9 +32,9 @@ export const PUBLIC_ROUTE = {
     path: '/register',
     element: Register,
   },
-  FIND: {
-    path: '/find',
-    element: Find,
+  PASSWORD: {
+    path: '/password',
+    element: Password,
   },
 };
 export const PRIVATE_ROUTE = {

@@ -80,7 +80,7 @@ const Register = () => {
       navigate('/');
     } catch (error) {
       console.error('Failed to register:', error);
-      openRefreshModal('회원가입에 실패하였습니다.', false);
+      openAlertModal('회원가입에 실패하였습니다.', false);
     }
   };
 
@@ -103,12 +103,12 @@ const Register = () => {
             onChange={(e) => updateUserInfo('name', e.target.value)}
             className="register"
           />
-          <Box className="register phone">
+          <Box className="register check">
             <Input
               placeholder="Please enter your phone"
               value={userInfo.phone}
               onChange={(e) => updateUserInfo('phone', e.target.value)}
-              className="register phone"
+              className="register check"
             />
             <Button className="check">Check</Button>
           </Box>

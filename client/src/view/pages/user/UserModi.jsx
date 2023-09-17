@@ -89,7 +89,7 @@ const UserModi = () => {
       window.location.reload('/usermodi');
     } catch (error) {
       console.error('Failed to register:', error);
-      openRefreshModal('회원 수정에 실패하였습니다.');
+      openAlertModal('회원 수정에 실패하였습니다.');
     }
   };
   const closeRefreshModal = () => {
