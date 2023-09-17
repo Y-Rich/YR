@@ -6,6 +6,11 @@ const Blog = mongoose.model('Blog', blogSchema);
 //schema and model
 const ProductSchema = require('./mongo_productschema');
 const Products = mongoose.model('Products', ProductSchema);
+const InventorySchema = require('./mongo_inventoryschema');
+const Inventory = mongoose.model('Inventory', InventorySchema, 'Inventory');
+const LogSchema = require('./mongo_logschema');
+const Logs = mongoose.model('Log', LogSchema);
+
 // Edukit1
 const Edukit1Schema = require('./mongo_edukit1schema');
 const Edukit1 = mongoose.model('Edukit1', Edukit1Schema);
@@ -27,5 +32,7 @@ collections.Edukit1 = Edukit1;
 collections.Edukit1Sensor = Edukit1Sensor;
 collections.Edukit2 = Edukit2;
 collections.Edukit2Sensor = Edukit2Sensor;
+collections.Inventory = Inventory;
+collections.Logs = Logs;
 
 module.exports = collections;

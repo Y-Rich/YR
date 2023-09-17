@@ -82,6 +82,7 @@ const MQTTconnect = () => {
           );
           parsedMessage.Wrapper.unshift(dateObj);
         }
+        console.log(parsedMessage);
         //1.  비즈니스 로직 호출 [상태데이터 DB저장]
         const result = await edukit1Service.saveStatus(parsedMessage);
         logger.debug(

@@ -3,6 +3,8 @@ const router = express.Router();
 const logger = require('../lib/logger');
 const MQTTconnectForControl = require('../controller/connection_MQTT_edukitControl'); // MQTTconnect 모듈을 가져옵니다.
 const controlSet = require('../config/edukitConfig.json');
+const logService = require('../controller/service/logService');
+const tokenUtil = require('../lib/tokenUtil');
 
 // MQTT 연결을 설정합니다. - MQTTconnect 모듈 require
 const mqttClient = MQTTconnectForControl();
@@ -82,11 +84,24 @@ router.post('/edukit1', (req, res) => {
       } else {
         mes = JSON.stringify(controlList[command]);
       }
-      // mqttClient.publish('edukit1/control', mes, { qos: 1 }, function (err) {
       mqttClient.publish('edukit1/control', mes, { qos: 1 }, function (err) {
         if (err) {
           logger.error('[ edukit1/control ] Error publishing message:', err);
         } else {
+          // 제어 로그 기록 - 액세스 토큰으로 사용자 정보 추출
+          const asyncfunc = async () => {
+            const token = req.headers && req.headers.accesstoken;
+            const decoded = tokenUtil.decodeToken(token);
+            const params = {
+              ...decoded,
+              type: 'edukit1/control',
+              control: mes,
+              Category: 'employee',
+            };
+            const result = await logService.control(params);
+            logger.info(`(logService.control) logged successfully...`);
+          };
+          asyncfunc();
           return res
             .status(200)
             .json(`[ edukit1/control ] Message published command : ${command}`);
@@ -176,6 +191,19 @@ router.post('/edukit2', (req, res) => {
         if (err) {
           logger.error('[ edukit2/control ] Error publishing message:', err);
         } else {
+          // 제어 로그 기록 - 액세스 토큰으로 사용자 정보 추출
+          const asyncfunc = async () => {
+            const token = req.headers && req.headers.accesstoken;
+            const decoded = tokenUtil.decodeToken(token);
+            const params = {
+              ...decoded,
+              type: 'edukit2/control',
+              control: mes,
+            };
+            const result = await logService.control(params);
+            logger.info(`(logService.control) logged successfully...`);
+          };
+          asyncfunc();
           return res
             .status(200)
             .json(`[ edukit2/control ] Message published command : ${command}`);

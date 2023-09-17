@@ -140,6 +140,61 @@ const service = {
     });
   },
 
+  // 재고정보 조회
+  async inventory(params) {
+    let result = null;
+
+    try {
+      result = await adminDao.searchInventory(params);
+    } catch (err) {
+      logger.error(`(adminService.searchInventory) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+  // 재고정보 등록
+  async updateInven(params) {
+    let inserted = null;
+
+    try {
+      inserted = await adminDao.updateInven(params);
+      logger.debug(`(adminDao.updateInven) ${JSON.stringify(inserted)}`);
+    } catch (err) {
+      logger.error(`(adminDao.updateInven) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(inserted);
+    });
+  },
+
+  // 시간조회 - 최근 가동시간,최근 중지시간 , 최근가동시간 기준 현재까지 가동시간
+  async searchRecentTime(params) {
+    let result = null;
+
+    try {
+      result = await adminDao.searchLog(params);
+    } catch (err) {
+      logger.error(`(adminService.searchLog) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   //생산관련 서비스 로직
   async searchDailyAvg_Prod(params) {
     let inserted = null;

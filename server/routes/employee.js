@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const logger = require('../lib/logger');
 const employeeService = require('../controller/service/employeeService');
+const logService = require('../controller/service/logService');
+
 const tokenService = require('../controller/service/tokenService');
 const tokenUtil = require('../lib/tokenUtil');
 const hashUtil = require('../lib/hashUtil');
@@ -294,12 +296,28 @@ router.post('/login', async (req, res) => {
         refreshToken,
       });
       logger.info(`(token.reg.result) ${JSON.stringify(insertToken)}`);
+
+      // 로그인 로그 서비스 로직 추가
+      await logService.login({
+        ...payload,
+        type: 'login',
+        Category: 'employee',
+      });
+      logger.info(`(logService.login) logged successfully.`);
+
       res.set('accessToken', accessToken); // header 세팅
       return res.status(200).json(payload);
     }
     // 리프레시 토큰있으면 액세스 토큰 발급 + 페이로드 제공
     else {
       const { accessToken, payload } = tokenUtil.makeAccessToken(result);
+      // 로그인 로그 서비스 로직 추가
+      await logService.login({
+        ...payload,
+        type: 'login',
+        Category: 'employee',
+      });
+      logger.info(`(logService.login) logged successfully.`);
       res.set('accessToken', accessToken); // header 세팅
       return res.status(200).json(payload);
     }
@@ -430,10 +448,17 @@ router.get('/logout', async (req, res) => {
     logger.debug(`(employee.logout.token) accesstoken:${token}`);
     // 토큰 확인
     const decoded = tokenUtil.decodeToken(token);
+    const id = decoded.employeeID;
     // 비즈니스 로직 호출
-    logger.info(`(employee.logout.decoded) ${JSON.stringify(decoded)}`);
-    const result = await tokenService.deleteToken({ employeeID: decoded });
-
+    logger.info(`(employee.logout.decoded) ${JSON.stringify(id)}`);
+    const result = await tokenService.deleteToken({ employeeID: id });
+    // 로그아웃 로그 서비스 로직 추가
+    await logService.logout({
+      ...decoded,
+      type: 'logout',
+      Category: 'employee',
+    });
+    logger.info(`(logService.logout) logged successfully.`);
     // 최종 응답
     return res.status(200).json('successfully logout.... ');
   } catch (err) {

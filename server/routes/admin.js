@@ -1,7 +1,10 @@
+/*eslint-disable*/
 const express = require('express');
 const router = express.Router();
 const logger = require('../lib/logger');
 const adminService = require('../controller/service/adminService');
+const logService = require('../controller/service/logService');
+const tokenUtil = require('../lib/tokenUtil');
 
 // management - employees
 
@@ -49,7 +52,12 @@ router.post('/permission/:id', async (req, res) => {
 router.get('/search', async (req, res) => {
   try {
     const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
-
+    //쿼리있는지 확인
+    if (!req.query.positionID) {
+      return res
+        .status(400)
+        .json({ error: `Invalid query parameter.  No query parameter ` });
+    }
     // 모든 쿼리 파라미터가 유효한지 확인
     for (const queryParam in req.query) {
       if (!validQueries.includes(queryParam)) {
@@ -166,10 +174,10 @@ router.post('/productionline', async (req, res) => {
       factoryID: req.body.factoryID,
       description: req.body.description,
     };
-    logger.info(`(line.reg.params) ${JSON.stringify(params)}`);
+    logger.info(`(admin.reg.params) ${JSON.stringify(params)}`);
     // 비즈니스 로직 호출
     const result = await adminService.regLine(params);
-    logger.info(`(line.reg.result) ${JSON.stringify(result)}`);
+    logger.info(`(admin.reg.result) ${JSON.stringify(result)}`);
 
     // 최종 응답
     return res.status(201).json(result);
@@ -352,6 +360,182 @@ router.post('/search/production-data', async (req, res) => {
       }
     }
     return res.status(200).json(dataSet);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+//  router -재고 정보 조회
+router.get('/inventory', async (req, res) => {
+  try {
+    const params = {};
+    const result = await adminService.inventory(params);
+    logger.info(`(admin.inventory.result) ${JSON.stringify(result)}`);
+
+    // 로그 기록- 액세스 토큰으로 사용자 정보 추출
+    const asyncfunc = async () => {
+      const token = req.headers && req.headers.accesstoken;
+      const decoded = tokenUtil.decodeToken(token);
+      const params = {
+        ...decoded,
+        type: 'inventory-view',
+        Category: 'employee',
+      };
+      const result = await logService.control(params);
+      logger.info(`(logService.control) logged successfully...`);
+    };
+    asyncfunc();
+
+    // 최종 응답
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+//  router -재고 정보 등록 - 최근 문서 기반으로 최소 재고량 수정하여 새롭게 등록하는 방식
+router.post('/inventory', async (req, res) => {
+  try {
+    if (
+      !req.body.CurrentStock ||
+      !req.body.MinimumStock ||
+      !req.body.StoredProducts
+    ) {
+      return res.status(400).json({
+        error:
+          'Parameter error required: [CurrentStock , MinimumStock , StoredProducts]',
+      });
+    }
+    const params = {
+      CurrentStock: req.body.CurrentStock, //현재 재고량
+      MinimumStock: req.body.MinimumStock, //남은 재고량
+      StoredProducts: req.body.StoredProducts, //완제품 수량
+    };
+    logger.info(`(admin.updateInven.params) ${JSON.stringify(params)}`);
+    // 비즈니스 로직 호출
+    const result = await adminService.updateInven(params);
+    logger.info(`(admin.updateInven.result) ${JSON.stringify(result)}`);
+    // 로그 기록- 액세스 토큰으로 사용자 정보 추출
+    const asyncfunc = async () => {
+      const token = req.headers && req.headers.accesstoken;
+      const decoded = tokenUtil.decodeToken(token);
+      const params = {
+        ...decoded,
+        type: 'inventory-record',
+        Category: 'employee',
+      };
+      const result = await logService.control(params);
+      logger.info(`(logService.control) logged successfully...`);
+    };
+    asyncfunc();
+    // 최종 응답
+    return res.status(201).json(result);
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+// 입력값으로 받은 문자열을 날짜 형식인지 검사하는 정규 표현식
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidDate(dateString) {
+  return dateRegex.test(dateString);
+}
+
+//  router - 최근 가동&중지이력 ,     총 가동시간 , 총 중지시간 조회
+// 조회 일자  , 조회 타입
+router.post('/operatingtime', async (req, res) => {
+  try {
+    // searchType로 로직이 분기되므로 가장먼저 판단한다.
+    // 유효성 검사 - field
+    if (!req.body.searchType) {
+      return res
+        .status(400)
+        .json({ error: 'parameter error.. required field: searchType ' });
+    }
+    // 유효성 검사 - field
+    if (!req.body.searchType == 'recent') {
+      return res
+        .status(400)
+        .json({ error: 'parameter error.. allow : recent ' });
+    }
+    // logic - search : 최근 가동&중지이력
+    let result = null;
+    if (req.body.searchType == 'recent') {
+      const params = {
+        type: 'process-start',
+        Manufacturer: 'edukit1',
+      };
+      logger.info(
+        `(admin.searchOperatingTime.params) ${JSON.stringify(params)}`,
+      );
+      // 비즈니스 로직 호출
+      result = await adminService.searchRecentTime(params);
+      logger.info(
+        `(admin.searchOperatingTime.result) ${JSON.stringify(result)}`,
+      );
+      // 로그 기록- 액세스 토큰으로 사용자 정보 추출
+      const asyncfunc = async () => {
+        const token = req.headers && req.headers.accesstoken;
+        const decoded = tokenUtil.decodeToken(token);
+        const params = {
+          ...decoded,
+          view: 'recent',
+          type: 'time',
+          Category: 'factory',
+        };
+        const result = await logService.FacTime(params);
+        logger.info(`(logService.control) logged successfully...`);
+      };
+      asyncfunc();
+    }
+
+    // // 유효성 검사 - field
+    // if (!req.body.startDate || !req.body.endDate || !req.body.searchType) {
+    //   return res.status(400).json({
+    //     error: 'Parameter error required: [startDate , endDate , searchType]',
+    //   });
+    // }
+    // // 유효성 검사 - field value
+    // if (!isValidDate(req.body.startDate) || !isValidDate(req.body.endDate)) {
+    //   return res.status(400).json({
+    //     error: 'Parameter error  - invalid dateType. ex. "YYYY-MM-DD"',
+    //   });
+    // }
+    // if (
+    //   !req.body.searchType == 'uptime' ||
+    //   !req.body.searchType == 'downtime'
+    // ) {
+    //   return res.status(400).json({
+    //     error:
+    //       'Parameter error  - invalid searchType. ex. "uptime" , "downtime"',
+    //   });
+    // }
+
+    // // logic - parameter settings
+    // const params = {
+    //   startDate: req.body.startDate, //조회 시작시점
+    //   endDate: req.body.endDate, //조회 종료시점
+    //   searchType: req.body.searchType, // type: uptime:총 가동시간 , downtime: 총 중지시간
+    // };
+
+    // // startDate와 endDate를 사용하여 쿼리를 작성하여 원하는 기간의 데이터를 조회합니다.
+    // const data = await Event.find({
+    //   createdAt: {
+    //     $gte: new Date(startDate), // startDate 이후
+    //     $lte: new Date(endDate), // endDate 이전
+    //   },
+    // });
+
+    // // logic - search : 최근 가동&중지이력
+
+    // logger.info(`(admin.searchOperatingTime.params) ${JSON.stringify(params)}`);
+    // // 비즈니스 로직 호출
+    // const result = await adminService.searchOperatingTime(params);
+    // logger.info(`(admin.searchOperatingTime.result) ${JSON.stringify(result)}`);
+
+    // // 최종 응답
+    return res.status(200).json(result);
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
   }

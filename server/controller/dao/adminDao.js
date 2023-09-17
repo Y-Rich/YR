@@ -5,8 +5,7 @@ const {
   Permission,
   Employee,
 } = require('../models/index');
-
-const { Products } = require('../models/index_mongo');
+const { Inventory, Products, Logs } = require('../models/index_mongo');
 
 const dao = {
   // dao - 공장 등록
@@ -61,7 +60,8 @@ const dao = {
   // dao - 직원 권한 수정
   update(params) {
     return new Promise((resolve, reject) => {
-      Employee.update(params, {
+      const data = { positionID: params.positionID };
+      Employee.update(data, {
         // id를 조건으로 검색하여 update
         where: { employeeID: params.employeeID },
       })
@@ -139,6 +139,55 @@ const dao = {
           },
         ],
       })
+        .then((selectedList) => {
+          resolve(selectedList);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  // dao - 재고정보 조회
+  searchInventory(params) {
+    return new Promise((resolve, reject) => {
+      Inventory.find(params, { __v: 0, _id: 0 }) // __v , _id 필드 제외
+        .then((selectedList) => {
+          resolve(selectedList);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  // dao - 재고정보 등록/수정 -  로그 형식이라 수정작업도 포함
+  updateInven(params) {
+    return new Promise((resolve, reject) => {
+      const data = new Inventory(params);
+      data
+        .save()
+        .then((inserted) => {
+          //id,__v 필드 제거
+          const {
+            CurrentStock,
+            MinimumStock,
+            StoredProducts,
+            createdAt,
+            ...rest
+          } = inserted;
+          resolve({ CurrentStock, MinimumStock, StoredProducts, createdAt });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  // dao - 최근 가동&중지시간 조회
+  searchLog(params) {
+    return new Promise((resolve, reject) => {
+      Logs.findOne(params, { __v: 0, _id: 0 }) // __v , _id 필드 제외
         .then((selectedList) => {
           resolve(selectedList);
         })
