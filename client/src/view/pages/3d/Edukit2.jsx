@@ -12,8 +12,7 @@ import { Log, Order, OrderBtn } from './Components';
 
 const PLC = (props) => {
   const position = sessionStorage.getItem('position');
-  const { messagePayloadEdukit2, webSocket, messagePayloadEnvironment2 } =
-    props.props;
+  const { messagePayloadEdukit2, webSocket, logEdukit2 } = props.props;
   const page = 2;
   const [loading, setLoading] = useState(true);
   // const [webSocket, setWebSocket] = useState(null);
@@ -148,7 +147,7 @@ const PLC = (props) => {
       1000
     );
     camera.position.x = 0;
-    camera.position.z = -60;
+    camera.position.z = -53;
     camera.position.y = 15;
     scene.add(camera);
     // scene.add(new THREE.CameraHelper(camera)); // 카메라 헬퍼
@@ -172,17 +171,19 @@ const PLC = (props) => {
     scene.add(directionalLight);
     scene.add(new THREE.DirectionalLightHelper(directionalLight)); // 라이트의 위치를 알려주는 헬퍼
     // Light2
-    const pointLight1 = new THREE.PointLight(0xffffff, 50, 0, 1);
-    pointLight1.position.y = 20;
+    const pointLight1 = new THREE.PointLight(0xffffff, 100, 0, 1);
+    pointLight1.position.y = 30;
     pointLight1.position.z = -20;
-    pointLight1.position.x = 20;
+    pointLight1.position.x = 10;
+    pointLight1.castShadow = true;
     scene.add(pointLight1);
     scene.add(new THREE.PointLightHelper(pointLight1)); // 라이트의 위치를 알려주는 헬퍼
     // Light3
-    const pointLight2 = new THREE.PointLight(0xffffff, 50, 0, 1);
-    pointLight2.position.y = 20;
+    const pointLight2 = new THREE.PointLight(0xffffff, 100, 0, 1);
+    pointLight2.position.y = 30;
     pointLight2.position.z = -20;
-    pointLight2.position.x = -30;
+    pointLight2.position.x = -15;
+    pointLight2.castShadow = true;
     scene.add(pointLight2);
     scene.add(new THREE.PointLightHelper(pointLight2)); // 라이트의 위치를 알려주는 헬퍼
     const control = new OrbitControls(camera, renderer.domElement);
@@ -452,8 +453,8 @@ const PLC = (props) => {
       )}
       <Selector />
       <Order />
-      <OrderBtn />
-      <Log />
+      {/* <OrderBtn /> */}
+      <Log props={props.props} page={page} />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
     </div>

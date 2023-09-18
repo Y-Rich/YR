@@ -79,7 +79,7 @@ export default class Edukit {
       'files/Edukit_Test.FBX'
     ));
     const mesh_edukit_body_test = (this.object.mesh_edukit_body_test =
-      await this.loader.loadAsync('files/BodyEdukit_test.FBX'));
+      await this.loader.loadAsync('files/BodyEdukit_2.FBX'));
 
     // 3호기 중심축 위치 재조정
     mesh_m3_y_bar.position.x = 6; // bar+gripper

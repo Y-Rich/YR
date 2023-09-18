@@ -17,7 +17,9 @@ const Main = () => {
   const [messagePayloadEdukit2, setMessagePayloadEdukit2] = useState(null);
   const [messagePayloadEnvironment2, setMessagePayloadEnvironment2] =
     useState(null);
-  // const [test, setTest] = useState([]);
+  const [logEdukit1, setLogEdukit1] = useState([]);
+  const [logEdukit2, setLogEdukit2] = useState([]);
+  const [scenario, setScenario] = useState(null);
 
   // 웹소켓 설정
   useEffect(() => {
@@ -37,11 +39,6 @@ const Main = () => {
       if (receivedMessage.topic === 'edukit1/environment/data') {
         setMessagePayloadEnvironment1(JSON.parse(receivedMessage.data));
         // console.log('1공장', JSON.parse(receivedMessage.data));
-
-        // websocket array 테스트
-        // const newData = JSON.parse(receivedMessage.data);
-        // test.push(newData);
-        // setTest([...test]);
       }
 
       // 공장2
@@ -53,6 +50,31 @@ const Main = () => {
       if (receivedMessage.topic === 'edukit2/environment/data') {
         setMessagePayloadEnvironment2(JSON.parse(receivedMessage.data));
         // console.log('2공장', JSON.parse(receivedMessage.data));
+      }
+
+      // 로그데이터 공장1
+      if (receivedMessage.topic === 'edukit1/log') {
+        const newData = JSON.parse(receivedMessage.data);
+        logEdukit1.push(newData);
+        setLogEdukit1([...logEdukit1]);
+        // console.log('로그-1공장', logEdukit1);
+      }
+
+      // 로그데이터 공장2
+      if (receivedMessage.topic === 'edukit2/log') {
+        const newData = JSON.parse(receivedMessage.data);
+        logEdukit2.push(newData);
+        setLogEdukit2([...logEdukit2]);
+        // console.log('로그-2공장', JSON.parse(receivedMessage.data));
+      }
+
+      // 시나리오 알림
+      if (receivedMessage.topic === 'edukit/scenario') {
+        const newData = JSON.parse(receivedMessage.data);
+        // logEdukit2.push(newData);
+        // setLogEdukit2([...logEdukit2]);
+        setScenario(newData);
+        console.log('시나리오-알림', JSON.parse(receivedMessage.data));
       }
     });
 
@@ -67,7 +89,8 @@ const Main = () => {
     messagePayloadEnvironment1,
     messagePayloadEdukit2,
     messagePayloadEnvironment2,
-    // test,
+    logEdukit1,
+    logEdukit2,
   };
 
   // 권한 가져오기
