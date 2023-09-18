@@ -107,10 +107,10 @@ const Header = () => {
           </p>
         </Text>
 
-        <LinkText to="/admin">ADMIN</LinkText>
-        <LinkText to="/usermodi">MyPage</LinkText>
+        {position === 'manager' && <LinkText to="/admin">Admin</LinkText>}
+        <LinkText to="/usermodi">My Page</LinkText>
         <LinkText to="/" onClick={handleLogout}>
-          Log out
+          Log Out
           {/* <GoSignOut /> */}
         </LinkText>
 

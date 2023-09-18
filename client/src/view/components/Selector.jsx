@@ -112,9 +112,7 @@ const Tooltip = ({ children, message, direction }) => {
 
 const Selector = ({ onPageChange }) => {
   const fac = sessionStorage.getItem('facilities');
-  // const position = sessionStorage.getItem('position');
-  const position = 'manager';
-  // console.log('현재 속한 공장은', facilities);
+  const position = sessionStorage.getItem('position');
 
   return (
     <SelectorContainer>

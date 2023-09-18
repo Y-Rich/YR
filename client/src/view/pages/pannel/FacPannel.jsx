@@ -30,6 +30,7 @@ const FacPannel = ({
   const gauge = (No1Delay) => {
     return (No1Delay - min) / (max - min);
   };
+  console.log('DiceValue=', DiceValue, typeof DiceValue);
   return (
     <>
       <Container className="top">
@@ -195,7 +196,28 @@ const FacPannel = ({
           </Section>
           <Section className="bottom right">
             <Title className="bottom right">현재 주사위 상황</Title>
-            <Dice src="./assets/dice.png" alt={` ${DiceValue}`} />
+            {DiceValue === '1' && (
+              <Dice src="./diceImg/cubes_gambling_1.png" alt={`${DiceValue}`} />
+            )}
+            {DiceValue === '2' && (
+              <Dice src="./diceImg/cubes_gambling_2.png" alt={`${DiceValue}`} />
+            )}
+            {DiceValue === '3' && (
+              <Dice src="./diceImg/cubes_gambling_3.png" alt={`${DiceValue}`} />
+            )}
+            {DiceValue === '4' && (
+              <Dice src="./diceImg/cubes_gambling_4.png" alt={`${DiceValue}`} />
+            )}
+            {DiceValue === '5' && (
+              <Dice src="./diceImg/cubes_gambling_5.png" alt={`${DiceValue}`} />
+            )}
+            {DiceValue === '6' && (
+              <Dice src="./diceImg/cubes_gambling_6.png" alt={`${DiceValue}`} />
+            )}
+            {DiceValue === '0' && (
+              <Content className="no_dice">읽은 값 없음</Content>
+            )}
+
             {/* <Content className="dice">gkdnl</Content> */}
           </Section>
         </Box>

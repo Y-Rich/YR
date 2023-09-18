@@ -91,6 +91,7 @@ const Main = () => {
     messagePayloadEnvironment2,
     logEdukit1,
     logEdukit2,
+    scenario,
   };
 
   // 권한 가져오기
