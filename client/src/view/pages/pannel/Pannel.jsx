@@ -3,7 +3,7 @@ import { Page } from './style';
 import Slider from 'react-slick';
 import Loading from '../../components/Loading';
 import FacPannel from './FacPannel';
-import { Slide } from '../chart/style';
+import { Dots, DotsContainer, Slide } from '../../components/Components';
 
 const Pannel = (props) => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +14,22 @@ const Pannel = (props) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    appendDots: (dots) => (
+      <DotsContainer>
+        <ul style={{ margin: '0px' }}> {dots} </ul>
+      </DotsContainer>
+    ),
+    customPaging: (i) => (
+      <Dots>
+        {position === 'manager'
+          ? ['1', '2'][i]
+          : facilities === 'fac1'
+          ? ['1'][i]
+          : facilities === 'fac2'
+          ? ['2'][i]
+          : null}
+      </Dots>
+    ),
   };
 
   // const position = sessionStorage.getItem('position');
@@ -21,8 +37,13 @@ const Pannel = (props) => {
   const facilities = sessionStorage.getItem('facilities');
 
   // 웹소켓 데이터
-  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
-    props.props;
+  const {
+    messagePayloadEdukit1,
+    webSocket,
+    messagePayloadEnvironment1,
+    messagePayloadEdukit2,
+    messagePayloadEnvironment2,
+  } = props.props;
   const [f1Info, setF1Info] = useState({
     No1Delay: '준비중...',
     No1Count: '준비중...',
@@ -136,7 +157,7 @@ const Pannel = (props) => {
 
   useEffect(() => {
     if (webSocket) {
-      messagePayloadEdukit1?.Wrapper?.forEach((item) => {
+      messagePayloadEdukit2?.Wrapper?.forEach((item) => {
         if (item.tagId === '14') {
           const convertedValue = parseInt(item.value) * 10;
           setF2Info((prevF2Info) => ({
@@ -188,7 +209,7 @@ const Pannel = (props) => {
         }
       });
     }
-  }, [messagePayloadEdukit1]);
+  }, [messagePayloadEdukit2]);
 
   useEffect(() => {
     if (webSocket) {
@@ -201,7 +222,7 @@ const Pannel = (props) => {
       }));
       setLoading(false);
     }
-  }, [messagePayloadEnvironment1]);
+  }, [messagePayloadEnvironment2]);
 
   return (
     <Slide>

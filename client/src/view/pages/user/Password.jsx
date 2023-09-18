@@ -45,7 +45,7 @@ const Password = () => {
   return (
     <Page>
       <Container className="password">
-        <Title>Password Reset</Title>
+        <Title>PW Reset</Title>
         <Box className="password">
           <Input
             value={userInfo.email}

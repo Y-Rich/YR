@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-  margin: 1.5% 10% 1% 12%;
+  margin: 1% 10% 1% 12%;
   width: 100%;
   &.top {
     display: grid;
@@ -69,7 +69,7 @@ export const Section = styled.section`
       justify-content: space-between;
     }
     &.right {
-      height: 90%;
+      height: 85.8%;
       background-color: white;
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
       border-radius: 5px;
@@ -87,14 +87,14 @@ export const Title = styled.article`
   font-size: 20px;
   text-align: center;
   border-radius: 5px;
-  color: #5498ff;
+  color: #3d5a7f;
   background-color: aliceblue;
   margin: 5px;
   padding: 5px;
   &.fac {
     position: absolute;
-    top: 5%;
-    color: #3d5a7f;
+    top: 2.5%;
+    color: #293242;
   }
   &.top {
     &.right {

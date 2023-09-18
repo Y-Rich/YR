@@ -1,22 +1,5 @@
 import { styled } from 'styled-components';
 
-export const Slide = styled.main`
-  height: 100vh;
-  background-color: #f6f8f7;
-  .slick-dots {
-    .slick-active {
-      button::before {
-        color: #293242;
-        z-index: 999;
-      }
-    }
-    button::before {
-      color: #3d5a7f;
-      z-index: 999;
-    }
-  }
-`;
-
 export const ChartContainer = styled.section`
   margin: 1vh 10% 1% 12%;
   display: flex;

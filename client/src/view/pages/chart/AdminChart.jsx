@@ -72,7 +72,7 @@ export const AdminChart = () => {
 
   return (
     <ChartContainer>
-      {/* {loading ? <Loading /> : null} */}
+      {loading ? <Loading /> : null}
       <ChartBox className="top">
         <NavContent
           location="서울"

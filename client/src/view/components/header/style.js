@@ -20,11 +20,11 @@ export const HeaderBox = styled.section`
 export const Text = styled.div`
   /* background-color: aliceblue; */
   font-size: 15px;
-  padding: 2px;
+  padding: 5px;
   position: absolute;
-  right: 30%;
+  right: 23%;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  /* gap: 10px; */
   /* font-weight: bold; */
 `;

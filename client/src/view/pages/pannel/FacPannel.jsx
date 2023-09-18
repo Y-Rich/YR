@@ -181,7 +181,7 @@ const FacPannel = ({
           <Content className="bottom middle">{No1Delay}㎳</Content>
           <GaugeChart
             nrOfLevels={420}
-            arcsLength={[0.3, 0.5, 0.2]}
+            arcsLength={[0.6, 0.2, 0.1]}
             animate={false}
             hideText={true}
             colors={['#5BE12C', '#F5CD19', '#EA4228']}

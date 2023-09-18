@@ -5,6 +5,23 @@ import { AiFillAndroid, AiFillAppstore, AiFillSetting } from 'react-icons/ai';
 import { styled } from 'styled-components';
 import { LineGraph1, LineGraph3 } from './Graph';
 import { MdOutlineReportGmailerrorred, MdReport } from 'react-icons/md';
+import { GoContainer } from 'react-icons/go';
+import { SiIbeacon } from 'react-icons/si';
+import { CiInboxIn, CiInboxOut } from 'react-icons/ci';
+import { FaMagnifyingGlassChart } from 'react-icons/fa6';
+
+const BtnContainer = styled.div`
+  position: absolute;
+  cursor: pointer;
+  color: #a6a6a6;
+  font-size: 1.2rem;
+  padding: 3px;
+  &:hover {
+    color: black;
+    transform: scale(1.2);
+    transition: all 0.2s linear;
+  }
+`;
 
 const ModalContainer = styled.section`
   z-index: 999;
@@ -63,42 +80,42 @@ export const NavContent = ({
     <>
       <Box className="chart big" style={{ backgroundColor: '#293242' }}>
         <BiSolidFactory style={{ color: '#7f83a0' }} />
-        <Box className="chart small">
+        <Box className="chart tiny">
           <Title className="label">공장 : {location}</Title>
           <Title className="mount">{factory}</Title>
         </Box>
       </Box>
-      <Box className="chart big" style={{ backgroundColor: '#55af58' }}>
-        <AiFillAndroid style={{ color: '#adefaf' }} />
-        <Box className="chart small">
+      <Box className="chart big" style={{ backgroundColor: '#42a845' }}>
+        <CiInboxOut style={{ color: '#adefaf' }} />
+        <Box className="chart tiny">
           <Title className="label">총 생산량</Title>
           <Title className="mount">{output}</Title>
         </Box>
       </Box>
       <Box className="chart big" style={{ backgroundColor: '#3d5a7f' }}>
-        <AiFillAppstore style={{ color: '#e2ecf6' }} />
-        <Box className="chart small">
+        <CiInboxIn style={{ color: '#e2ecf6' }} />
+        <Box className="chart tiny">
           <Title className="label">총 투입량</Title>
           <Title className="mount">{input}</Title>
         </Box>
       </Box>
-      <Box className="chart big" style={{ backgroundColor: '#ef6e4e' }}>
-        <MdOutlineReportGmailerrorred style={{ color: '#f4dada' }} />
-        <Box className="chart small">
+      <Box className="chart big" style={{ backgroundColor: '#9B0000' }}>
+        <MdOutlineReportGmailerrorred style={{ color: '#f6d8d8' }} />
+        <Box className="chart tiny">
           <Title className="label">{errName}</Title>
           <Title className="mount">{err}%</Title>
         </Box>
       </Box>
-      <Box className="chart big" style={{ backgroundColor: '#97c0db' }}>
-        <AiFillSetting style={{ color: '#f9f0dd' }} />
-        <Box className="chart small">
+      <Box className="chart big" style={{ backgroundColor: '#FF7272' }}>
+        <GoContainer style={{ color: '##f4c0b4' }} />
+        <Box className="chart tiny">
           <Title className="label">{right1Title}</Title>
           <Title className="mount">{right1Num}</Title>
         </Box>
       </Box>
-      <Box className="chart big" style={{ backgroundColor: '#321fd9' }}>
-        <AiFillSetting style={{ color: '#dad8f2' }} />
-        <Box className="chart small">
+      <Box className="chart big" style={{ backgroundColor: '#FFB5B5' }}>
+        <GoContainer style={{ color: '#f9d4d4' }} />
+        <Box className="chart tiny">
           <Title className="label">{right2Title}</Title>
           <Title className="mount">{right2Num}</Title>
         </Box>
@@ -171,5 +188,13 @@ export const ChartModal = ({ setModal, time, dust, temp, humi }) => {
         </ModalChart>
       </ModalBox>
     </ModalContainer>
+  );
+};
+
+export const ModalBtn = ({ handleClick }) => {
+  return (
+    <BtnContainer>
+      <FaMagnifyingGlassChart onClick={handleClick}></FaMagnifyingGlassChart>
+    </BtnContainer>
   );
 };

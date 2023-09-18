@@ -6,6 +6,7 @@ import { info, logout } from '../../../services/user';
 import { RefreshModal } from '../Modal';
 import { useNavigate } from 'react-router-dom';
 import { Text } from './style';
+import { GoSignOut } from 'react-icons/go';
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -102,7 +103,7 @@ const Header = () => {
       <HeaderBox>
         <Text>
           <p>
-            {position} {userName}
+            직급: {position} | 이름: {userName}
           </p>
         </Text>
 
@@ -110,6 +111,7 @@ const Header = () => {
         <LinkText to="/usermodi">My Page</LinkText>
         <LinkText to="/" onClick={handleLogout}>
           Log Out
+          {/* <GoSignOut /> */}
         </LinkText>
 
         {/* {refreshModal && (

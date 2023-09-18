@@ -187,7 +187,7 @@ export const DoughnutGraph = ({ title, labels, datas }) => {
       {
         labels,
         data: datas,
-        backgroundColor: ['#1c3353', '#467fd0', '#7ea5dc'],
+        backgroundColor: ['#42a845', '#cfcfcf', '#7ea5dc'],
         borderColor: ['white', 'white', 'white'],
         borderWidth: 1,
       },
