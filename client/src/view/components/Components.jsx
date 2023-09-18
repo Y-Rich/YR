@@ -207,6 +207,14 @@ export const Input = styled.input`
       background-color: #dde998;
     }
   }
+  &.gui_b_ms {
+    width: 2.7vw;
+    height: 3vh;
+    margin-right: 0.5vw;
+    &:focus {
+      background-color: #dde998;
+    }
+  }
   &.gui_a_dicenum {
     width: 1.5vw;
     height: 3vh;

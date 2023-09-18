@@ -15,6 +15,7 @@ export default class Edukit {
     this.object = {};
     this.loaded = false;
     this.axes = {};
+    this.trays = {};
   }
 
   async fileload(scene) {
@@ -22,6 +23,10 @@ export default class Edukit {
     const groupM3Y = (this.axes.yAxis = new Group());
     const groupM3X = (this.axes.xAxis = new Group());
     const groupM3X2 = (this.axes.xAxis2 = new Group());
+
+    const groupTrayM1 = (this.trays.m1 = new Group());
+    const groupTrayM2 = (this.trays.m2 = new Group());
+    const groupTrayM3 = (this.trays.m3 = new Group());
 
     // 3호기 중심축 위치 재조정
     groupM3X.position.x = -6; // bar+gripper
@@ -75,11 +80,19 @@ export default class Edukit {
       await this.loader.loadAsync('files/TrafficLight_Yellow.FBX'));
     const mesh_v_sensor = (this.object.mesh_v_sensor =
       await this.loader.loadAsync('files/VisionSensor2.FBX'));
-    const test = (this.object.test = await this.loader.loadAsync(
-      'files/Edukit_Test.FBX'
-    ));
     const mesh_edukit_body_test = (this.object.mesh_edukit_body_test =
       await this.loader.loadAsync('files/BodyEdukit_2.FBX'));
+    const mesh_tray_m1 = (this.object.mesh_tray_m1 =
+      await this.loader.loadAsync('files/Tray_2.FBX'));
+    const mesh_tray_m2 = (this.object.mesh_tray_m2 =
+      await this.loader.loadAsync('files/Tray_2.FBX'));
+    const mesh_tray_m3 = (this.object.mesh_tray_m3 =
+      await this.loader.loadAsync('files/Tray_2.FBX'));
+
+    // Tray 위치 조정
+    mesh_tray_m1.position.set(19.8, 0.3, 4);
+    mesh_tray_m2.position.set(11.4, 0.3, 4);
+    mesh_tray_m3.position.set(0, 0, 0);
 
     // 3호기 중심축 위치 재조정
     mesh_m3_y_bar.position.x = 6; // bar+gripper
@@ -109,6 +122,9 @@ export default class Edukit {
     groupM3X.add(mesh_m3_y_bar, groupM3X2, new AxesHelper(7));
     groupM3Y.add(groupM3X, mesh_m3_y_axis);
     group.add(groupM3Y);
+    groupTrayM1.add(mesh_tray_m1);
+    groupTrayM2.add(mesh_tray_m2);
+    groupTrayM3.add(mesh_tray_m3);
     group.add(
       mesh_belt,
       // mesh_edukit_body,
@@ -125,8 +141,13 @@ export default class Edukit {
       mesh_trf_grn,
       mesh_trf_red,
       mesh_trf_yll,
-      mesh_v_sensor
-      // test
+      mesh_v_sensor,
+      // mesh_tray_m1,
+      // mesh_tray_m2,
+      // mesh_tray_m3,
+      groupTrayM1,
+      groupTrayM2,
+      groupTrayM3
     );
     group.position.x = -1;
     group.position.y = -5;
@@ -201,6 +222,39 @@ export default class Edukit {
         this.axes.xAxis.rotation.y -= deltaXDeg;
         this.axes.xAxis2.rotation.y += deltaXDeg;
       }
+    }
+  }
+
+  trayActionM1(value) {
+    // console.log('trayActionM1 호출, value=', value);
+    this.trays.m1.visible = value;
+  }
+
+  trayActionM2(value, color) {
+    // console.log('trayActionM2 호출, value=', value, ', material=', material);
+    this.trays.m2.visible = value;
+
+    // 재질 가져오기
+    const currentMaterial = this.trays.m2.children[0].children[0].material[0];
+    if (color === 'red') {
+      currentMaterial.color.set(0xff0000);
+    }
+    if (color === 'white') {
+      currentMaterial.color.set(0xffffff);
+    }
+  }
+
+  trayActionM3(value, color) {
+    // console.log('trayActionM3 호출, value=', value);
+    this.trays.m3.visible = value;
+
+    // 재질 가져오기
+    const currentMaterial = this.trays.m3.children[0].children[0].material[0];
+    if (color === 'red') {
+      currentMaterial.color.set(0xff0000);
+    }
+    if (color === 'white') {
+      currentMaterial.color.set(0xffffff);
     }
   }
 }

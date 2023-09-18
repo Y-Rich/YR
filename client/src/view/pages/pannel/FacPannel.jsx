@@ -30,7 +30,6 @@ const FacPannel = ({
   const gauge = (No1Delay) => {
     return (No1Delay - min) / (max - min);
   };
-  console.log('DiceValue=', DiceValue, typeof DiceValue);
   return (
     <>
       <Container className="top">

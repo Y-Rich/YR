@@ -220,7 +220,7 @@ export const DurationTime = ({ ison, togglehandler, fac }) => {
         <Input ison={ison} className="gui_a" value={ison} disabled />
         <Input
           ison={ison}
-          className="gui_b"
+          className="gui_b_ms"
           onKeyDown={(e) => durationTimeHandleOnEnter(e, fac)}
         />
         ms

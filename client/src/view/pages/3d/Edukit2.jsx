@@ -21,6 +21,19 @@ const PLC = (props) => {
   //   useState(null);
   const canvasRef = useRef(null);
 
+  // tray를 위한 셋팅
+  const [arrivedM1, setArrivedM1] = useState(false);
+  const [arrivedM2, setArrivedM2] = useState(false);
+  const [arrivedM3, setArrivedM3] = useState(false);
+  const [arrivedColorM2, setArrivedColorM2] = useState('');
+  const [arrivedColorM3, setArrivedColorM3] = useState('');
+
+  const currentArrivedM1 = useRef(arrivedM1);
+  const currentArrivedM2 = useRef(arrivedM2);
+  const currentArrivedM3 = useRef(arrivedM3);
+  const currentArrivedColorM2 = useRef(arrivedColorM2);
+  const currentArrivedColorM3 = useRef(arrivedColorM3);
+
   // textSprite Ref
   const textSprite1_1Ref = useRef(null);
   const textSprite1_2Ref = useRef(null);
@@ -210,6 +223,10 @@ const PLC = (props) => {
     // let lastM1OnOff = m1OnOff; // 초기값으로 설정
     // console.log('lastM1OnOff =', lastM1OnOff);
 
+    // 트레이 색상
+    const redMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const whiteMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
     const tick = () => {
       // console.log(messagePayloadEdukit2);
       renderer.render(scene, camera);
@@ -226,6 +243,17 @@ const PLC = (props) => {
         // console.log('-------------------X', currentm3axis1.current);
         edukitRef.current.actionY(yAxisFunc(currentm3axis2.current));
         edukitRef.current.actionX(xAxisFunc(currentm3axis1.current));
+
+        // 트레이
+        edukitRef.current.trayActionM1(currentArrivedM1.current);
+        edukitRef.current.trayActionM2(
+          currentArrivedM2.current,
+          currentArrivedColorM2.current
+        );
+        edukitRef.current.trayActionM3(
+          currentArrivedM3.current,
+          currentArrivedColorM3.current
+        );
 
         // textSprite 업데이트
         textSprite1_1Ref.current.updateParameters(currentm1OnOff.current);
@@ -331,6 +359,9 @@ const PLC = (props) => {
       };
     };
     if (webSocket) {
+      // 2호기 도착 여부
+      let validation1 = false;
+      let validation2 = false;
       messagePayloadEdukit2?.Wrapper?.forEach((item) => {
         if (item.tagId === '21') {
           const convertedValue = parseInt(item.value);
@@ -435,6 +466,78 @@ const PLC = (props) => {
           const convertedValue = parseInt(item.value);
           setVnum(Vnum(convertedValue));
           currentVNum.current = Vnum(convertedValue);
+        }
+
+        // 트레이 세팅
+        // 1호기 도착 여부
+        if (item.tagId === '3') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setArrivedM1(true);
+            currentArrivedM1.current = true;
+          } else {
+            setArrivedM1(false);
+            currentArrivedM1.current = false;
+          }
+        }
+
+        if (item.tagId === '24') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setArrivedM2(true);
+            currentArrivedM2.current = true;
+          } else {
+            validation1 = true;
+            console.log('hi 24');
+          }
+        }
+        if (item.tagId === '29') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setArrivedM2(true);
+            currentArrivedM2.current = true;
+          } else {
+            validation2 = true;
+            console.log('hi 29');
+          }
+        }
+        console.log('24=', validation1, '29=', validation2);
+        if (validation1 === true && validation2 === true) {
+          setArrivedM2(false);
+          currentArrivedM2.current = false;
+        }
+        // 3호기 도착 여부
+        if (item.tagId === '5') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setArrivedM3(true);
+            currentArrivedM3.current = true;
+          } else {
+            setArrivedM3(false);
+            currentArrivedM3.current = false;
+          }
+        }
+        // 색상체인지 M2
+        if (item.tagId === '6') {
+          const convertedValue = item.value ? 1 : 0;
+          if (convertedValue) {
+            setArrivedColorM2('white');
+            currentArrivedColorM2.current = 'white';
+          } else {
+            setArrivedColorM2('red');
+            currentArrivedColorM2.current = 'red';
+          }
+        }
+        // 색상체인지 M3
+        if (item.tagId === '37') {
+          const convertedValue = parseInt(item.value);
+          if (convertedValue > 0) {
+            setArrivedColorM3('white');
+            currentArrivedColorM3.current = 'white';
+          } else {
+            setArrivedColorM3('red');
+            currentArrivedColorM3.current = 'red';
+          }
         }
       });
     }
