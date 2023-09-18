@@ -12,8 +12,7 @@ import { Log, Order, OrderBtn } from './Components';
 
 const PLC = (props) => {
   const position = sessionStorage.getItem('position');
-  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
-    props.props;
+  const { messagePayloadEdukit1, webSocket, logEdukit1 } = props.props;
   const page = 1;
   const [loading, setLoading] = useState(true);
   // const [webSocket, setWebSocket] = useState(null);
@@ -31,6 +30,7 @@ const PLC = (props) => {
   const textSpriteC_1Ref = useRef(null);
   const textSpriteC_2Ref = useRef(null);
   const textSpriteVRef = useRef(null);
+  const textSpriteV_numRef = useRef(null);
 
   const [m3axis1, setM3axis1] = useState(0);
   const [m3axis2, setM3axis2] = useState(0);
@@ -42,6 +42,7 @@ const PLC = (props) => {
   const [m1Pal, setM1Pal] = useState(0);
   const [m2Pal, setM2Pal] = useState(0);
   const [CFilter, setCFilter] = useState(0);
+  const [Vnum, setVnum] = useState(0);
 
   // 에듀킷 실시간 변수
   const currentm3axis1 = useRef(m3axis1);
@@ -54,6 +55,7 @@ const PLC = (props) => {
   const currentm1Pal = useRef(m1Pal);
   const currentm2Pal = useRef(m2Pal);
   const currentCFilter = useRef(CFilter);
+  const currentVNum = useRef(Vnum);
 
   const edukitRef = useRef(null);
 
@@ -108,6 +110,11 @@ const PLC = (props) => {
     // 비전센서
     const textSpriteV = new TextSprite({
       canvasX: -3, // X 좌표 설정
+      canvasY: 10.5, // Y 좌표 설정
+      canvasZ: -12, // Z 좌표 설정
+    });
+    const textSpriteVNum = new TextSprite({
+      canvasX: -3, // X 좌표 설정
       canvasY: 9, // Y 좌표 설정
       canvasZ: -12, // Z 좌표 설정
     });
@@ -120,6 +127,7 @@ const PLC = (props) => {
     scene.add(textSpriteC_1);
     scene.add(textSpriteC_2);
     scene.add(textSpriteV);
+    scene.add(textSpriteVNum);
 
     textSprite1_1Ref.current = textSprite1_1;
     textSprite1_2Ref.current = textSprite1_2;
@@ -129,6 +137,7 @@ const PLC = (props) => {
     textSpriteC_1Ref.current = textSpriteC_1;
     textSpriteC_2Ref.current = textSpriteC_2;
     textSpriteVRef.current = textSpriteV;
+    textSpriteV_numRef.current = textSpriteVNum;
 
     // 카메라
     const camera = new THREE.PerspectiveCamera(
@@ -138,7 +147,7 @@ const PLC = (props) => {
       1000
     );
     camera.position.x = 0;
-    camera.position.z = -60;
+    camera.position.z = -53;
     camera.position.y = 15;
     scene.add(camera);
     // scene.add(new THREE.CameraHelper(camera)); // 카메라 헬퍼
@@ -162,32 +171,34 @@ const PLC = (props) => {
     scene.add(directionalLight);
     scene.add(new THREE.DirectionalLightHelper(directionalLight)); // 라이트의 위치를 알려주는 헬퍼
     // Light2
-    const pointLight1 = new THREE.PointLight(0xffffff, 50, 0, 1);
-    pointLight1.position.y = 20;
+    const pointLight1 = new THREE.PointLight(0xffffff, 100, 0, 1);
+    pointLight1.position.y = 30;
     pointLight1.position.z = -20;
-    pointLight1.position.x = 20;
+    pointLight1.position.x = 10;
+    pointLight1.castShadow = true;
     scene.add(pointLight1);
     scene.add(new THREE.PointLightHelper(pointLight1)); // 라이트의 위치를 알려주는 헬퍼
     // Light3
-    const pointLight2 = new THREE.PointLight(0xffffff, 50, 0, 1);
-    pointLight2.position.y = 20;
+    const pointLight2 = new THREE.PointLight(0xffffff, 100, 0, 1);
+    pointLight2.position.y = 30;
     pointLight2.position.z = -20;
-    pointLight2.position.x = -30;
+    pointLight2.position.x = -15;
+    pointLight2.castShadow = true;
     scene.add(pointLight2);
     scene.add(new THREE.PointLightHelper(pointLight2)); // 라이트의 위치를 알려주는 헬퍼
     const control = new OrbitControls(camera, renderer.domElement);
 
     let requestId = null;
 
-    // const [minY, maxY] = [0, 18000000];
-    // const [minX, maxX] = [0, 1030000];
-    const [minY, maxY] = [0, 25000000];
-    const [minX, maxX] = [0, 1250000];
+    const [minY, maxY] = [0, 18000000];
+    const [minX, maxX] = [0, 1030000];
+    // const [minY, maxY] = [0, 25000000];
+    // const [minX, maxX] = [0, 1250000];
 
     // yAxisFunc 함수는 num 속성 값을 슬라이더의 높이로 변환하는 함수입니다.
     // 해당 슬라이더는 min에서 max 사이의 값을 0에서 7 사이의 값으로 변환합니다.
     const yAxisFunc = (value) => {
-      return ((value - minY) / (maxY - minY)) * 9;
+      return ((value - minY) / (maxY - minY)) * 7;
     };
     //xAxisFunc 함수는 num2 속성 값을 슬라이더의 각도로 변환하는 함수입니다.
     //해당 슬라이더는 min에서 max 사이의 값을 0에서 90도 사이의 각도로 변환합니다.
@@ -225,6 +236,7 @@ const PLC = (props) => {
         textSpriteC_1Ref.current.updateParameters(currentCOnOff.current);
         textSpriteC_2Ref.current.updateParameters(currentCFilter.current);
         textSpriteVRef.current.updateParameters(currentVOnOff.current);
+        textSpriteV_numRef.current.updateParameters(currentVNum.current);
       }
     };
 
@@ -306,6 +318,17 @@ const PLC = (props) => {
         a: 1.0,
       },
       message: '분류안함',
+    };
+    const Vnum = (num) => {
+      return {
+        borderColor: {
+          r: 0,
+          g: 255,
+          b: 0,
+          a: 1.0,
+        },
+        message: `${num}보다 큰 수`,
+      };
     };
     if (webSocket) {
       messagePayloadEdukit1?.Wrapper?.forEach((item) => {
@@ -407,6 +430,12 @@ const PLC = (props) => {
             currentVOnOff.current = switchOff;
           }
         }
+        // 비전센서 주사위 조건
+        if (item.tagId === '38') {
+          const convertedValue = parseInt(item.value);
+          setVnum(Vnum(convertedValue));
+          currentVNum.current = Vnum(convertedValue);
+        }
       });
     }
   }, [messagePayloadEdukit1]);
@@ -424,8 +453,7 @@ const PLC = (props) => {
       )}
       <Selector />
       <Order />
-      {/* <OrderBtn /> */}
-      <Log />
+      <Log props={props.props} page={page} />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>
     </div>

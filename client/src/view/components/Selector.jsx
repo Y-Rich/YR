@@ -127,7 +127,6 @@ const Selector = ({ onPageChange }) => {
           <LiaDigitalTachographSolid />
         </Btn>
       </Tooltip>
-
       {position === 'manager' ? (
         <>
           <Tooltip message="plc1" direction="left">
