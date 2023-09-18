@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { CBox, ChartBox, ChartContainer, GBox } from './style';
 import { DoughnutGraph, LineGraph1, LineGraph2, LineGraph3 } from './Graph';
-import { Box, Title } from '../../components/Components';
 import { monthM1Data, monthM2Data } from '../../../services/chart';
-import { AiFillAndroid, AiFillAppstore, AiFillSetting } from 'react-icons/ai';
 import Loading from '../../components/Loading';
+import { NavContent } from './ChartComponent';
 
 export const AdminChart = () => {
   const [loading, setLoading] = useState(true);
@@ -73,84 +72,20 @@ export const AdminChart = () => {
 
   return (
     <ChartContainer>
-      {loading ? <Loading /> : null}
+      {/* {loading ? <Loading /> : null} */}
       <ChartBox className="top">
-        {/* <CBox className="title"> */}
-        <Box className="chart big" style={{ backgroundColor: '#293242' }}>
-          <AiFillSetting style={{ color: '#7f83a0' }} />
-          <Box className="chart small">
-            <Title className="label">공장 : 서울특별시 강남구</Title>
-            <Title className="mount">전체{/* {monthM1ly[2].count} */}</Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#55af58' }}>
-          <AiFillAndroid style={{ color: '#adefaf' }} />
-          <Box className="chart small">
-            <Title className="label">총 생산량</Title>
-            <Title
-              className="mount"
-              // style={{ color: 'green' }}
-            >
-              {output}
-            </Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#3d5a7f' }}>
-          <AiFillAppstore style={{ color: '#e2ecf6' }} />
-          <Box className="chart small">
-            <Title className="label">총 투입량</Title>
-            <Title
-              className="mount"
-              // style={{ color: 'blue' }}
-            >
-              {input}
-            </Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#ef6e4e' }}>
-          <AiFillSetting style={{ color: '#f4dada' }} />
-          <Box className="chart small">
-            <Title className="label">불량률</Title>
-            <Title
-              className="mount"
-              // style={{ color: 'red' }}
-            >
-              {/* {(monthM1Line1Defect +
-                monthM1Line2Defect +
-                monthM2Line1Defect +
-                monthM2Line2Defect) *
-                100} */}
-              {err}%
-            </Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#97c0db' }}>
-          <AiFillSetting style={{ color: '#f9f0dd' }} />
-          <Box className="chart small">
-            <Title className="label">총 재고</Title>
-            <Title
-              className="mount"
-              // style={{ color: 'orange' }}
-            >
-              {outputF1}
-              {/* {monthM1ly[0].count} */}
-            </Title>
-          </Box>
-        </Box>
-        <Box className="chart big" style={{ backgroundColor: '#321fd9' }}>
-          <AiFillSetting style={{ color: '#dad8f2' }} />
-          <Box className="chart small">
-            <Title className="label">목표 생산량</Title>
-            <Title
-              className="mount"
-              // style={{ color: 'red' }}
-            >
-              {input + output}
-              {/* {monthM1ly[1].count} */}
-            </Title>
-          </Box>
-        </Box>
-        {/* </CBox> */}
+        <NavContent
+          location="서울"
+          factory="전체"
+          output={output}
+          input={input}
+          errName="불량률"
+          err={err}
+          right1Title="총 재고"
+          right1Num={outputF1}
+          right2Title="목표 생산량"
+          right2Num={input + output}
+        />
       </ChartBox>
       <ChartBox className="bottom">
         <GBox className="do">

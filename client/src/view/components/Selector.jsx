@@ -22,16 +22,16 @@ const SelectorContainer = styled.footer`
   z-index: 999;
 `;
 const Btn = styled.button`
-  color: #000000;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 800;
   cursor: pointer;
   &:hover {
-    color: #5498ff;
+    color: #22598f;
   }
-  /* &:focus {
-    color: #5498ff;
-  } */
+  &:focus {
+    color: #000000;
+  }
   background-color: #5498ff;
   padding: 15px;
   font-size: 1.5rem;
@@ -42,10 +42,9 @@ const Btn = styled.button`
 `;
 
 const Selector = ({ onPageChange }) => {
-  // 권한 가져오기
-
   const fac = sessionStorage.getItem('facilities');
-  const position = sessionStorage.getItem('position');
+  // const position = sessionStorage.getItem('position');
+  const position = 'manager';
   // console.log('현재 속한 공장은', facilities);
 
   return (

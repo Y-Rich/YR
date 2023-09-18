@@ -50,7 +50,7 @@ const Login = () => {
       openRefreshModal(`어서오세요, ${email}님!`);
     } catch (error) {
       console.error('Failed to login:', error);
-      openRefreshModal('로그인에 실패하였습니다.');
+      openAlertModal('로그인에 실패하였습니다.');
     }
   };
   const closeRefreshModal = () => {
@@ -84,7 +84,7 @@ const Login = () => {
         <LinkText to="/register" className="smallbox">
           SIGN IN
         </LinkText>
-        <LinkText to="/find" className="smallbox">
+        <LinkText to="/password" className="smallbox">
           FIND PW
         </LinkText>
       </Box>

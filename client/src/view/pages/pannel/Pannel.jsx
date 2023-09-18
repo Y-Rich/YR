@@ -1,70 +1,121 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Page,
-  Box,
-  Container,
-  Content,
-  Dice,
-  Section,
-  Title,
-  ContentBox,
-} from './style';
+import { Page } from './style';
 import Slider from 'react-slick';
-import GaugeChart from 'react-gauge-chart';
 import Loading from '../../components/Loading';
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import { Progress, ProgressBar } from '../../components/Components';
+import FacPannel from './FacPannel';
+import { Slide } from '../chart/style';
 
 const Pannel = (props) => {
   const [loading, setLoading] = useState(true);
+  const settings = {
+    dots: true,
+    fade: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  // const position = sessionStorage.getItem('position');
+  const position = 'manager';
+  const facilities = sessionStorage.getItem('facilities');
 
   // 웹소켓 데이터
   const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
     props.props;
-
+  const [f1Info, setF1Info] = useState({
+    No1Delay: '준비중...',
+    No1Count: '준비중...',
+    No2Count: '준비중...',
+    No3Count: '준비중...',
+    OutputLimit: '준비중...',
+    DiceValue: '준비중...',
+    DiceComparisonValue: '준비중...',
+    Temperature: '준비중...',
+    Humidity: '준비중...',
+    Particulates: '준비중...',
+  });
+  const [f2Info, setF2Info] = useState({
+    No1Delay: '준비중...',
+    No1Count: '준비중...',
+    No2Count: '준비중...',
+    No3Count: '준비중...',
+    OutputLimit: '준비중...',
+    DiceValue: '준비중...',
+    DiceComparisonValue: '준비중...',
+    Temperature: '준비중...',
+    Humidity: '준비중...',
+    Particulates: '준비중...',
+  });
   // 받은 데이터
-  const [No1Delay, setNo1Delay] = useState('준비중...');
-  const [No1Count, setNo1Count] = useState('준비중...');
-  const [No2Count, setNo2Count] = useState('준비중...');
-  const [No3Count, setNo3Delay] = useState('준비중...');
-  const [OutputLimit, setOutputLimit] = useState('준비중...');
-  const [DiceValue, setDiceValue] = useState('준비중...');
-  const [DiceComparisonValue, setDiceComparisonValue] = useState('준비중...');
-  const [Temperature, setTemperature] = useState('준비중...');
-  const [Humidity, setHumidity] = useState('준비중...');
-  const [Particulates, setParticulates] = useState('준비중...');
-
+  // const [No1Delay, setNo1Delay] = useState('준비중...');
+  // const [No1Count, setNo1Count] = useState('준비중...');
+  // const [No2Count, setNo2Count] = useState('준비중...');
+  // const [No3Count, setNo3Delay] = useState('준비중...');
+  // const [OutputLimit, setOutputLimit] = useState('준비중...');
+  // const [DiceValue, setDiceValue] = useState('준비중...');
+  // const [DiceComparisonValue, setDiceComparisonValue] = useState('준비중...');
+  // const [Temperature, setTemperature] = useState('준비중...');
+  // const [Humidity, setHumidity] = useState('준비중...');
+  // const [Particulates, setParticulates] = useState('준비중...');
+  // const updateF1Info = (fieldName, value) => {
+  //   setF1Info((prevF1Info) => ({
+  //     ...prevF1Info,
+  //     [fieldName]: value,
+  //   }));
+  // };
   //데이터 설정
   useEffect(() => {
     if (webSocket) {
       messagePayloadEdukit1?.Wrapper?.forEach((item) => {
         if (item.tagId === '14') {
           const convertedValue = parseInt(item.value) * 10;
-          setNo1Delay(convertedValue.toString());
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            No1Delay: convertedValue.toString(),
+          }));
         }
         if (item.tagId === '15') {
           const convertedValue = item.value;
-          setNo1Count(convertedValue);
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            No1Count: convertedValue,
+          }));
         }
         if (item.tagId === '16') {
           const convertedValue = item.value;
-          setNo2Count(convertedValue);
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            No2Count: convertedValue,
+          }));
         }
         if (item.tagId === '17') {
           const convertedValue = item.value;
-          setNo3Delay(convertedValue);
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            No3Count: convertedValue,
+          }));
         }
         if (item.tagId === '36') {
           const convertedValue = item.value;
-          setOutputLimit(convertedValue);
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            OutputLimit: convertedValue,
+          }));
         }
         if (item.tagId === '37') {
           const convertedValue = item.value;
-          setDiceValue(convertedValue);
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            DiceValue: convertedValue,
+          }));
         }
         if (item.tagId === '38') {
           const convertedValue = item.value;
-          setDiceComparisonValue(convertedValue);
+          setF1Info((prevF1Info) => ({
+            ...prevF1Info,
+            DiceComparisonValue: convertedValue,
+          }));
         }
       });
     }
@@ -73,412 +124,153 @@ const Pannel = (props) => {
   useEffect(() => {
     if (webSocket) {
       // console.log(messagePayloadEnvironment1);
-      setTemperature(messagePayloadEnvironment1?.Temperature);
-      setHumidity(messagePayloadEnvironment1?.Humidity);
-      setParticulates(messagePayloadEnvironment1?.Particulates);
+      setF1Info((prevF1Info) => ({
+        ...prevF1Info,
+        Temperature: messagePayloadEnvironment1?.Temperature,
+        Humidity: messagePayloadEnvironment1?.Humidity,
+        Particulates: messagePayloadEnvironment1?.Particulates,
+      }));
       setLoading(false);
     }
   }, [messagePayloadEnvironment1]);
 
-  const [min, max] = [60, 220];
-  const gauge = (No1Delay) => {
-    return (No1Delay - min) / (max - min);
-  };
+  useEffect(() => {
+    if (webSocket) {
+      messagePayloadEdukit1?.Wrapper?.forEach((item) => {
+        if (item.tagId === '14') {
+          const convertedValue = parseInt(item.value) * 10;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            No1Delay: convertedValue.toString(),
+          }));
+        }
+        if (item.tagId === '15') {
+          const convertedValue = item.value;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            No1Count: convertedValue,
+          }));
+        }
+        if (item.tagId === '16') {
+          const convertedValue = item.value;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            No2Count: convertedValue,
+          }));
+        }
+        if (item.tagId === '17') {
+          const convertedValue = item.value;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            No3Count: convertedValue,
+          }));
+        }
+        if (item.tagId === '36') {
+          const convertedValue = item.value;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            OutputLimit: convertedValue,
+          }));
+        }
+        if (item.tagId === '37') {
+          const convertedValue = item.value;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            DiceValue: convertedValue,
+          }));
+        }
+        if (item.tagId === '38') {
+          const convertedValue = item.value;
+          setF2Info((prevF2Info) => ({
+            ...prevF2Info,
+            DiceComparisonValue: convertedValue,
+          }));
+        }
+      });
+    }
+  }, [messagePayloadEdukit1]);
+
+  useEffect(() => {
+    if (webSocket) {
+      // console.log(messagePayloadEnvironment1);
+      setF2Info((prevF2Info) => ({
+        ...prevF2Info,
+        Temperature: messagePayloadEnvironment1?.Temperature,
+        Humidity: messagePayloadEnvironment1?.Humidity,
+        Particulates: messagePayloadEnvironment1?.Particulates,
+      }));
+      setLoading(false);
+    }
+  }, [messagePayloadEnvironment1]);
 
   return (
-    <Page>
-      {loading ? <Loading /> : null}
-      <Slider>
-        <>
-          {/* {position === "manager" && (
-            <></>
-          )} */}
-          <Container className="top">
-            <Box className="top left">
-              <Section className="top left">
-                <Title className="fac">공장 1</Title>
-                <Title>목표 생산량</Title>
-                <Content>{OutputLimit}개</Content>
-              </Section>
-              <Section>
-                <Progress className="pannel top">
-                  <ProgressBar style={{ width: `${No3Count}%` }}></ProgressBar>
-                </Progress>
-              </Section>
-              <Section className="top left">
-                <Title>현재 생산량</Title>
-                <Content>{No3Count}개</Content>
-              </Section>
-            </Box>
-            <Box className="top right">
-              <Section className="top right">
-                <Title className="top right">미세먼지</Title>
-                <CircularProgressbarWithChildren
-                  value={Particulates * 100}
-                  strokeWidth={20}
-                  styles={{
-                    root: { height: '21vh' },
-                    path: {
-                      stroke: '#4fce84',
-                      strokeWidth: '15px',
-                      strokeLinecap: 'butt',
-                      transition: 'stroke-dashoffset 0.5s ease 0s',
-                    },
-
-                    trail: {
-                      strokeWidth: '15px',
-                      stroke: '#d7d7d7',
-                    },
-                    text: {
-                      fill: '#333333',
-                      fontSize: '18px',
-                    },
-                    background: {
-                      fill: '#3e98c7',
-                    },
-                  }}
-                >
-                  {Particulates}㎍/㎥
-                </CircularProgressbarWithChildren>
-                {/* <Content>10㎍/㎥</Content> */}
-              </Section>
-              <Section className="top right">
-                <Title className="top right">온도</Title>
-                <CircularProgressbarWithChildren
-                  value={Temperature}
-                  strokeWidth={20}
-                  styles={{
-                    root: { height: '21vh' },
-                    path: {
-                      stroke: '#4fce84',
-                      strokeWidth: '15px',
-                      strokeLinecap: 'butt',
-                      transition: 'stroke-dashoffset 0.5s ease 0s',
-                    },
-
-                    trail: {
-                      strokeWidth: '15px',
-                      stroke: '#d7d7d7',
-                    },
-                    text: {
-                      fill: '#333333',
-                      fontSize: '18px',
-                    },
-                    background: {
-                      fill: '#3e98c7',
-                    },
-                  }}
-                >
-                  {Temperature}℃
-                </CircularProgressbarWithChildren>
-                {/* <Content>{Temperature}℃</Content> */}
-              </Section>
-              <Section className="top right">
-                <Title className="top right">습도</Title>
-                <CircularProgressbarWithChildren
-                  value={Humidity}
-                  strokeWidth={20}
-                  styles={{
-                    root: { height: '21vh' },
-                    path: {
-                      stroke: '#4fce84',
-                      strokeWidth: '15px',
-                      strokeLinecap: 'butt',
-                      transition: 'stroke-dashoffset 0.5s ease 0s',
-                    },
-
-                    trail: {
-                      strokeWidth: '15px',
-                      stroke: '#d7d7d7',
-                    },
-                    text: {
-                      fill: '#333333',
-                      fontSize: '18px',
-                    },
-                    background: {
-                      fill: '#3e98c7',
-                    },
-                  }}
-                >
-                  {Humidity}%
-                </CircularProgressbarWithChildren>
-                {/* <Content>{Humidity}%</Content> */}
-              </Section>
-            </Box>
-          </Container>
-          <Container className="bottom">
-            <Box className="bottom left">
-              <Title className="bottom left">공정 반복 횟수</Title>
-              <Section className="bottom left">
-                <ContentBox>
-                  <Content className="bottom left">1호기</Content>
-                  <Content className="bottom left">{No1Count} 회</Content>
-                </ContentBox>
-                <Progress className="pannel bottom">
-                  <ProgressBar
-                    style={{ width: `${No1Count * 5}%` }}
-                  ></ProgressBar>
-                </Progress>
-              </Section>
-              <Section className="bottom left">
-                <ContentBox>
-                  <Content className="bottom left">2호기</Content>
-                  <Content className="bottom left">{No2Count} 회</Content>
-                </ContentBox>
-                <Progress className="pannel bottom">
-                  <ProgressBar
-                    style={{ width: `${No2Count * 5}%` }}
-                  ></ProgressBar>
-                </Progress>
-              </Section>
-              <Section className="bottom left">
-                <ContentBox>
-                  <Content className="bottom left">3호기</Content>
-                  <Content className="bottom left">{No3Count} 회</Content>
-                </ContentBox>
-                <Progress className="pannel bottom">
-                  <ProgressBar
-                    style={{ width: `${No3Count * 5}%` }}
-                  ></ProgressBar>
-                </Progress>
-              </Section>
-            </Box>
-            <Box className="bottom middle">
-              {/* <Section className="bottom middle"> */}
-              <Title className="bottom middle">현재 공정 반복 시간</Title>
-              <Content className="bottom middle">{No1Delay}㎳</Content>
-              {/* <Progress>
-            <ProgressBar style={{ width: `${No1Delay}%` }}></ProgressBar>
-          </Progress> */}
-              <>
-                <GaugeChart
-                  nrOfLevels={420}
-                  arcsLength={[0.3, 0.5, 0.2]}
-                  animate={false}
-                  hideText={true}
-                  // animDelay="10000"
-                  // animateDuration="10000"
-                  colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                  percent={gauge(No1Delay)}
-                  arcPadding={0.02}
-                />
-              </>
-
-              {/* <GaugeChart
-            id="gauge-chart6"
-            animate={false}
-            nrOfLevels={15}
-            percent={No1Delay * 0.01}
-            needleColor="#345243"
-          /> */}
-              {/* </Section> */}
-            </Box>
-            <Box className="bottom right">
-              <Section className="bottom right">
-                <Title className="bottom right">양품 조건</Title>
-                <Content>{DiceComparisonValue} 이상</Content>
-              </Section>
-              <Section className="bottom right">
-                <Title className="bottom right">현재 주사위 상황</Title>
-                <Dice src="./assets/dice.png" alt={` ${DiceValue}`} />
-                {/* <Content className="dice">gkdnl</Content> */}
-              </Section>
-            </Box>
-          </Container>
-        </>
-        <>
-          <Container className="top">
-            <Box className="top left">
-              <Section className="top left">
-                <Title className="fac">공장 2</Title>
-                <Title>목표 생산량</Title>
-                <Content>{OutputLimit}개</Content>
-              </Section>
-              <Section>
-                <Progress className="pannel top">
-                  <ProgressBar style={{ width: `${No3Count}%` }}></ProgressBar>
-                </Progress>
-              </Section>
-              <Section className="top left">
-                <Title>목표 생산량</Title>
-                <Content>{No3Count}개</Content>
-              </Section>
-            </Box>
-            <Box className="top right">
-              <Section className="top right">
-                <Title className="top right">미세먼지</Title>
-                <CircularProgressbarWithChildren
-                  value={Particulates * 100}
-                  strokeWidth={20}
-                  styles={{
-                    root: { height: '21vh' },
-                    path: {
-                      stroke: '#4fce84',
-                      strokeWidth: '15px',
-                      strokeLinecap: 'butt',
-                      transition: 'stroke-dashoffset 0.5s ease 0s',
-                    },
-
-                    trail: {
-                      strokeWidth: '15px',
-                      stroke: '#d7d7d7',
-                    },
-                    text: {
-                      fill: '#333333',
-                      fontSize: '18px',
-                    },
-                    background: {
-                      fill: '#3e98c7',
-                    },
-                  }}
-                >
-                  {Particulates}㎍/㎥
-                </CircularProgressbarWithChildren>
-                {/* <Content>10㎍/㎥</Content> */}
-              </Section>
-              <Section className="top right">
-                <Title className="top right">온도</Title>
-                <CircularProgressbarWithChildren
-                  value={Temperature}
-                  strokeWidth={20}
-                  styles={{
-                    root: { height: '21vh' },
-                    path: {
-                      stroke: '#4fce84',
-                      strokeWidth: '15px',
-                      strokeLinecap: 'butt',
-                      transition: 'stroke-dashoffset 0.5s ease 0s',
-                    },
-
-                    trail: {
-                      strokeWidth: '15px',
-                      stroke: '#d7d7d7',
-                    },
-                    text: {
-                      fill: '#333333',
-                      fontSize: '18px',
-                    },
-                    background: {
-                      fill: '#3e98c7',
-                    },
-                  }}
-                >
-                  {Temperature}℃
-                </CircularProgressbarWithChildren>
-                {/* <Content>{Temperature}℃</Content> */}
-              </Section>
-              <Section className="top right">
-                <Title className="top right">습도</Title>
-                <CircularProgressbarWithChildren
-                  value={Humidity}
-                  strokeWidth={20}
-                  styles={{
-                    root: { height: '21vh' },
-                    path: {
-                      stroke: '#4fce84',
-                      strokeWidth: '15px',
-                      strokeLinecap: 'butt',
-                      transition: 'stroke-dashoffset 0.5s ease 0s',
-                    },
-
-                    trail: {
-                      strokeWidth: '15px',
-                      stroke: '#d7d7d7',
-                    },
-                    text: {
-                      fill: '#333333',
-                      fontSize: '18px',
-                    },
-                    background: {
-                      fill: '#3e98c7',
-                    },
-                  }}
-                >
-                  {Humidity}%
-                </CircularProgressbarWithChildren>
-                {/* <Content>{Humidity}%</Content> */}
-              </Section>
-            </Box>
-          </Container>
-          <Container className="bottom">
-            <Box className="bottom left">
-              <Title className="bottom left">공정 반복 횟수</Title>
-              <Section className="bottom left">
-                <ContentBox>
-                  <Content className="bottom left">1호기</Content>
-                  <Content className="bottom left">{No1Count} 회</Content>
-                </ContentBox>
-                <Progress className="pannel bottom">
-                  <ProgressBar
-                    style={{ width: `${No1Count * 5}%` }}
-                  ></ProgressBar>
-                </Progress>
-              </Section>
-              <Section className="bottom left">
-                <ContentBox>
-                  <Content className="bottom left">2호기</Content>
-                  <Content className="bottom left">{No2Count} 회</Content>
-                </ContentBox>
-                <Progress className="pannel bottom">
-                  <ProgressBar
-                    style={{ width: `${No2Count * 5}%` }}
-                  ></ProgressBar>
-                </Progress>
-              </Section>
-              <Section className="bottom left">
-                <ContentBox>
-                  <Content className="bottom left">3호기</Content>
-                  <Content className="bottom left">{No3Count} 회</Content>
-                </ContentBox>
-                <Progress className="pannel bottom">
-                  <ProgressBar
-                    style={{ width: `${No3Count * 5}%` }}
-                  ></ProgressBar>
-                </Progress>
-              </Section>
-            </Box>
-            <Box className="bottom middle">
-              {/* <Section className="bottom middle"> */}
-              <Title className="bottom middle">현재 공정 반복 시간</Title>
-              <Content className="bottom middle">{No1Delay}㎳</Content>
-              {/* <Progress>
-            <ProgressBar style={{ width: `${No1Delay}%` }}></ProgressBar>
-          </Progress> */}
-              <GaugeChart
-                nrOfLevels={420}
-                arcsLength={[0.3, 0.5, 0.2]}
-                animate={false}
-                hideText={true}
-                // animDelay="10000"
-                // animateDuration="10000"
-                colors={['#5BE12C', '#F5CD19', '#EA4228']}
-                percent={No1Delay * 0.023}
-                arcPadding={0.02}
-              />
-              {/* <GaugeChart
-            id="gauge-chart6"
-            animate={false}
-            nrOfLevels={15}
-            percent={No1Delay * 0.01}
-            needleColor="#345243"
-          /> */}
-              {/* </Section> */}
-            </Box>
-            <Box className="bottom right">
-              <Section className="bottom right">
-                <Title className="bottom right">양품 조건</Title>
-                <Content>{DiceComparisonValue} 이상</Content>
-              </Section>
-              <Section className="bottom right">
-                <Title className="bottom right">현재 주사위 상황</Title>
-                <Dice src="./assets/dice.png" alt={` ${DiceValue}`} />
-                {/* <Content className="dice">gkdnl</Content> */}
-              </Section>
-            </Box>
-          </Container>
-        </>
-      </Slider>
-    </Page>
+    <Slide>
+      {/* {loading ? <Loading /> : null} */}
+      {position === 'manager' && (
+        <Slider {...settings}>
+          <FacPannel
+            facName="공장 1"
+            OutputLimit={f1Info.OutputLimit}
+            No3Count={f1Info.No3Count}
+            Particulates={f1Info.Particulates}
+            Temperature={f1Info.Temperature}
+            Humidity={f1Info.Humidity}
+            No1Count={f1Info.No1Count}
+            No2Count={f1Info.No2Count}
+            No1Delay={f1Info.No1Delay}
+            DiceComparisonValue={f1Info.DiceComparisonValue}
+            DiceValue={f1Info.DiceValue}
+          />
+          <FacPannel
+            facName="공장 2"
+            OutputLimit={f2Info.OutputLimit}
+            No3Count={f2Info.No3Count}
+            Particulates={f2Info.Particulates}
+            Temperature={f2Info.Temperature}
+            Humidity={f2Info.Humidity}
+            No1Count={f2Info.No1Count}
+            No2Count={f2Info.No2Count}
+            No1Delay={f2Info.No1Delay}
+            DiceComparisonValue={f2Info.DiceComparisonValue}
+            DiceValue={f2Info.DiceValue}
+          />
+        </Slider>
+      )}
+      {(position === 'supervisior' || position === 'worker') && (
+        <Slider {...settings}>
+          {facilities === 'fac1' && (
+            <FacPannel
+              facName="공장 1"
+              OutputLimit={f1Info.OutputLimit}
+              No3Count={f1Info.No3Count}
+              Particulates={f1Info.Particulates}
+              Temperature={f1Info.Temperature}
+              Humidity={f1Info.Humidity}
+              No1Count={f1Info.No1Count}
+              No2Count={f1Info.No2Count}
+              No1Delay={f1Info.No1Delay}
+              DiceComparisonValue={f1Info.DiceComparisonValue}
+              DiceValue={f1Info.DiceValue}
+            />
+          )}
+          {facilities === 'fac2' && (
+            <FacPannel
+              facName="공장 2"
+              OutputLimit={f2Info.OutputLimit}
+              No3Count={f2Info.No3Count}
+              Particulates={f2Info.Particulates}
+              Temperature={f2Info.Temperature}
+              Humidity={f2Info.Humidity}
+              No1Count={f2Info.No1Count}
+              No2Count={f2Info.No2Count}
+              No1Delay={f2Info.No1Delay}
+              DiceComparisonValue={f2Info.DiceComparisonValue}
+              DiceValue={f2Info.DiceValue}
+            />
+          )}
+        </Slider>
+      )}
+    </Slide>
   );
 };
 

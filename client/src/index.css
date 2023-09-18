@@ -101,7 +101,11 @@ section {
   display: block;
 }
 body {
-  font-family: 'Eoe_Zno_EB';
+  /* font-family: 'Eoe_Zno_EB'; */
+  font-family: 'Do Hyeon';
+  /* font-family: 'Nanum Myeongjo', sans-serif; */
+  /* font-family: 'Song Myung'; */
+  /* font-weight: 500; */
   line-height: 1;
   background-color: #000000;
   width: 100%;
@@ -148,3 +152,6 @@ table {
   font-weight: normal;
   font-style: normal;
 }
+@import url('https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700,800');
+@import url('https://fonts.googleapis.com/css?family=Song+Myung:400');
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon:400');

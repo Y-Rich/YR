@@ -46,6 +46,15 @@ export const Container = styled.section`
   }
   &.login {
     margin-top: 45vh;
+    &::after {
+      height: 55%;
+    }
+  }
+  &.password {
+    margin-top: 40vh;
+    &::after {
+      height: 63%;
+    }
   }
   &.register {
     margin-top: 35vh;
@@ -53,7 +62,7 @@ export const Container = styled.section`
     &::after {
       top: 15%;
       width: 30%;
-      height: 75vh;
+      // height: 75vh;
     }
   }
   &.modi {
@@ -72,13 +81,10 @@ export const Title = styled.div`
   &.register {
     font-size: 50px;
   }
-  &.login {
-  }
   &.modi {
     font-size: 50px;
   }
   &.label {
-    /* margin-top: 20%; */
     font-size: 2vh;
     align-items: center;
     color: white;
@@ -98,11 +104,12 @@ export const Box = styled.article`
   }
   &.register {
     gap: 2vh;
-    &.phone {
+    &.check {
       gap: 0;
       flex-direction: row;
     }
   }
+
   &.small {
     flex-direction: row;
     gap: 10px;
@@ -111,10 +118,15 @@ export const Box = styled.article`
   &.modi {
     gap: 2vh;
   }
-  &.find {
+  &.password {
     gap: 3vh;
     padding-top: 4vh;
     align-items: center;
+    &.check {
+      padding-top: 0;
+      gap: 0;
+      flex-direction: row;
+    }
   }
   &.chart {
     display: flex;
@@ -124,8 +136,6 @@ export const Box = styled.article`
       font-size: 3rem;
       display: flex;
       flex-direction: row;
-      /* justify-content: flex-start; */
-      /* align-items: center; */
       border-radius: 5px;
       padding: 8px;
       gap: 3vh;
@@ -135,7 +145,6 @@ export const Box = styled.article`
     }
     &.small {
       flex-direction: column;
-      /* gap: 2vh; */
     }
   }
 `;
@@ -154,7 +163,15 @@ export const Input = styled.input`
   }
   &.register {
     width: 20vw;
-    &.phone {
+    &.check {
+      width: 15vw;
+      border-radius: 5px 0 0 5px;
+    }
+  }
+  &.password {
+    width: 20vw;
+    height: 5vh;
+    &.check {
       width: 15vw;
       border-radius: 5px 0 0 5px;
     }
@@ -265,17 +282,15 @@ export const LinkText = styled(Link)`
   text-decoration: none;
   font-weight: 800;
   &:hover {
-    color: #5498ff;
+    color: #22598f;
   }
-  /* &:focus {
-    color: #5498ff;
-  } */
+  &:focus {
+    color: #000000;
+  }
   &.logo {
     font-size: 20px;
     font-family: 'CWDangamAsac-Bold';
-    /* &:focus {
-      color: #000000;
-    } */
+    // font-family: 'Nanum Myeongjo';
   }
   &.edukit {
     color: #c4c4c4;
