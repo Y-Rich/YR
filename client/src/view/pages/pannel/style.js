@@ -9,11 +9,7 @@ export const Container = styled.section`
     grid-column-gap: 20px;
   }
   &.bottom {
-    // gap: 1vw;
-    // display: flex;
-    // flex-direction: row;
-    width: 78.5%;
-
+    width: 78%;
     display: grid;
     grid-template-columns: 1.5fr 1fr 1.2fr;
     grid-column-gap: 1%;

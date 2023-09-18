@@ -95,8 +95,8 @@ export const AdminChart = () => {
             datas={[output, input - output]}
           />
         </GBox>
-        <CBox>
-          <GBox>
+        <CBox className="admin">
+          <GBox className="admin">
             <LineGraph2
               title="이번 달 1공장 생산 현황"
               labels={day}
@@ -110,7 +110,7 @@ export const AdminChart = () => {
               backgroundColor2="#458d47"
             />
           </GBox>
-          <GBox>
+          <GBox className="admin">
             <LineGraph2
               title="이번 달 2공장 투입 현황"
               labels={day}
