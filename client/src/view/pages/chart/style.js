@@ -37,6 +37,10 @@ export const CBox = styled.div`
   &.title {
     flex-direction: row;
   }
+  &.admin {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const GBox = styled.div`
@@ -47,6 +51,9 @@ export const GBox = styled.div`
   &.do {
     width: 31vw;
     height: 64vh;
+  }
+  &.admin {
+    width: 44.2vw;
   }
   background-color: white;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);

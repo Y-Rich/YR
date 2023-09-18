@@ -20,7 +20,7 @@ export const HeaderBox = styled.section`
 export const Text = styled.div`
   /* background-color: aliceblue; */
   font-size: 15px;
-  padding: 5px;
+  padding: 3px;
   position: absolute;
   right: 23%;
   display: flex;
