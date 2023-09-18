@@ -142,6 +142,9 @@ export const Content = styled.div`
   &.dice {
     background-image: url('./assets/dice.png');
   }
+  &.no_dice {
+    padding: 57px;
+  }
 `;
 
 export const Dice = styled.img`

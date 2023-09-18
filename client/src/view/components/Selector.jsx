@@ -43,17 +43,10 @@ const Btn = styled.button`
 
 const Selector = ({ onPageChange }) => {
   const fac = sessionStorage.getItem('facilities');
-  // const position = sessionStorage.getItem('position');
-  const position = 'manager';
-  // console.log('현재 속한 공장은', facilities);
+  const position = sessionStorage.getItem('position');
 
   return (
     <SelectorContainer>
-      {/* 깃에 올리기 전에 지울 부분 ㅜㅜㅜㅜㅜㅜㅜ*/}
-      {/* <Btn onClick={() => onPageChange('plc1')}>
-        <GiSewingMachine />
-      </Btn> */}
-      {/* 깃에 올리기 전에 지울 부분 ㅗㅗㅗㅗㅗㅗㅗ*/}
       <Btn onClick={() => onPageChange('chart')}>
         <AiOutlineBarChart />
       </Btn>
