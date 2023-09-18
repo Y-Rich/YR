@@ -8,7 +8,6 @@ import Loading from '../../components/Loading';
 import TextSprite from './TextSprite';
 import ManagerGui from './ManagerGui';
 import WorkerGui from './WorkerGui';
-
 import { Log, Order, OrderBtn } from './Components';
 
 const PLC = (props) => {
@@ -32,6 +31,7 @@ const PLC = (props) => {
   const textSpriteC_1Ref = useRef(null);
   const textSpriteC_2Ref = useRef(null);
   const textSpriteVRef = useRef(null);
+  const textSpriteV_numRef = useRef(null);
 
   const [m3axis1, setM3axis1] = useState(0);
   const [m3axis2, setM3axis2] = useState(0);
@@ -43,6 +43,7 @@ const PLC = (props) => {
   const [m1Pal, setM1Pal] = useState(0);
   const [m2Pal, setM2Pal] = useState(0);
   const [CFilter, setCFilter] = useState(0);
+  const [Vnum, setVnum] = useState(0);
 
   // 에듀킷 실시간 변수
   const currentm3axis1 = useRef(m3axis1);
@@ -55,6 +56,7 @@ const PLC = (props) => {
   const currentm1Pal = useRef(m1Pal);
   const currentm2Pal = useRef(m2Pal);
   const currentCFilter = useRef(CFilter);
+  const currentVNum = useRef(Vnum);
 
   const edukitRef = useRef(null);
 
@@ -109,6 +111,11 @@ const PLC = (props) => {
     // 비전센서
     const textSpriteV = new TextSprite({
       canvasX: -3, // X 좌표 설정
+      canvasY: 10.5, // Y 좌표 설정
+      canvasZ: -12, // Z 좌표 설정
+    });
+    const textSpriteVNum = new TextSprite({
+      canvasX: -3, // X 좌표 설정
       canvasY: 9, // Y 좌표 설정
       canvasZ: -12, // Z 좌표 설정
     });
@@ -121,6 +128,7 @@ const PLC = (props) => {
     scene.add(textSpriteC_1);
     scene.add(textSpriteC_2);
     scene.add(textSpriteV);
+    scene.add(textSpriteVNum);
 
     textSprite1_1Ref.current = textSprite1_1;
     textSprite1_2Ref.current = textSprite1_2;
@@ -130,6 +138,7 @@ const PLC = (props) => {
     textSpriteC_1Ref.current = textSpriteC_1;
     textSpriteC_2Ref.current = textSpriteC_2;
     textSpriteVRef.current = textSpriteV;
+    textSpriteV_numRef.current = textSpriteVNum;
 
     // 카메라
     const camera = new THREE.PerspectiveCamera(
@@ -180,15 +189,15 @@ const PLC = (props) => {
 
     let requestId = null;
 
-    // const [minY, maxY] = [0, 18000000];
-    // const [minX, maxX] = [0, 1030000];
-    const [minY, maxY] = [0, 25000000];
-    const [minX, maxX] = [0, 1250000];
+    const [minY, maxY] = [0, 18000000];
+    const [minX, maxX] = [0, 1030000];
+    // const [minY, maxY] = [0, 25000000];
+    // const [minX, maxX] = [0, 1250000];
 
     // yAxisFunc 함수는 num 속성 값을 슬라이더의 높이로 변환하는 함수입니다.
     // 해당 슬라이더는 min에서 max 사이의 값을 0에서 7 사이의 값으로 변환합니다.
     const yAxisFunc = (value) => {
-      return ((value - minY) / (maxY - minY)) * 9;
+      return ((value - minY) / (maxY - minY)) * 7;
     };
     //xAxisFunc 함수는 num2 속성 값을 슬라이더의 각도로 변환하는 함수입니다.
     //해당 슬라이더는 min에서 max 사이의 값을 0에서 90도 사이의 각도로 변환합니다.
@@ -226,6 +235,7 @@ const PLC = (props) => {
         textSpriteC_1Ref.current.updateParameters(currentCOnOff.current);
         textSpriteC_2Ref.current.updateParameters(currentCFilter.current);
         textSpriteVRef.current.updateParameters(currentVOnOff.current);
+        textSpriteV_numRef.current.updateParameters(currentVNum.current);
       }
     };
 
@@ -307,6 +317,17 @@ const PLC = (props) => {
         a: 1.0,
       },
       message: '분류안함',
+    };
+    const Vnum = (num) => {
+      return {
+        borderColor: {
+          r: 0,
+          g: 255,
+          b: 0,
+          a: 1.0,
+        },
+        message: `${num}보다 큰 수`,
+      };
     };
     if (webSocket) {
       messagePayloadEdukit2?.Wrapper?.forEach((item) => {
@@ -407,6 +428,12 @@ const PLC = (props) => {
             setVOnOff(switchOff);
             currentVOnOff.current = switchOff;
           }
+        }
+        // 비전센서 주사위 조건
+        if (item.tagId === '38') {
+          const convertedValue = parseInt(item.value);
+          setVnum(Vnum(convertedValue));
+          currentVNum.current = Vnum(convertedValue);
         }
       });
     }
