@@ -21,8 +21,13 @@ const Pannel = (props) => {
   const facilities = sessionStorage.getItem('facilities');
 
   // 웹소켓 데이터
-  const { messagePayloadEdukit1, webSocket, messagePayloadEnvironment1 } =
-    props.props;
+  const {
+    messagePayloadEdukit1,
+    webSocket,
+    messagePayloadEnvironment1,
+    messagePayloadEdukit2,
+    messagePayloadEnvironment2,
+  } = props.props;
   const [f1Info, setF1Info] = useState({
     No1Delay: '준비중...',
     No1Count: '준비중...',
@@ -188,7 +193,7 @@ const Pannel = (props) => {
         }
       });
     }
-  }, [messagePayloadEdukit1]);
+  }, [messagePayloadEdukit2]);
 
   useEffect(() => {
     if (webSocket) {
@@ -201,7 +206,7 @@ const Pannel = (props) => {
       }));
       setLoading(false);
     }
-  }, [messagePayloadEnvironment1]);
+  }, [messagePayloadEnvironment2]);
 
   return (
     <Slide>

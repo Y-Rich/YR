@@ -35,7 +35,7 @@ export const Container = styled.section`
   &::after {
     content: '';
     width: 30%;
-    height: 65vh;
+    height: 70vh;
     background-color: #ffffff;
     opacity: 0.7;
     position: absolute;
@@ -47,13 +47,13 @@ export const Container = styled.section`
   &.login {
     margin-top: 45vh;
     &::after {
-      height: 55%;
+      height: 60%;
     }
   }
   &.password {
     margin-top: 40vh;
     &::after {
-      height: 63%;
+      height: 65%;
     }
   }
   &.register {
@@ -133,7 +133,7 @@ export const Box = styled.article`
     &.big {
       min-width: 11vw;
       height: 12vh;
-      font-size: 3rem;
+      font-size: 2.5rem;
       display: flex;
       flex-direction: row;
       border-radius: 5px;
@@ -143,7 +143,7 @@ export const Box = styled.article`
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
       color: white;
     }
-    &.small {
+    &.tiny {
       flex-direction: column;
     }
   }

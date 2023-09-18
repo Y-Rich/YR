@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { AiFillNotification } from 'react-icons/ai';
@@ -55,6 +55,7 @@ export const Log = (props) => {
   const { logEdukit1, logEdukit2, webSocket } = props.props;
   const { page } = props;
   const [data, setData] = useState([]);
+  const messageEndRef = useRef(null);
 
   useEffect(() => {
     if (page === 1 && webSocket) {
@@ -70,6 +71,7 @@ export const Log = (props) => {
       });
       setData([...formattedData]);
       // console.log('here', formattedData);
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [logEdukit1]);
 
@@ -87,6 +89,7 @@ export const Log = (props) => {
       });
       setData([...formattedData]);
       // console.log('here', formattedData);
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [logEdukit2]);
 
@@ -110,6 +113,7 @@ export const Order = () => {
         <AiFillNotification style={{ marginRight: '10px' }} />
         [제 1공장]: 정다슬 - 1호기 제어
       </Box>
+      <div ref={messageEndRef}></div>
     </Container>
   );
 };
@@ -117,10 +121,27 @@ export const Order = () => {
 export const OrderBtn = () => {
   return (
     <Container className="btn">
-      <Btn>이게</Btn>
-      <Btn>무슨</Btn>
-      <Btn>버튼</Btn>
-      <Btn>이였지</Btn>
+      시나리오 선택 :
+      <DropDown>
+        <ul>
+          <li>하이~!</li>
+          <li>오하요</li>
+          <li>반가워`!</li>
+          <li>짜이찌엔</li>
+        </ul>
+      </DropDown>
     </Container>
+  );
+};
+
+export const DropDown = (props) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <li>
+      <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
+        {props.icon}오잉
+      </a>
+      {open && props.children}
+    </li>
   );
 };
