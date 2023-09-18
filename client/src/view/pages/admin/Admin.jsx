@@ -131,7 +131,7 @@ const Admin = () => {
   };
   return (
     <Page className="admin">
-      <Title>인사 관리 및 로그</Title>
+      <Title>권한 관리 및 로그</Title>
       <AuthButton onClick={openModal}>권한 관리</AuthButton>
       <Modal
         isOpen={isModalOpen}

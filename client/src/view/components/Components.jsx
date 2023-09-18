@@ -10,7 +10,7 @@ export const Page = styled.main`
   align-items: center;
   justify-content: center;
   &.admin {
-    background-color: #d9d9d9;
+    background-color: #f6f8f7;
     align-items: baseline;
   }
   &::after {
