@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { ModalWrapper, ModalContent, CloseButton } from './style';
+import {
+  ModalWrapper,
+  ModalContent,
+  CloseButton,
+  Positions,
+  Select,
+  Label,
+  Button,
+  ButtonContainer,
+} from './ModalStyle';
 import axios from 'axios';
 
 const Modal = ({ isOpen, onClose, data, reloadData }) => {
@@ -15,24 +24,33 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
     setSelectedPositionID(event.target.value);
   };
 
-  const handleSubmit = () => {
-    setIsSubmitting(true);
+  const handleClose = () => {
+    setSelectedUserID(''); // 사용자 선택 초기화
+    setSelectedPositionID(''); // 권한 선택 초기화
+    onClose();
+  };
 
-    axios
-      .put('http://192.168.0.127:8000/admin/permission', {
-        id: selectedUserID,
-        positionID: selectedPositionID,
-      })
-      .then((res) => {
-        onClose();
-        reloadData(); // 데이터 다시 불러오기
-      })
-      .catch((error) => {
-        console.error('포지션 변경 중 에러가 발생했습니다.', error);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+  const handleSubmit = () => {
+    const confirmed = window.confirm('변경 사항을 적용하시겠습니까?');
+    if (confirmed) {
+      setIsSubmitting(true);
+
+      axios
+        .put('http://192.168.0.127:8000/admin/permission', {
+          id: selectedUserID,
+          positionID: selectedPositionID,
+        })
+        .then((res) => {
+          handleClose();
+          reloadData(); // 데이터 다시 불러오기
+        })
+        .catch((error) => {
+          console.error('포지션 변경 중 에러가 발생했습니다.', error);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
   };
 
   const positions = [
@@ -47,6 +65,11 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
     { id: 11, name: 'worker_fac2_line3' },
   ];
 
+  const handleModalContentClick = (e) => {
+    // 모달 내부를 클릭해도 모달이 닫히지 않도록 이벤트 중단
+    e.stopPropagation();
+  };
+
   useEffect(() => {
     if (isOpen) {
     }
@@ -55,33 +78,34 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
   if (!isOpen) return null;
 
   return (
-    <ModalWrapper>
-      <ModalContent>
-        <h2>권한 관리</h2>
-        <label>사용자 선택:</label>
-        <select value={selectedUserID} onChange={handleUserChange}>
-          <option value="">사용자를 선택하세요</option>
+    <ModalWrapper onClick={handleClose}>
+      <ModalContent onClick={handleModalContentClick}>
+        <Positions>제어 권한 관리</Positions>
+        <Label>사용자</Label>
+        <Select value={selectedUserID} onChange={handleUserChange}>
+          <option value=""></option>
           {data.map((user) => (
             <option key={user.employeeID} value={user.employeeID}>
               {user.name}
             </option>
           ))}
-        </select>
-        <label>포지션 선택:</label>
-        <select value={selectedPositionID} onChange={handlePositionChange}>
-          <option value="">포지션을 선택하세요</option>
+        </Select>
+        <Label>권한</Label>
+        <Select value={selectedPositionID} onChange={handlePositionChange}>
+          <option value=""></option>
           {positions.map((position) => (
             <option key={position.id} value={position.id}>
               {position.name}
             </option>
           ))}
-        </select>
-        <button onClick={handleSubmit} disabled={isSubmitting}>
-          적용
-        </button>
-        <button onClick={onClose}>닫기</button>
+        </Select>
+        <ButtonContainer>
+          <Button onClick={handleSubmit} disabled={isSubmitting}>
+            적용
+          </Button>
+        </ButtonContainer>
       </ModalContent>
-      <CloseButton onClick={onClose}>X</CloseButton>
+      <CloseButton onClick={handleClose}>x</CloseButton>
     </ModalWrapper>
   );
 };
