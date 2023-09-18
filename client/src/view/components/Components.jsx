@@ -186,8 +186,20 @@ export const Input = styled.input`
     height: 3vh;
     margin-right: 0.5vw;
     &:focus {
-      // outline: none;
-      // box-shadow: none;
+      background-color: #dde998;
+    }
+  }
+  &.gui_a_dicenum {
+    width: 1.5vw;
+    height: 3vh;
+    margin-right: 0.5vw;
+    background-color: #acacac;
+  }
+  &.gui_b_dicenum {
+    width: 1.5vw;
+    height: 3vh;
+    margin-right: 0.5vw;
+    &:focus {
       background-color: #dde998;
     }
   }

@@ -50,6 +50,11 @@ const Selector = ({ onPageChange }) => {
 
   return (
     <SelectorContainer>
+      {/* 깃에 올리기 전에 지울 부분 ㅜㅜㅜㅜㅜㅜㅜ*/}
+      {/* <Btn onClick={() => onPageChange('plc1')}>
+        <GiSewingMachine />
+      </Btn> */}
+      {/* 깃에 올리기 전에 지울 부분 ㅗㅗㅗㅗㅗㅗㅗ*/}
       <Btn onClick={() => onPageChange('chart')}>
         <AiOutlineBarChart />
       </Btn>

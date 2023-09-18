@@ -134,6 +134,17 @@ const limitHandleOnEnter = (e, fac) => {
   }
 };
 
+// 양품 판별 숫자
+const DiceNumHandleOnEnter = (e, fac) => {
+  if (e.key === 'Enter') {
+    const inputValue = e.target.value.trim();
+    const number = parseInt(inputValue, 10); // 10진수 변환
+    doControlValue(fac, 'DiceComparisonValue', number, '양품판별숫자');
+    console.log('DiceNum entered = ', number);
+    e.target.blur();
+  }
+};
+
 export const Emergency = ({ ison, togglehandler, fac }) => {
   console.log('here', fac);
   return (
@@ -229,6 +240,22 @@ export const ColorCheck = ({ ison, togglehandler, fac }) => {
     </Box>
   );
 };
+export const DiceNum = ({ ison, togglehandler, fac }) => {
+  return (
+    <Box className="guiDetail">
+      <Title>양품 판별 숫자</Title>
+      <Box className="small">
+        <Input ison={ison} className="gui_a_dicenum" value={ison} disabled />
+        <Input
+          ison={ison}
+          className="gui_b_dicenum"
+          onKeyDown={(e) => DiceNumHandleOnEnter(e, fac)}
+        />
+        보다 큰
+      </Box>
+    </Box>
+  );
+};
 export const Limit = ({ ison, togglehandler, fac }) => {
   return (
     <Box className="guiDetail">
@@ -245,6 +272,7 @@ export const Limit = ({ ison, togglehandler, fac }) => {
     </Box>
   );
 };
+
 export const Color = ({ ison, togglehandler, fac }) => {
   return (
     <Box className="guiDetail">

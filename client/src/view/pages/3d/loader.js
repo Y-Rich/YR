@@ -50,17 +50,17 @@ export default class Edukit {
     const mesh_c_sensor_red = (this.object.mesh_c_sensor_red =
       await this.loader.loadAsync('files/ColorSensor_R.FBX'));
     const mesh_m1_body = (this.object.mesh_m1_body =
-      await this.loader.loadAsync('files/M1_Body.FBX'));
+      await this.loader.loadAsync('files/M1_Body_2.FBX'));
     const mesh_m1_pusher = (this.object.mesh_m1_pusher =
       await this.loader.loadAsync('files/M1_Pusher.FBX'));
     const mesh_m2_body = (this.object.mesh_m2_body =
-      await this.loader.loadAsync('files/M2_Body.FBX'));
+      await this.loader.loadAsync('files/M2_Body_2.FBX'));
     const mesh_m2_pusher = (this.object.mesh_m2_pusher =
       await this.loader.loadAsync('files/M2_Pusher.FBX'));
     const mesh_m3_body = (this.object.mesh_m3_body =
       await this.loader.loadAsync('files/M3_Body.FBX'));
     const mesh_m3_gripper = (this.object.mesh_m3_gripper =
-      await this.loader.loadAsync('files/M3_Gripper.FBX'));
+      await this.loader.loadAsync('files/M3_Gripper_2.FBX'));
     const mesh_m3_y_axis = (this.object.mesh_m3_y_axis =
       await this.loader.loadAsync('files/M3_Yaxis.FBX'));
     const mesh_m3_y_bar = (this.object.mesh_m3_y_bar =
@@ -75,6 +75,11 @@ export default class Edukit {
       await this.loader.loadAsync('files/TrafficLight_Yellow.FBX'));
     const mesh_v_sensor = (this.object.mesh_v_sensor =
       await this.loader.loadAsync('files/VisionSensor2.FBX'));
+    const test = (this.object.test = await this.loader.loadAsync(
+      'files/Edukit_Test.FBX'
+    ));
+    const mesh_edukit_body_test = (this.object.mesh_edukit_body_test =
+      await this.loader.loadAsync('files/BodyEdukit_test.FBX'));
 
     // 3호기 중심축 위치 재조정
     mesh_m3_y_bar.position.x = 6; // bar+gripper
@@ -106,7 +111,8 @@ export default class Edukit {
     group.add(groupM3Y);
     group.add(
       mesh_belt,
-      mesh_edukit_body,
+      // mesh_edukit_body,
+      mesh_edukit_body_test,
       mesh_c_sensor_body,
       mesh_c_sensor_grn,
       mesh_c_sensor_red,
@@ -115,14 +121,12 @@ export default class Edukit {
       mesh_m2_body,
       mesh_m2_pusher,
       mesh_m3_body,
-      // mesh_m3_gripper,
-      // mesh_m3_y_axis,
-      // mesh_m3_y_bar,
       mesh_trf_body,
       mesh_trf_grn,
       mesh_trf_red,
       mesh_trf_yll,
       mesh_v_sensor
+      // test
     );
     group.position.x = -1;
     group.position.y = -5;
@@ -187,7 +191,7 @@ export default class Edukit {
     if (typeof value !== 'undefined') {
       const fixedValue = parseFloat(value.toFixed(2));
       const fixedCurrentX = parseFloat(currentX.toFixed(2));
-      const deltaXDeg = Math.abs(fixedValue - fixedCurrentX) * 0.08; // degree 단위로 차이 계산
+      const deltaXDeg = Math.abs(fixedValue - fixedCurrentX) * 0.05; // degree 단위로 차이 계산
       //const deltaXRad = MathUtils.degToRad(deltaXDeg * 0.01); // 비례 상수를 조절하여 세밀함을 결정
 
       if (fixedValue < fixedCurrentX) {

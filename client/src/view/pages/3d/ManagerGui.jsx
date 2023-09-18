@@ -7,6 +7,7 @@ import {
   ColorCheck,
   DurationTime,
   Edukit,
+  DiceNum,
   Limit,
   Reset,
   Vision,
@@ -23,6 +24,7 @@ const ManagerGui = (props) => {
     reset: false,
     duration_time: 0,
     color_check: false,
+    dice_num: 0,
     limit: 0,
     color: false,
     vision: false,
@@ -106,6 +108,14 @@ const ManagerGui = (props) => {
             limit: convertedValue,
           }));
         }
+        // 양품 판별 숫자
+        if (item.tagId === '38') {
+          const convertedValue = parseInt(item.value);
+          setison((previson) => ({
+            ...previson,
+            dice_num: convertedValue,
+          }));
+        }
       });
     }
   }, [messagePayloadEdukit1]);
@@ -165,6 +175,14 @@ const ManagerGui = (props) => {
             limit: convertedValue,
           }));
         }
+        // 양품 판별 숫자
+        if (item.tagId === '38') {
+          const convertedValue = parseInt(item.value);
+          setison((previson) => ({
+            ...previson,
+            dice_num: convertedValue,
+          }));
+        }
       });
     }
   }, [messagePayloadEdukit2]);
@@ -217,6 +235,7 @@ const ManagerGui = (props) => {
               togglehandler={() => togglehandler('color_check')}
               fac={facNum}
             />
+            <DiceNum ison={ison.dice_num} className="gui" fac={facNum} />
           </Box>
         )}
       </Container>
