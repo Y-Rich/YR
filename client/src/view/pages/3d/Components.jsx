@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { AiFillNotification } from 'react-icons/ai';
@@ -49,6 +49,10 @@ const Btn = styled.button`
 `;
 
 export const Log = () => {
+  const messageEndRef = useRef(null);
+  useEffect(() => {
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, []);
   return (
     <Container className="log">
       <Box className="log">최상단입니다...</Box>
@@ -63,6 +67,7 @@ export const Log = () => {
       <Box>[제 1공장]: 정다슬 - 1호기 제어</Box>
       <Box>[제 1공장]: 정다슬 - 1호기 제어</Box>
       <Box>최하단입니다...</Box>
+      <div ref={messageEndRef}></div>
     </Container>
   );
 };
@@ -80,10 +85,27 @@ export const Order = () => {
 export const OrderBtn = () => {
   return (
     <Container className="btn">
-      <Btn>이게</Btn>
-      <Btn>무슨</Btn>
-      <Btn>버튼</Btn>
-      <Btn>이였지</Btn>
+      시나리오 선택 :
+      <DropDown>
+        <ul>
+          <li>하이~!</li>
+          <li>오하요</li>
+          <li>반가워`!</li>
+          <li>짜이찌엔</li>
+        </ul>
+      </DropDown>
     </Container>
+  );
+};
+
+export const DropDown = (props) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <li>
+      <a href="#" className="icon-button" onClick={() => setOpen(!open)}>
+        {props.icon}오잉
+      </a>
+      {open && props.children}
+    </li>
   );
 };

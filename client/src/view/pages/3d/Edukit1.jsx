@@ -424,7 +424,7 @@ const PLC = (props) => {
       )}
       <Selector />
       <Order />
-      <OrderBtn />
+      {/* <OrderBtn /> */}
       <Log />
       <div style={{ display: 'flex' }}></div>
       <canvas ref={canvasRef} id="webgl"></canvas>

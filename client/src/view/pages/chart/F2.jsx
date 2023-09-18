@@ -2,50 +2,67 @@ import React, { useEffect, useState } from 'react';
 import { CBox, ChartBox, ChartContainer, GBox } from './style';
 import { DoughnutGraph, LineGraph1, LineGraph2, LineGraph3 } from './Graph';
 import { dailyM2Data, tempHumi } from '../../../services/chart';
+import Loading from '../../components/Loading';
 import { NavContent, ChartModal } from './ChartComponent';
 
 export const F2 = () => {
+  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
-  const [humi, setHumi] = useState([]);
-  const [temp, setTemp] = useState([]);
-  const [time, setTime] = useState([]);
-  const [dust, setDust] = useState([]);
-
-  // const [monthly, setMonthly] = useState([]);
-  // const [monthlyM1, setMonthlyM1] = useState([]);
-  // const [monthlyM2, setMonthlyM2] = useState([]);
-  const [dailyInput, setDailyInput] = useState([]);
-  const [dailyOutput, setDailyOutput] = useState([]);
-  const [dailyLine1Defect, setDailyLine1Defect] = useState([]);
-  const [dailyLine2Defect, setDailyLine2Defect] = useState([]);
-  const [dailyProdRate, setDailyProdRate] = useState([]);
+  const [data, setData] = useState({
+    humi: [],
+    temp: [],
+    time: [],
+    dust: [],
+    dailyInput: [],
+    dailyOutput: [],
+    dailyLine1Defect: [],
+    dailyLine2Defect: [],
+    dailyLine1DefectRatio: [],
+    dailyLine2DefectRatio: [],
+    dailyProdRate: [],
+  });
   const handleClick = () => {
     setModal(true);
   };
-  // const [daily, setDaily] = useState([]);
+
   useEffect(() => {
     try {
       tempHumi()
         .then((res) => {
-          setHumi(res.dailyAvgHumi.map((v) => v.average));
-          setTemp(res.dailyAvgTemp.map((v) => v.average));
-          setDust(res.dailyAvgPar.map((v) => v.average * 100));
-          setTime(res.dailyAvgHumi.map((v) => v.hour));
+          setData((prevData) => ({
+            ...prevData,
+            humi: res.dailyAvgHumi.map((v) => v.average),
+            temp: res.dailyAvgTemp.map((v) => v.average),
+            dust: res.dailyAvgPar.map((v) => v.average * 100),
+            time: res.dailyAvgHumi.map((v) => v.hour),
+          }));
         })
         .catch((err) => {
           console.error(err);
         });
       dailyM2Data()
         .then((res) => {
-          // setMonthly(res.monthlyAvgLineProdRate);
-          // setMonthlyM1(res.monthlyAvgLine1defectRate);
-          // setMonthlyM2(res.monthlyAvgLine2defectRate);
-          setDailyInput(res.dailyAvgInput.map((v) => v.total));
-          setDailyOutput(res.dailyAvgOutput.map((v) => v.total));
-          setDailyLine1Defect(res.dailyAvgLine1DefectRate);
-          setDailyLine2Defect(res.dailyAvgLine2DefectRate);
-          setDailyProdRate(res.dailyAvgLineProdRate);
-          // console.log(res);
+          setData((prevData) => ({
+            ...prevData,
+            dailyInput: res.dailyAvgInput.map((v) => v.total),
+            dailyOutput: res.dailyAvgOutput.map((v) => v.total),
+            dailyLine1Defect: res.dailyAvgLine1defectRate[0]?.Detail?.map(
+              (v) => v.DefectProducts
+            ),
+            dailyLine2Defect: res.dailyAvgLine2defectRate[0]?.Detail?.map(
+              (v) => v.DefectProducts
+            ),
+            dailyLine1DefectRatio: res.dailyAvgLine1defectRate[0]?.Detail?.map(
+              (v) => v.DefectRatio
+            ),
+            dailyLine2DefectRatio: res.dailyAvgLine2defectRate[0]?.Detail?.map(
+              (v) => v.DefectRatio
+            ),
+            dailyProdRate: res.dailyAvgLine2defectRate[0]?.Detail?.map(
+              (v) => v.ProductionRate
+            ),
+          }));
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -54,12 +71,14 @@ export const F2 = () => {
       console.error(err);
     }
   }, []);
+  const { dailyInput, dailyOutput, time, temp, humi, dust } = data;
   const input = dailyInput.reduce((acc, item) => acc + item, 0);
   const output = dailyOutput.reduce((acc, item) => acc + item, 0);
   const err = Math.round(((input - output) / input) * 100);
 
   return (
     <ChartContainer>
+      {loading ? <Loading /> : null}
       <ChartBox className="top">
         <NavContent
           location="세종"
@@ -124,12 +143,12 @@ export const F2 = () => {
               labels={time}
               label1="1호기"
               label2="2호기"
-              data1={dailyInput}
-              data2={dailyOutput}
-              borderColor1="#97c0db"
-              borderColor2="#321fd9"
-              backgroundColor1="#97c0db"
-              backgroundColor2="#321fd9"
+              data1={data.dailyLine1Defect}
+              data2={data.dailyLine2Defect}
+              borderColor1="#FF7272"
+              borderColor2="#FFB5B5"
+              backgroundColor1="#FF7272"
+              backgroundColor2="#FFB5B5"
             />
           </GBox>
           <GBox>
@@ -138,12 +157,12 @@ export const F2 = () => {
               labels={time}
               label1="1호기"
               label2="2호기"
-              data1={dailyInput}
-              data2={dailyOutput}
-              borderColor1="#97c0db"
-              borderColor2="#321fd9"
-              backgroundColor1="#97c0db"
-              backgroundColor2="#321fd9"
+              data1={data.dailyLine1DefectRatio}
+              data2={data.dailyLine2DefectRatio}
+              borderColor1="#FF7272"
+              borderColor2="#FFB5B5"
+              backgroundColor1="#FF7272"
+              backgroundColor2="#FFB5B5"
             />
           </GBox>
         </CBox>
