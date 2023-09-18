@@ -179,6 +179,7 @@ export const Input = styled.input`
   &:focus {
     outline: none;
     box-shadow: none;
+    transition: all 0.2s linear;
   }
   &::-webkit-input-placeholder {
     /* text-align: center; */
@@ -248,6 +249,7 @@ export const Button = styled.button`
   }
   &:hover {
     background-color: #4379cc;
+    transition: all 0.2s linear;
   }
   &.gui {
     font-size: 0.8rem;
@@ -283,9 +285,12 @@ export const LinkText = styled(Link)`
   font-weight: 800;
   &:hover {
     color: #22598f;
+    transform: scale(1.2);
+    transition: all 0.2s linear;
   }
   &:focus {
     color: #000000;
+    transition: all 0.2s linear;
   }
   &.logo {
     font-size: 20px;
@@ -333,7 +338,46 @@ export const Progress = styled.div`
 
 export const ProgressBar = styled.div`
   height: 100%;
-  background-color: #007bff;
+  background-color: #3d5a7f;
   border-radius: 10px;
   transition: width 0.3s ease-in-out;
+`;
+
+export const Slide = styled.main`
+  height: 100vh;
+  background-color: #f6f8f7;
+  .slick-dots {
+    .slick-active {
+      button::before {
+        color: #293242;
+        z-index: 999;
+        transition: all 0.2s linear;
+      }
+    }
+    button::before {
+      color: #3d5a7f;
+      z-index: 999;
+      transition: all 0.2s linear;
+    }
+  }
+`;
+
+export const DotsContainer = styled.div`
+  border-radius: 10px;
+  padding: 10px;
+`;
+export const Dots = styled.div`
+  width: 20px;
+  color: #293242;
+  border: 2px #293242 solid;
+  border-radius: 10px;
+  &:hover {
+    color: #3d5a7f;
+    border: 2px #3d5a7f solid;
+    transition: all 0.2s linear;
+  }
+  &:focus {
+    color: gray;
+    border: 1px gray solid;
+  }
 `;

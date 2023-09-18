@@ -87,14 +87,14 @@ export const Title = styled.article`
   font-size: 20px;
   text-align: center;
   border-radius: 5px;
-  color: #5498ff;
+  color: #3d5a7f;
   background-color: aliceblue;
   margin: 5px;
   padding: 5px;
   &.fac {
     position: absolute;
     top: 2.5%;
-    color: #3d5a7f;
+    color: #293242;
   }
   &.top {
     &.right {

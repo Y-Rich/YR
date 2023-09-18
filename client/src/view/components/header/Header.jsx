@@ -110,8 +110,8 @@ const Header = () => {
         <LinkText to="/admin">ADMIN</LinkText>
         <LinkText to="/usermodi">MyPage</LinkText>
         <LinkText to="/" onClick={handleLogout}>
-          {/* Log out */}
-          <GoSignOut />
+          Log out
+          {/* <GoSignOut /> */}
         </LinkText>
 
         {/* {refreshModal && (

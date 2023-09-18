@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Slide } from './style';
+import { Dots, DotsContainer, Slide } from '../../components/Components';
 import { F1 } from './F1';
 import { F2 } from './F2';
 import { AdminChart } from './AdminChart';
@@ -15,6 +15,22 @@ const Chart = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    appendDots: (dots) => (
+      <DotsContainer>
+        <ul style={{ margin: '0px' }}> {dots} </ul>
+      </DotsContainer>
+    ),
+    customPaging: (i) => (
+      <Dots>
+        {position === 'manager'
+          ? ['All', '1', '2'][i]
+          : facilities === 'fac1'
+          ? ['1'][i]
+          : facilities === 'fac2'
+          ? ['2'][i]
+          : null}
+      </Dots>
+    ),
   };
 
   // const position = sessionStorage.getItem('position');

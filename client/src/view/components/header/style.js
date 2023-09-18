@@ -22,7 +22,7 @@ export const Text = styled.div`
   font-size: 15px;
   padding: 5px;
   position: absolute;
-  right: 20%;
+  right: 23%;
   display: flex;
   flex-direction: row;
   /* gap: 10px; */

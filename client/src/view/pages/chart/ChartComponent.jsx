@@ -8,6 +8,20 @@ import { MdOutlineReportGmailerrorred, MdReport } from 'react-icons/md';
 import { GoContainer } from 'react-icons/go';
 import { SiIbeacon } from 'react-icons/si';
 import { CiInboxIn, CiInboxOut } from 'react-icons/ci';
+import { FaMagnifyingGlassChart } from 'react-icons/fa6';
+
+const BtnContainer = styled.div`
+  position: absolute;
+  cursor: pointer;
+  color: #a6a6a6;
+  font-size: 1.2rem;
+  padding: 3px;
+  &:hover {
+    color: black;
+    transform: scale(1.2);
+    transition: all 0.2s linear;
+  }
+`;
 
 const ModalContainer = styled.section`
   z-index: 999;
@@ -174,5 +188,13 @@ export const ChartModal = ({ setModal, time, dust, temp, humi }) => {
         </ModalChart>
       </ModalBox>
     </ModalContainer>
+  );
+};
+
+export const ModalBtn = ({ handleClick }) => {
+  return (
+    <BtnContainer>
+      <FaMagnifyingGlassChart onClick={handleClick}></FaMagnifyingGlassChart>
+    </BtnContainer>
   );
 };
