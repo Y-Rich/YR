@@ -195,6 +195,24 @@ const service = {
     });
   },
 
+  // 로그기록 조회
+  async logList(params) {
+    let result = null;
+
+    try {
+      result = await adminDao.searchLogs(params);
+    } catch (err) {
+      logger.error(`(adminService.searchLogs) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
   //생산관련 서비스 로직
   async searchDailyAvg_Prod(params) {
     let inserted = null;

@@ -165,14 +165,14 @@ router.post('/edukit2', (req, res) => {
           // isNaN 함수를 사용하여 숫자로 변환이 실패한 경우를 처리합니다.
           if (!isNaN(numericValue)) {
             // 범위를 비교합니다.
-            if (numericValue >= 80) {
+            if (numericValue >= 150) {
               logger.debug(`기준범위 내: ${numericValue}`);
               mesObj.value = numericValue.toString();
             } else {
               return res
                 .status(400)
                 .json(
-                  `기준범위 초과. value: ${numericValue} , 범위: 80<=value`,
+                  `기준범위 초과. value: ${numericValue} , 범위: 150<=value`,
                 );
             }
           } else {

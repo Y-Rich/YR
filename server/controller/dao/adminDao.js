@@ -197,6 +197,19 @@ const dao = {
     });
   },
 
+  // dao - 로그정보 조회
+  searchLogs(params) {
+    return new Promise((resolve, reject) => {
+      Logs.find(params, { __v: 0, _id: 0 }) // __v , _id 필드 제외
+        .then((selectedList) => {
+          resolve(selectedList);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
   // 생산 관련 일간 데이터 조회
   dailyProdData1(params) {
     return new Promise((resolve, reject) => {
@@ -737,7 +750,7 @@ const dao = {
       const startDate = firstDayOfMonth;
       const endDate = lastDayOfMonth;
 
-      console.log(`startDate: ${startDate} , endDate: ${endDate}`);
+      // console.log(`startDate: ${startDate} , endDate: ${endDate}`);
       if (params.List) {
         Products.aggregate([
           {

@@ -541,4 +541,39 @@ router.post('/operatingtime', async (req, res) => {
   }
 });
 
+//  router - 로그 기록 전체조회
+router.get('/logs', async (req, res) => {
+  try {
+    // 유효성 검사 - 필드 & 값
+    if (req.query && req.query.list) {
+      const value = req.query.list;
+      if (value == 'all') {
+        let params = null;
+        if (req.query.category) {
+          params = {
+            Category: req.query.category,
+          };
+        } else {
+          params = {};
+        }
+
+        const result = await adminService.logList(params);
+        logger.info(`(adminService.logList.result) ${JSON.stringify(result)}`);
+        // 최종 응답
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json({
+          error: 'query parameter error.... required : list , value: all ',
+        });
+      }
+    } else {
+      return res.status(400).json({
+        error: 'query parameter error.... required : list , value: all ',
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
 module.exports = router;

@@ -227,7 +227,7 @@ const dao = {
       const startDate = firstDayOfMonth;
       const endDate = lastDayOfMonth;
 
-      console.log(`startDate: ${startDate} , endDate: ${endDate}`);
+      // console.log(`startDate: ${startDate} , endDate: ${endDate}`);
 
       Edukit2Sensor.aggregate([
         {
@@ -844,7 +844,7 @@ const dao = {
       const startDate = firstDayOfMonth;
       const endDate = lastDayOfMonth;
 
-      console.log(`startDate: ${startDate} , endDate: ${endDate}`);
+      // console.log(`startDate: ${startDate} , endDate: ${endDate}`);
       if (params.List) {
         Products.aggregate([
           {

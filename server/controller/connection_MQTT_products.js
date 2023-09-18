@@ -4,8 +4,8 @@ const edukit1Service = require('../controller/service/edukit1Service');
 const edukit2Service = require('../controller/service/edukit2Service');
 const logService = require('../controller/service/logService');
 
-// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
 
 const MQTTconnectForProducts = () => {
   // 기준값 전역으로 설정
@@ -26,7 +26,7 @@ const MQTTconnectForProducts = () => {
     client.on('connect', function () {
       logger.info('[ products ]Connected to MQTT broker...');
 
-      const topic = ['edukit1', 'edukit2'];
+      const topic = ['edukit1', 'edukit2', 'edukit1/log', 'edukit2/log'];
 
       client.subscribe(topic, { qos: 1 }, function (err) {
         if (err) {
@@ -67,8 +67,32 @@ const MQTTconnectForProducts = () => {
                   type: 'process-start',
                   Category: 'factory',
                 };
-                const result = await logService.isFacRunning(params);
-                logger.info(`(logService.isFacRunning) logged successfully...`);
+                const result = await logService.FacTime(params);
+                logger.info(`(logService.FacTime) logged successfully...`);
+
+                const { Manufacturer, Category, type, createdAt, ...rest } =
+                  result;
+                let mes = {
+                  Manufacturer: Manufacturer,
+                  Category: Category,
+                  type: type,
+                  createdAt: Date.now(),
+                  message: '공정 시작.',
+                };
+                //edukit1/log  - 로그 발송
+                client.publish(
+                  'edukit1/log',
+                  JSON.stringify(mes),
+                  { qos: 1 },
+                  function (err, message) {
+                    if (err) {
+                      logger.error(
+                        '[ edukit1/log ] Error publishing message:',
+                        err,
+                      );
+                    }
+                  },
+                );
               };
               asyncfunc();
             } else if (IsFacrunning_edukit1 == true) {
@@ -90,8 +114,32 @@ const MQTTconnectForProducts = () => {
                   type: 'process-stop',
                   Category: 'factory',
                 };
-                const result = await logService.isFacRunning(params);
-                logger.info(`(logService.isFacRunning) logged successfully...`);
+                const result = await logService.FacTime(params);
+                logger.info(`(logService.FacTime) logged successfully...`);
+
+                const { Manufacturer, Category, type, createdAt, ...rest } =
+                  result;
+                let mes = {
+                  Manufacturer: Manufacturer,
+                  Category: Category,
+                  type: type,
+                  createdAt: Date.now(),
+                  message: '공정 종료.',
+                };
+                //edukit1/log  - 로그 발송
+                client.publish(
+                  'edukit1/log',
+                  JSON.stringify(mes),
+                  { qos: 1 },
+                  function (err, message) {
+                    if (err) {
+                      logger.error(
+                        '[ edukit1/log ] Error publishing message:',
+                        err,
+                      );
+                    }
+                  },
+                );
               };
               asyncfunc();
             } else if (IsFacrunning_edukit1 == false) {
@@ -127,7 +175,38 @@ const MQTTconnectForProducts = () => {
                     Category: 'factory',
                   };
                   const result = await logService.product(modified);
-                  logger.info(`(logService.control) logged successfully...`);
+                  logger.info(`(logService.product) logged successfully...`);
+
+                  const {
+                    ProductName,
+                    Manufacturer,
+                    type,
+                    Category,
+                    createdAt,
+                    ...rest
+                  } = result;
+                  let mes = {
+                    ProductName: ProductName,
+                    Manufacturer: Manufacturer,
+                    type: type,
+                    Category: Category,
+                    createdAt: Date.now(),
+                    message: '자재 반출',
+                  };
+                  //edukit1/log  - 로그 발송
+                  client.publish(
+                    'edukit1/log',
+                    JSON.stringify(mes),
+                    { qos: 1 },
+                    function (err, message) {
+                      if (err) {
+                        logger.error(
+                          '[ edukit1/log ] Error publishing message:',
+                          err,
+                        );
+                      }
+                    },
+                  );
                 };
                 asyncfunc(params);
                 memo1 = Number(No1Count);
@@ -161,7 +240,38 @@ const MQTTconnectForProducts = () => {
                     Category: 'factory',
                   };
                   const result = await logService.product(modified);
-                  logger.info(`(logService.control) logged successfully...`);
+                  logger.info(`(logService.product) logged successfully...`);
+
+                  const {
+                    ProductName,
+                    Manufacturer,
+                    type,
+                    Category,
+                    createdAt,
+                    ...rest
+                  } = result;
+                  let mes = {
+                    ProductName: ProductName,
+                    Manufacturer: Manufacturer,
+                    type: type,
+                    Category: Category,
+                    createdAt: Date.now(),
+                    message: '가공 완료',
+                  };
+                  //edukit1/log  - 로그 발송
+                  client.publish(
+                    'edukit1/log',
+                    JSON.stringify(mes),
+                    { qos: 1 },
+                    function (err, message) {
+                      if (err) {
+                        logger.error(
+                          '[ edukit1/log ] Error publishing message:',
+                          err,
+                        );
+                      }
+                    },
+                  );
                 };
                 asyncfunc(params);
                 memo2 = Number(No2Count);
@@ -195,7 +305,38 @@ const MQTTconnectForProducts = () => {
                     Category: 'factory',
                   };
                   const result = await logService.product(modified);
-                  logger.info(`(logService.control) logged successfully...`);
+                  logger.info(`(logService.product) logged successfully...`);
+
+                  const {
+                    ProductName,
+                    Manufacturer,
+                    type,
+                    Category,
+                    createdAt,
+                    ...rest
+                  } = result;
+                  let mes = {
+                    ProductName: ProductName,
+                    Manufacturer: Manufacturer,
+                    type: type,
+                    Category: Category,
+                    createdAt: Date.now(),
+                    message: '완제품 출하',
+                  };
+                  //edukit1/log  - 로그 발송
+                  client.publish(
+                    'edukit1/log',
+                    JSON.stringify(mes),
+                    { qos: 1 },
+                    function (err, message) {
+                      if (err) {
+                        logger.error(
+                          '[ edukit1/log ] Error publishing message:',
+                          err,
+                        );
+                      }
+                    },
+                  );
                 };
                 asyncfunc(params);
                 memo3 = Number(No3Count);
@@ -232,8 +373,32 @@ const MQTTconnectForProducts = () => {
                   type: 'process-start',
                   Category: 'factory',
                 };
-                const result = await logService.isFacRunning(params);
-                logger.info(`(logService.isFacRunning) logged successfully...`);
+                const result = await logService.FacTime(params);
+                logger.info(`(logService.FacTime) logged successfully...`);
+
+                const { Manufacturer, Category, type, createdAt, ...rest } =
+                  result;
+                let mes = {
+                  Manufacturer: Manufacturer,
+                  Category: Category,
+                  type: type,
+                  createdAt: Date.now(),
+                  message: '공정 시작.',
+                };
+                //edukit2/log  - 로그 발송
+                client.publish(
+                  'edukit2/log',
+                  JSON.stringify(mes),
+                  { qos: 1 },
+                  function (err, message) {
+                    if (err) {
+                      logger.error(
+                        '[ edukit2/log ] Error publishing message:',
+                        err,
+                      );
+                    }
+                  },
+                );
               };
               asyncfunc();
             } else if (IsFacrunning_edukit2 == true) {
@@ -255,8 +420,32 @@ const MQTTconnectForProducts = () => {
                   type: 'process-stop',
                   Category: 'factory',
                 };
-                const result = await logService.isFacRunning(params);
-                logger.info(`(logService.isFacRunning) logged successfully...`);
+                const result = await logService.FacTime(params);
+                logger.info(`(logService.FacTime) logged successfully...`);
+
+                const { Manufacturer, Category, type, createdAt, ...rest } =
+                  result;
+                let mes = {
+                  Manufacturer: Manufacturer,
+                  Category: Category,
+                  type: type,
+                  createdAt: Date.now(),
+                  message: '공정 종료.',
+                };
+                //edukit2/log  - 로그 발송
+                client.publish(
+                  'edukit2/log',
+                  JSON.stringify(mes),
+                  { qos: 1 },
+                  function (err, message) {
+                    if (err) {
+                      logger.error(
+                        '[ edukit2/log ] Error publishing message:',
+                        err,
+                      );
+                    }
+                  },
+                );
               };
               asyncfunc();
             } else if (IsFacrunning_edukit2 == false) {
@@ -292,7 +481,38 @@ const MQTTconnectForProducts = () => {
                     Category: 'factory',
                   };
                   const result = await logService.product(modified);
-                  logger.info(`(logService.control) logged successfully...`);
+                  logger.info(`(logService.product) logged successfully...`);
+
+                  const {
+                    ProductName,
+                    Manufacturer,
+                    type,
+                    Category,
+                    createdAt,
+                    ...rest
+                  } = result;
+                  let mes = {
+                    ProductName: ProductName,
+                    Manufacturer: Manufacturer,
+                    type: type,
+                    Category: Category,
+                    createdAt: Date.now(),
+                    message: '자재 반출',
+                  };
+                  //edukit2/log  - 로그 발송
+                  client.publish(
+                    'edukit2/log',
+                    JSON.stringify(mes),
+                    { qos: 1 },
+                    function (err, message) {
+                      if (err) {
+                        logger.error(
+                          '[ edukit2/log ] Error publishing message:',
+                          err,
+                        );
+                      }
+                    },
+                  );
                 };
                 asyncfunc(params);
                 memo1 = Number(No1Count);
@@ -326,7 +546,38 @@ const MQTTconnectForProducts = () => {
                     Category: 'factory',
                   };
                   const result = await logService.product(modified);
-                  logger.info(`(logService.control) logged successfully...`);
+                  logger.info(`(logService.product) logged successfully...`);
+
+                  const {
+                    ProductName,
+                    Manufacturer,
+                    type,
+                    Category,
+                    createdAt,
+                    ...rest
+                  } = result;
+                  let mes = {
+                    ProductName: ProductName,
+                    Manufacturer: Manufacturer,
+                    type: type,
+                    Category: Category,
+                    createdAt: Date.now(),
+                    message: '가공 완료',
+                  };
+                  //edukit2/log  - 로그 발송
+                  client.publish(
+                    'edukit2/log',
+                    JSON.stringify(mes),
+                    { qos: 1 },
+                    function (err, message) {
+                      if (err) {
+                        logger.error(
+                          '[ edukit2/log ] Error publishing message:',
+                          err,
+                        );
+                      }
+                    },
+                  );
                 };
                 asyncfunc(params);
                 memo2 = Number(No2Count);
@@ -360,7 +611,38 @@ const MQTTconnectForProducts = () => {
                     Category: 'factory',
                   };
                   const result = await logService.product(modified);
-                  logger.info(`(logService.control) logged successfully...`);
+                  logger.info(`(logService.product) logged successfully...`);
+
+                  const {
+                    ProductName,
+                    Manufacturer,
+                    type,
+                    Category,
+                    createdAt,
+                    ...rest
+                  } = result;
+                  let mes = {
+                    ProductName: ProductName,
+                    Manufacturer: Manufacturer,
+                    type: type,
+                    Category: Category,
+                    createdAt: Date.now(),
+                    message: '완제품 출하',
+                  };
+                  //edukit2/log  - 로그 발송
+                  client.publish(
+                    'edukit2/log',
+                    JSON.stringify(mes),
+                    { qos: 1 },
+                    function (err, message) {
+                      if (err) {
+                        logger.error(
+                          '[ edukit2/log ] Error publishing message:',
+                          err,
+                        );
+                      }
+                    },
+                  );
                 };
                 asyncfunc(params);
                 memo3 = Number(No3Count);
