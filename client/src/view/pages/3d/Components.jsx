@@ -12,8 +12,16 @@ const Container = styled.nav`
   text-overflow: clip;
   overflow-x: hidden;
   overflow-y: scroll;
-  &::-webkit-scrollbar {
+  /* &::-webkit-scrollbar {
     display: none;
+  } */
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /* border-radius: 2px; */
+    background: #ccc;
   }
   &.log {
     width: 18vw;
@@ -22,7 +30,7 @@ const Container = styled.nav`
     padding: 0.7em;
   }
   &.order {
-    width: 25vw;
+    width: 18vw;
     /* height: 1vh; */
     top: 7%;
     padding: 0.5em;
@@ -55,7 +63,9 @@ export const Log = (props) => {
   const { logEdukit1, logEdukit2, webSocket } = props.props;
   const { page } = props;
   const [data, setData] = useState([]);
-  const messageEndRef = useRef(null);
+  const scrollRef = useRef(null);
+
+  // scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
 
   useEffect(() => {
     if (page === 1 && webSocket) {
@@ -70,8 +80,9 @@ export const Log = (props) => {
         };
       });
       setData([...formattedData]);
+
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       // console.log('here', formattedData);
-    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [logEdukit1]);
 
@@ -88,13 +99,14 @@ export const Log = (props) => {
         };
       });
       setData([...formattedData]);
+
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       // console.log('here', formattedData);
-    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [logEdukit2]);
 
   return (
-    <Container className="log">
+    <Container className="log" ref={scrollRef}>
       {/* <Box className="log">최상단입니다...</Box> */}
       {data.map((item, index) => (
         <Box key={index}>
@@ -106,6 +118,7 @@ export const Log = (props) => {
     </Container>
   );
 };
+
 export const Order = () => {
   return (
     <Container className="order">
@@ -113,7 +126,6 @@ export const Order = () => {
         <AiFillNotification style={{ marginRight: '10px' }} />
         [제 1공장]: 정다슬 - 1호기 제어
       </Box>
-      <div ref={messageEndRef}></div>
     </Container>
   );
 };

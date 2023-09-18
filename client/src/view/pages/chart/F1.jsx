@@ -3,7 +3,7 @@ import { CBox, ChartBox, ChartContainer, GBox } from './style';
 import { DoughnutGraph, LineGraph1, LineGraph2, LineGraph3 } from './Graph';
 import { dailyM1Data, tempHumi } from '../../../services/chart';
 import Loading from '../../components/Loading';
-import { NavContent, ChartModal } from './ChartComponent';
+import { NavContent, ChartModal, ModalBtn } from './ChartComponent';
 
 export const F1 = () => {
   const [loading, setLoading] = useState(true);
@@ -117,7 +117,8 @@ export const F1 = () => {
               backgroundColor2="#458d47"
             />
           </GBox>
-          <GBox onClick={handleClick} className="modal">
+          <GBox className="modal">
+            <ModalBtn handleClick={handleClick} />
             <LineGraph3
               title="온습도 및 미세먼지 현황"
               labels={time}

@@ -21,6 +21,7 @@ export const Container = styled.section`
   -ms-user-select: none;
   user-select: none;
   gap: 2%;
+  transition: all 0.2s linear;
 `;
 
 export const Box = styled.div`
@@ -34,6 +35,7 @@ export const Box = styled.div`
     border-radius: 5px 5px 0 0;
     &:active {
       cursor: grabbing;
+      transition: all 0.2s linear;
     }
   }
   &.small {
@@ -86,6 +88,7 @@ export const ToggleBtn = styled.button`
 
   &:hover {
     color: rgb(233, 233, 234);
+    transition: all 0.2s linear;
   }
 
   -webkit-user-select: all;

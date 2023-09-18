@@ -27,12 +27,13 @@ const Btn = styled.button`
   font-weight: 800;
   cursor: pointer;
   &:hover {
-    color: #22598f;
+    color: #749ec8;
+    transition: all 0.2s linear;
   }
-  &:focus {
+  /* &:focus {
     color: #000000;
-  }
-  background-color: #5498ff;
+  } */
+  background-color: #293242;
   padding: 15px;
   font-size: 1.5rem;
   border-radius: 5px;
@@ -56,6 +57,7 @@ const ToolTipContainer = styled.div`
   &:hover > .tooltip,
   &:active > .tooltip {
     display: block;
+    transition: all 0.2s linear;
   }
 `;
 
@@ -91,7 +93,7 @@ const ToolTipContent = styled.div`
           transform: translate(-50%, 0%);
         `;
       default:
-        return ''; // 기본값 설정
+        return '';
     }
   }}
   animation: ${hoverAction} 1s ease
