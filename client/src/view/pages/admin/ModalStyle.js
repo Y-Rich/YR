@@ -12,7 +12,7 @@ export const ModalWrapper = styled.div`
   align-items: center;
 `;
 
-export const ModalContent = styled.div`
+export const PermissionModalContent = styled.div`
   top: -10%;
   background-color: white;
   border-radius: 5px;
@@ -59,12 +59,15 @@ export const Label = styled.label`
 export const Button = styled.button`
   margin-top: 30px;
   cursor: pointer;
-  background-color: #90b0c9;
+  background-color: #3579a0;
   color: white;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
+  font-size: 1rem;
   font-weight: bold;
+  width: 25%;
+  height: 60%;
 `;
 
 export const ButtonContainer = styled.div`

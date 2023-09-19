@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   ModalWrapper,
-  ModalContent,
+  PermissionModalContent,
   CloseButton,
   Positions,
   Select,
@@ -10,11 +10,15 @@ import {
   ButtonContainer,
 } from './ModalStyle';
 import axios from 'axios';
+import ConfirmModal from './ConfirmModal';
 
 const Modal = ({ isOpen, onClose, data, reloadData }) => {
   const [selectedUserID, setSelectedUserID] = useState('');
   const [selectedPositionID, setSelectedPositionID] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isPermissionChangeConfirmed, setIsPermissionChangeConfirmed] =
+    useState(false);
 
   const handleUserChange = (event) => {
     setSelectedUserID(event.target.value);
@@ -31,26 +35,30 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
   };
 
   const handleSubmit = () => {
-    const confirmed = window.confirm('변경 사항을 적용하시겠습니까?');
-    if (confirmed) {
-      setIsSubmitting(true);
+    setIsConfirmationModalOpen(true); // 변경 사항을 적용하기 전에 확인 모달을 엽니다.
+  };
 
-      axios
-        .put('http://192.168.0.127:8000/admin/permission', {
-          id: selectedUserID,
-          positionID: selectedPositionID,
-        })
-        .then((res) => {
-          handleClose();
-          reloadData(); // 데이터 다시 불러오기
-        })
-        .catch((error) => {
-          console.error('포지션 변경 중 에러가 발생했습니다.', error);
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    }
+  const handleConfirm = () => {
+    setIsSubmitting(true);
+
+    axios
+      .put('http://192.168.0.127:8000/admin/permission', {
+        id: selectedUserID,
+        positionID: selectedPositionID,
+      })
+      .then((res) => {
+        handleClose();
+        setIsPermissionChangeConfirmed(true); // 권한 변경이 확인되었습니다.
+        reloadData();
+      })
+      .catch((error) => {
+        console.error('포지션 변경 중 에러가 발생했습니다.', error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        setIsConfirmationModalOpen(false); // 모달을 닫습니다.
+        handleClose(); // 원래 모달을 닫습니다.
+      });
   };
 
   const positions = [
@@ -79,7 +87,7 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
 
   return (
     <ModalWrapper onClick={handleClose}>
-      <ModalContent onClick={handleModalContentClick}>
+      <PermissionModalContent onClick={handleModalContentClick}>
         <Positions>제어 권한 관리</Positions>
         <Label>사용자</Label>
         <Select value={selectedUserID} onChange={handleUserChange}>
@@ -104,7 +112,15 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
             적용
           </Button>
         </ButtonContainer>
-      </ModalContent>
+        {/* 변경 사항 확인 모달 */}
+        {isConfirmationModalOpen && (
+          <ConfirmModal
+            isOpen={isConfirmationModalOpen}
+            onClose={() => setIsConfirmationModalOpen(false)}
+            onConfirm={handleConfirm}
+          />
+        )}
+      </PermissionModalContent>
       <CloseButton onClick={handleClose}>x</CloseButton>
     </ModalWrapper>
   );
