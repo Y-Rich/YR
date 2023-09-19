@@ -42,10 +42,10 @@ const Login = () => {
         openAlertModal('이메일 또는 비밀번호를 입력해주세요!');
         return;
       }
-      // if (!validatePassword(password)) {
-      //   openAlertModal('비밀번호 8자리를 입력해주세요!');
-      //   return;
-      // }
+      if (!validatePassword(password)) {
+        openAlertModal('비밀번호 8자리를 입력해주세요!');
+        return;
+      }
       await login(email, password);
       openRefreshModal(`어서오세요, ${email}님!`);
     } catch (error) {
@@ -69,7 +69,7 @@ const Login = () => {
           type="text"
           name="email"
           onChange={handleChange}
-          placeholder="Please enter your email"
+          placeholder="Please enter your email@uvc.co.kr"
           className="login"
         />
         <Input
@@ -84,7 +84,7 @@ const Login = () => {
         <LinkText to="/register" className="smallbox">
           SIGN IN
         </LinkText>
-        <LinkText to="/password" className="smallbox">
+        <LinkText to="/reset" className="smallbox">
           FIND PW
         </LinkText>
       </Box>

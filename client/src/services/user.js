@@ -29,9 +29,6 @@ export const login = async (email, password) => {
       sessionStorage.setItem('employeeID', response.data.employeeID);
       sessionStorage.setItem('token', headerValue);
     }
-    // else {
-    // alert('로그인 실패');
-    // }
     return response.data;
   } catch (error) {
     console.error('Failed to login:', error);
@@ -76,6 +73,38 @@ export const logout = async () => {
     return res.data;
   } catch (error) {
     console.error('Failed to logout:', error);
+    throw error;
+  }
+};
+export const pwcheck = async (email, toEmail, secret) => {
+  try {
+    const response = await axios.post(
+      'http://192.168.0.127:8000/users/password-reset',
+      {
+        email,
+        toEmail,
+        secret,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Failed to pw check', error);
+    throw error;
+  }
+};
+export const pwchange = async (email, password) => {
+  try {
+    const response = await axios.put(
+      'http://192.168.0.127:8000/users/password',
+      {
+        email,
+        password,
+      }
+    );
+    console.log(1);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to pw change:', error);
     throw error;
   }
 };

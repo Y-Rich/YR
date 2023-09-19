@@ -103,14 +103,13 @@ const Register = () => {
             onChange={(e) => updateUserInfo('name', e.target.value)}
             className="register"
           />
-          <Box className="register check">
+          <Box className="register">
             <Input
               placeholder="Please enter your phone"
               value={userInfo.phone}
               onChange={(e) => updateUserInfo('phone', e.target.value)}
-              className="register check"
+              className="register"
             />
-            <Button className="check">Check</Button>
           </Box>
           <Input
             placeholder="Please enter your email"
