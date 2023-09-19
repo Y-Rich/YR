@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import EmployeeChart from './EmployeeChart';
 import EmployeeLog from './EmployeeLog';
 import FactoryLog from './FactoryLog';
+import Buttons from './Buttons';
 
 const Admin = () => {
   const [selected, setSelected] = useState('pannel');
@@ -14,7 +15,7 @@ const Admin = () => {
       {selected === 'employeeList' && <EmployeeChart />}
       {selected === 'employeeLog' && <EmployeeLog />}
       {selected === 'factoryLog' && <FactoryLog />}
-      <Selector onPageChange={handleSelect} />
+      <Buttons onPageChange={handleSelect} />
     </div>
   );
 };
