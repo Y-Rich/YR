@@ -142,13 +142,17 @@ const EmployeeLog = () => {
         Cell: ({ value }) => getPositionName(value),
       },
       {
-        Header: '타입',
+        Header: '내용',
         accessor: 'type',
         Cell: ({ value }) => {
           if (value === 'edukit1/control') {
-            return '1공장 제어';
+            return '세종공장 제어';
           } else if (value === 'edukit2/control') {
-            return '2공장 제어';
+            return '화성공장 제어';
+          } else if (value === 'login') {
+            return '로그인';
+          } else if (value === 'logout') {
+            return '로그아웃';
           } else {
             return value; // 나머지 타입은 그대로 출력
           }
@@ -202,7 +206,30 @@ const EmployeeLog = () => {
           prepareRow(row);
           return (
             <Tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
+              {row.cells.map((cell, index) => {
+                // console.log('here', index, cell.value);
+                if (cell.column.Header === '시간') {
+                  const date = new Date(cell.value);
+                  const formattedDate = `${date.getFullYear()}-${(
+                    date.getMonth() + 1
+                  )
+                    .toString()
+                    .padStart(2, '0')}-${date
+                    .getDate()
+                    .toString()
+                    .padStart(2, '0')} ${date
+                    .getHours()
+                    .toString()
+                    .padStart(2, '0')}:${date
+                    .getMinutes()
+                    .toString()
+                    .padStart(2, '0')}:${date
+                    .getSeconds()
+                    .toString()
+                    .padStart(2, '0')}`;
+
+                  return <Td {...cell.getCellProps()}>{formattedDate}</Td>;
+                }
                 return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
               })}
             </Tr>

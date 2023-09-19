@@ -101,7 +101,30 @@ const FactoryLog = () => {
           prepareRow(row);
           return (
             <Tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
+              {row.cells.map((cell, index) => {
+                console.log('here', index, cell.value);
+                if (cell.column.Header === '시간') {
+                  const date = new Date(cell.value);
+                  const formattedDate = `${date.getFullYear()}-${(
+                    date.getMonth() + 1
+                  )
+                    .toString()
+                    .padStart(2, '0')}-${date
+                    .getDate()
+                    .toString()
+                    .padStart(2, '0')} ${date
+                    .getHours()
+                    .toString()
+                    .padStart(2, '0')}:${date
+                    .getMinutes()
+                    .toString()
+                    .padStart(2, '0')}:${date
+                    .getSeconds()
+                    .toString()
+                    .padStart(2, '0')}`;
+
+                  return <Td {...cell.getCellProps()}>{formattedDate}</Td>;
+                }
                 return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
               })}
             </Tr>
