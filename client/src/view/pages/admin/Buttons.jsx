@@ -1,6 +1,6 @@
 import { styled, keyframes } from 'styled-components';
-import { GiSewingMachine } from 'react-icons/gi';
-import { AiOutlineBarChart } from 'react-icons/ai';
+import { BiSolidUserDetail } from 'react-icons/bi';
+import { MdManageAccounts, MdFactory } from 'react-icons/md';
 import { LiaDigitalTachographSolid } from 'react-icons/lia';
 
 const SelectorContainer = styled.footer`
@@ -34,7 +34,7 @@ const Btn = styled.button`
   } */
   background-color: #293242;
   padding: 15px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   border-radius: 5px;
   border: none;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
@@ -52,16 +52,16 @@ const Buttons = ({ onPageChange }) => {
   return (
     <SelectorContainer>
       <Btn onClick={() => onPageChange('employeeList')}>
-        <AiOutlineBarChart />
-        직원목록
+        <MdManageAccounts style={{ fontSize: '1.2rem' }} />
+        &nbsp; 직원 관리
       </Btn>
       <Btn onClick={() => onPageChange('employeeLog')}>
-        <GiSewingMachine />
-        직원로그
+        <BiSolidUserDetail style={{ fontSize: '1.2rem' }} />
+        &nbsp; 직원 로그
       </Btn>
       <Btn onClick={() => onPageChange('factoryLog')}>
-        <LiaDigitalTachographSolid />
-        공장로그
+        <MdFactory style={{ fontSize: '1.2rem' }} />
+        &nbsp; 공장 로그
       </Btn>
     </SelectorContainer>
   );

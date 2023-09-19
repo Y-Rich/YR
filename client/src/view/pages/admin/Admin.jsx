@@ -5,7 +5,7 @@ import FactoryLog from './FactoryLog';
 import Buttons from './Buttons';
 
 const Admin = () => {
-  const [selected, setSelected] = useState('pannel');
+  const [selected, setSelected] = useState('employeeList');
   const handleSelect = (option) => {
     setSelected(option);
   };

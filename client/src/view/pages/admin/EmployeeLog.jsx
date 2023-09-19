@@ -16,8 +16,10 @@ import {
 import axios from 'axios';
 import { useTable, useSortBy } from 'react-table';
 import { Link } from 'react-router-dom';
+import Loading from '../../components/Loading';
 
 const EmployeeLog = () => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -30,9 +32,11 @@ const EmployeeLog = () => {
       .then((res) => {
         setData(res.data);
         console.log(res.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('데이터를 불러오는 중 에러가 발생했습니다.', error);
+        setLoading(false);
       });
   };
 
@@ -208,15 +212,8 @@ const EmployeeLog = () => {
   };
   return (
     <Page className="employeelog">
+      {loading ? <Loading /> : null}
       <Title>직원 로그</Title>
-      <ButtonContainer>
-        <Link to="/admin">
-          <AdminButton>직원 목록</AdminButton>
-        </Link>
-        <Link to="/factorylog">
-          <FacButton>공장 로그</FacButton>
-        </Link>
-      </ButtonContainer>
       <Scroll>
         <Table {...getTableProps()}>
           <TableHead />
