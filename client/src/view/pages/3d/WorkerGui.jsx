@@ -174,8 +174,8 @@ const WorkerGui = (props) => {
           <ToggleBtn onClick={toggleMenu}>
             <AiFillCaretRight size="20" alt="햄버거 버튼" />
           </ToggleBtn>
-          {facNum === 1 && '제 1 공장 - 상세 제어'}
-          {facNum === 2 && '제 2 공장 - 상세 제어'}
+          {facNum === 1 && '세종 공장 - 상세 제어'}
+          {facNum === 2 && '화성 공장 - 상세 제어'}
         </Box>
         {isMenuOpen && (
           <Box className="gui">
