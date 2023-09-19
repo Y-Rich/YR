@@ -384,16 +384,17 @@ export const DotsContainer = styled.div`
 `;
 export const Dots = styled.div`
   width: 20px;
-  color: #293242;
-  border: 2px #293242 solid;
+  color: #616771;
+  /* box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.5); */
+  border: 2px #616771 solid;
   border-radius: 10px;
   &:hover {
-    color: #3d5a7f;
-    border: 2px #3d5a7f solid;
+    color: #293242;
+    border: 2px #293242 solid;
     transition: all 0.2s linear;
   }
-  &:focus {
-    color: gray;
-    border: 1px gray solid;
+  &:active {
+    color: #3d5a7f;
+    border: 2px #3d5a7f solid;
   }
 `;

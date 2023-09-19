@@ -50,7 +50,7 @@ const ModalBox = styled.div`
     font-size: 2rem;
     text-align: center;
     padding: 1rem;
-    background-color: aliceblue;
+    background-color: #e7e9ec;
   }
   &.graph {
     display: grid;

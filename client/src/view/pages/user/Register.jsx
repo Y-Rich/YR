@@ -98,35 +98,35 @@ const Register = () => {
         <Title className="register">REGISTER</Title>
         <Box className="register">
           <Input
-            placeholder="Please enter your name"
+            placeholder="이름을 입력해 주세요."
             value={userInfo.name}
             onChange={(e) => updateUserInfo('name', e.target.value)}
             className="register"
           />
           <Box className="register">
             <Input
-              placeholder="Please enter your phone"
+              placeholder="전화번호를 입력해 주세요."
               value={userInfo.phone}
               onChange={(e) => updateUserInfo('phone', e.target.value)}
               className="register"
             />
           </Box>
           <Input
-            placeholder="Please enter your email"
+            placeholder="이메일을 입력해 주세요."
             value={userInfo.email}
             onChange={(e) => updateUserInfo('email', e.target.value)}
             className="register"
           />
           <Input
             type="password"
-            placeholder="Please enter your password"
+            placeholder="비밀번호를 입력해 주세요."
             value={userInfo.password}
             onChange={(e) => updateUserInfo('password', e.target.value)}
             className="register"
           />
           <Input
             type="password"
-            placeholder="Please Check Your password"
+            placeholder="비밀번호를 다시 한 번 입력해 주세요."
             value={userInfo.password2}
             onChange={(e) => updateUserInfo('password2', e.target.value)}
             className="register"

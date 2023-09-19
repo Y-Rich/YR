@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
+ChartJS.defaults.font.family = 'Do Hyeon';
 
 export const LineGraph1 = ({
   title,
@@ -107,7 +108,9 @@ export const LineGraph2 = ({
     ],
   };
 
-  return <Line options={options} data={data} />;
+  return (
+    <Line style={{ fontFamily: 'Do Hyeon' }} options={options} data={data} />
+  );
 };
 export const LineGraph3 = ({
   title,
@@ -187,7 +190,7 @@ export const DoughnutGraph = ({ title, labels, datas }) => {
       {
         labels,
         data: datas,
-        backgroundColor: ['#42a845', '#cfcfcf', '#7ea5dc'],
+        backgroundColor: ['#42a845', '#9B0000', '#7ea5dc'],
         borderColor: ['white', 'white', 'white'],
         borderWidth: 1,
       },

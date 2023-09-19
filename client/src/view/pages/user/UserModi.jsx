@@ -106,17 +106,17 @@ const UserModi = () => {
             value={userInfo.name}
             onChange={(e) => updateUserInfo('name', e.target.value)}
             className="modi"
-            placeholder="Please enter your name"
+            placeholder="이름을 입력해 주세요."
           ></Input>
           <Input
             value={userInfo.email}
             className="modi"
-            placeholder="Cannot Change Your Email"
+            placeholder="이메일은 변경할 수 없습니다."
             disabled
             style={{ backgroundColor: '#d9d9c0' }}
           />
           <Input
-            placeholder="Please enter your phone"
+            placeholder="전화번호를 입력해 주세요."
             value={userInfo.phone}
             onChange={(e) => updateUserInfo('phone', e.target.value)}
             className="modi"
@@ -126,14 +126,14 @@ const UserModi = () => {
             value={userInfo.password}
             className="modi"
             onChange={(e) => updateUserInfo('password', e.target.value)}
-            placeholder="Please enter your password"
+            placeholder="비밀번호를 입력해 주세요."
           />
           <Input
             type="password"
             value={userInfo.password2}
             className="modi"
             onChange={(e) => updateUserInfo('password2', e.target.value)}
-            placeholder="Check your password"
+            placeholder="비밀번호를 다시 한 번 입력해 주세요."
           ></Input>
         </Box>
         <Button className="submit" onClick={handleSubmit}>

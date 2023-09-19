@@ -45,7 +45,7 @@ const Chart = () => {
           <F2 />
         </Slider>
       )}
-      {(position === 'supervisior' || position === 'worker') && (
+      {(position === 'supervisor' || position === 'worker') && (
         <Slider {...settings}>
           {facilities === 'fac1' && <F1 />}
           {facilities === 'fac2' && <F2 />}
