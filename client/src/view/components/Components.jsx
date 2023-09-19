@@ -61,7 +61,7 @@ export const Container = styled.section`
   &.password {
     margin-top: 40vh;
     &::after {
-      height: 65%;
+      height: 60%;
     }
   }
   &.register {

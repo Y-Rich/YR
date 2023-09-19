@@ -33,8 +33,7 @@ const Chart = () => {
     ),
   };
 
-  // const position = sessionStorage.getItem('position');
-  const position = 'manager';
+  const position = sessionStorage.getItem('position');
   const facilities = sessionStorage.getItem('facilities');
 
   return (

@@ -32,8 +32,7 @@ const Pannel = (props) => {
     ),
   };
 
-  // const position = sessionStorage.getItem('position');
-  const position = 'manager';
+  const position = sessionStorage.getItem('position');
   const facilities = sessionStorage.getItem('facilities');
 
   // 웹소켓 데이터
@@ -68,24 +67,6 @@ const Pannel = (props) => {
     Humidity: '준비중...',
     Particulates: '준비중...',
   });
-  // 받은 데이터
-  // const [No1Delay, setNo1Delay] = useState('준비중...');
-  // const [No1Count, setNo1Count] = useState('준비중...');
-  // const [No2Count, setNo2Count] = useState('준비중...');
-  // const [No3Count, setNo3Delay] = useState('준비중...');
-  // const [OutputLimit, setOutputLimit] = useState('준비중...');
-  // const [DiceValue, setDiceValue] = useState('준비중...');
-  // const [DiceComparisonValue, setDiceComparisonValue] = useState('준비중...');
-  // const [Temperature, setTemperature] = useState('준비중...');
-  // const [Humidity, setHumidity] = useState('준비중...');
-  // const [Particulates, setParticulates] = useState('준비중...');
-  // const updateF1Info = (fieldName, value) => {
-  //   setF1Info((prevF1Info) => ({
-  //     ...prevF1Info,
-  //     [fieldName]: value,
-  //   }));
-  // };
-  //데이터 설정
   useEffect(() => {
     if (webSocket) {
       messagePayloadEdukit1?.Wrapper?.forEach((item) => {

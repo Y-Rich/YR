@@ -6,6 +6,7 @@ import Admin from './view/pages/admin/Admin';
 import Main from './view/pages/3d/Main';
 import EmployeeLog from './view/pages/admin/EmployeeLog';
 import FactoryLog from './view/pages/admin/FactoryLog';
+import Reset from './view/pages/user/Reset';
 
 export const ROUTE = {
   HOME: {
@@ -20,6 +21,10 @@ export const ROUTE = {
     path: '/usermodi',
     element: UserModi,
   },
+  RESET: {
+    path: '/reset',
+    element: Reset,
+  },
   PASSWORD: {
     path: '/password',
     element: Password,
@@ -33,6 +38,10 @@ export const PUBLIC_ROUTE = {
   REGISTER: {
     path: '/register',
     element: Register,
+  },
+  RESET: {
+    path: '/reset',
+    element: Reset,
   },
   PASSWORD: {
     path: '/password',

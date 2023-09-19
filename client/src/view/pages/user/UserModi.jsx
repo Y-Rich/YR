@@ -72,11 +72,8 @@ const UserModi = () => {
       openAlertModal('정확한 핸드폰 번호를 입력해주세요');
       return;
     }
-    if (password.length > 0 || password2.length > 0) {
-      if (!validatePassword(password)) {
-        openAlertModal('8자 이상의 비밀번호를 입력해주세요!');
-        return;
-      }
+    if (!validatePassword(password)) {
+      openAlertModal('8자 이상의 비밀번호를 입력해주세요!');
       return;
     }
     if (password !== password2) {
@@ -86,7 +83,7 @@ const UserModi = () => {
     try {
       await modi(name, phone, password);
       openRefreshModal('회원 수정이 완료되었습니다.');
-      window.location.reload('/usermodi');
+      // window.location.reload('/usermodi');
     } catch (error) {
       console.error('Failed to register:', error);
       openAlertModal('회원 수정에 실패하였습니다.');
