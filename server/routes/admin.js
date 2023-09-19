@@ -6,6 +6,487 @@ const adminService = require('../controller/service/adminService');
 const logService = require('../controller/service/logService');
 const tokenUtil = require('../lib/tokenUtil');
 
+/**
+ * @swagger
+ * tags:
+ *   name: Admin
+ *   description: Admin - 인사관리 / 공장 관리
+ */
+
+//완료 - 직급 등록
+
+/**
+ * @swagger
+ * /admin/position:
+ *   post:
+ *     summary: 직급 등록
+ *     tags: [Admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               positionName:
+ *                 type: string
+ *                 description: 직급 이름
+ *               description:
+ *                 type: string
+ *                 description: 직급에 대한 설명
+ *             required:
+ *               - positionName
+ *     responses:
+ *       201:
+ *         description: 직급 등록 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 position:
+ *                   $ref: '#/components/schemas/Position'
+ *       400:
+ *         description: 요청 파라미터 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 직급 등록에 실패했습니다.
+ */
+
+//완료 - 권한 등록
+
+/**
+ * @swagger
+ * /admin/permission/{id}:
+ *   post:
+ *     summary: 권한 등록
+ *     tags: [Admin]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: 직원 ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               positionID:
+ *                 type: integer
+ *                 description: 직급 ID
+ *               lineID:
+ *                 type: integer
+ *                 description: 라인 ID
+ *               view:
+ *                 type: boolean
+ *                 description: 조회 권한 여부
+ *               control:
+ *                 type: boolean
+ *                 description: 제어 권한 여부
+ *             required:
+ *               - positionID
+ *               - lineID
+ *               - view
+ *               - control
+ *     responses:
+ *       201:
+ *         description: 권한 등록 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 permission:
+ *                   $ref: '#/components/schemas/Permission'
+ *       400:
+ *         description: 요청 파라미터 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 권한 등록에 실패했습니다.
+ */
+
+//완료 - 전체 직원 조회
+
+/**
+ * @swagger
+ * /admin/search:
+ *   get:
+ *     summary: 전체 직원 조회
+ *     tags: [Admin]
+ *     parameters:
+ *       - name: positionID
+ *         in: query
+ *         description: 직급 ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: 직원 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 employees:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: 요청 파라미터 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 직원 조회에 실패했습니다.
+ */
+
+//완료 - 직원 권한 수정
+
+/**
+ * @swagger
+ * /admin/permission:
+ *   put:
+ *     summary: 직원 권한 수정
+ *     tags: [Admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 description: 직원 ID
+ *               positionID:
+ *                 type: integer
+ *                 description: 직급 ID
+ *             required:
+ *               - id
+ *               - positionID
+ *     responses:
+ *       200:
+ *         description: 직원 권한 수정 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 성공 메시지
+ *                 result:
+ *                   $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: 요청 파라미터 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 직원 권한 수정에 실패했습니다.
+ */
+
+//완료 - 공장 등록
+
+/**
+ * @swagger
+ * /admin/factory:
+ *   post:
+ *     summary: 공장 등록
+ *     tags: [Admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               factoryName:
+ *                 type: string
+ *                 description: 공장 이름
+ *               description:
+ *                 type: string
+ *                 description: 공장 설명
+ *             required:
+ *               - factoryName
+ *     responses:
+ *       201:
+ *         description: 공장 등록 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   $ref: '#/components/schemas/Factory'
+ *       400:
+ *         description: 요청 본문 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 공장 등록에 실패했습니다.
+ */
+
+//완료 - 공장 조회
+
+/**
+ * @swagger
+ * /admin/factory:
+ *   get:
+ *     summary: 공장 조회
+ *     tags: [Admin]
+ *     parameters:
+ *       - name: factoryID
+ *         in: query
+ *         description: 공장 ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: 공장 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 factory:
+ *                   $ref: '#/components/schemas/Factory'
+ *       400:
+ *         description: 요청 파라미터 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 공장 조회에 실패했습니다.
+ */
+
+//완료 - 공정 등록
+
+/**
+ * @swagger
+ * /admin/productionline:
+ *   post:
+ *     summary: 공정 등록
+ *     tags: [Admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               lineName:
+ *                 type: string
+ *                 description: 공정 이름
+ *               factoryID:
+ *                 type: integer
+ *                 description: 공장 ID
+ *               description:
+ *                 type: string
+ *                 description: 공정 설명
+ *             required:
+ *               - lineName
+ *               - factoryID
+ *     responses:
+ *       201:
+ *         description: 공정 등록 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   $ref: '#/components/schemas/ProductionLine'
+ *       400:
+ *         description: 요청 본문 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 공정 등록에 실패했습니다.
+ */
+
+// 완료 - 공장 데이터 조회
+
+/**
+ * @swagger
+ * /admin/search/production-data:
+ *   post:
+ *     summary: 공장 데이터 조회
+ *     tags: [Admin]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               LineProdRate:
+ *                 type: array
+ *                 description: 생산률 데이터 요청
+ *               Input:
+ *                 type: array
+ *                 description: 자재투입량 데이터 요청
+ *               Output:
+ *                 type: array
+ *                 description: 생산량 데이터 요청
+ *               Line1defectRate:
+ *                 type: array
+ *                 description: 1공정 불량률 데이터 요청
+ *               Line2defectRate:
+ *                 type: array
+ *                 description: 2공정 불량률 데이터 요청
+ *             required:
+ *               - LineProdRate
+ *               - Input
+ *               - Output
+ *               - Line1defectRate
+ *               - Line2defectRate
+ *     responses:
+ *       200:
+ *         description: 공장 데이터 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dailyAvgLineProdRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 weeklyAvgLineProdRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 monthlyAvgLineProdRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 dailyAvgInput:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 weeklyAvgInput:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 monthlyAvgInput:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 dailyAvgOutput:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 weeklyAvgOutput:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 monthlyAvgOutput:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 dailyAvgLine1defectRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 weeklyAvgLine1defectRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 monthlyAvgLine1defectRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 dailyAvgLine2defectRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 weeklyAvgLine2defectRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *                 monthlyAvgLine2defectRate:
+ *                   $ref: '#/components/schemas/ProductionData'
+ *       400:
+ *         description: 요청 본문 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 데이터 조회에 실패했습니다.
+ */
+
+// 완료 - 로그 기록 전체 조회
+
+/**
+ * @swagger
+ * /admin/logs:
+ *   get:
+ *     summary: 로그 기록 전체 조회
+ *     tags: [Admin]
+ *     parameters:
+ *       - name: list
+ *         in: query
+ *         required: true
+ *         description: 조회할 로그 목록 (all)
+ *         schema:
+ *           type: string
+ *       - name: category
+ *         in: query
+ *         required: false
+ *         description: 로그 카테고리 (옵션)
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: 로그 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 logs:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Log'
+ *       400:
+ *         description: 요청이 잘못됨
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 로그 조회에 실패했습니다.
+ */
+
 // management - employees
 
 //position - 직급 등록
@@ -82,7 +563,6 @@ router.get('/search', async (req, res) => {
   }
 });
 
-// 매니저 직급미만은 권한 수정 못해야함 -> auth 미들웨어 처리
 //permission - 직원 권한 수정
 router.put('/permission', async (req, res) => {
   try {
@@ -490,51 +970,6 @@ router.post('/operatingtime', async (req, res) => {
       asyncfunc();
     }
 
-    // // 유효성 검사 - field
-    // if (!req.body.startDate || !req.body.endDate || !req.body.searchType) {
-    //   return res.status(400).json({
-    //     error: 'Parameter error required: [startDate , endDate , searchType]',
-    //   });
-    // }
-    // // 유효성 검사 - field value
-    // if (!isValidDate(req.body.startDate) || !isValidDate(req.body.endDate)) {
-    //   return res.status(400).json({
-    //     error: 'Parameter error  - invalid dateType. ex. "YYYY-MM-DD"',
-    //   });
-    // }
-    // if (
-    //   !req.body.searchType == 'uptime' ||
-    //   !req.body.searchType == 'downtime'
-    // ) {
-    //   return res.status(400).json({
-    //     error:
-    //       'Parameter error  - invalid searchType. ex. "uptime" , "downtime"',
-    //   });
-    // }
-
-    // // logic - parameter settings
-    // const params = {
-    //   startDate: req.body.startDate, //조회 시작시점
-    //   endDate: req.body.endDate, //조회 종료시점
-    //   searchType: req.body.searchType, // type: uptime:총 가동시간 , downtime: 총 중지시간
-    // };
-
-    // // startDate와 endDate를 사용하여 쿼리를 작성하여 원하는 기간의 데이터를 조회합니다.
-    // const data = await Event.find({
-    //   createdAt: {
-    //     $gte: new Date(startDate), // startDate 이후
-    //     $lte: new Date(endDate), // endDate 이전
-    //   },
-    // });
-
-    // // logic - search : 최근 가동&중지이력
-
-    // logger.info(`(admin.searchOperatingTime.params) ${JSON.stringify(params)}`);
-    // // 비즈니스 로직 호출
-    // const result = await adminService.searchOperatingTime(params);
-    // logger.info(`(admin.searchOperatingTime.result) ${JSON.stringify(result)}`);
-
-    // // 최종 응답
     return res.status(200).json(result);
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
@@ -576,5 +1011,4 @@ router.get('/logs', async (req, res) => {
   }
 });
 
-router.post('/edit');
 module.exports = router;

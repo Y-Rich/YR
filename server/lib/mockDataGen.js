@@ -67,8 +67,8 @@ function mockDataGen_Products() {
   const dataToInsert = [];
 
   // 원하는 시작 날짜와 종료 날짜 설정
-  let startDate = moment('2023-09-14T00:00:00').tz('Asia/Seoul'); // 시작 날짜 설정
-  const endDate = moment('2023-09-17T23:59:59').tz('Asia/Seoul'); // 종료 날짜 설정
+  let startDate = moment('2023-09-18T00:00:00').tz('Asia/Seoul'); // 시작 날짜 설정
+  const endDate = moment('2023-09-19T23:59:59').tz('Asia/Seoul'); // 종료 날짜 설정
 
   function generateProduct(factory, line, currentDate) {
     const ProductName = `product - ${Date.now()}`;

@@ -16,7 +16,7 @@ function readFileAndInsertIntoTemplate(filePath) {
     return null;
   }
 }
-const filePath = path.join(__dirname, '..', 'images', 'index.html');
+const filePath = path.join(__dirname, '..', 'templates', 'index.html');
 // 파일을 읽고 HTML에 삽입
 const finalHTML = readFileAndInsertIntoTemplate(filePath);
 

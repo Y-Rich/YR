@@ -83,7 +83,7 @@ const MQTTconnect = () => {
             scenario_edukit1[6] = false; //이력삭제
             scenario_edukit1[5] = false;
             logger.info(
-              '[edukit1 - scenario 2 ] 시나리오 2 종료 - 감속 가동 시작',
+              '[edukit1 - scenario 2 ] 설비 상태 복원 - 감속 가동 시작',
             );
             //액션
             let control1 = command.start;
@@ -121,7 +121,7 @@ const MQTTconnect = () => {
               Manufacturer: 'edukit1',
               type: 'scenario 2',
               createdAt: Date.now(),
-              message: '시나리오 2 종료- 감속 가동 시작',
+              message: '설비 상태 복원 - 감속 가동 시작',
             };
             client.publish(
               'edukit1/log',
@@ -167,7 +167,7 @@ const MQTTconnect = () => {
               data.Temperature < scenario_edukit1[2]
             ) {
               logger.info(
-                '[edukit1 - scenario 1 ] 시나리오 1 발생 - 온도상승. 속도 제어',
+                '[edukit1 - scenario 1 ] 설비 이상 발생 - 온도상승 감지. 속도 제어',
               );
               scenario_edukit1[4] = true;
               //액션
@@ -192,7 +192,7 @@ const MQTTconnect = () => {
                 Manufacturer: 'edukit1',
                 type: 'scenario 1',
                 createdAt: Date.now(),
-                message: '시나리오 1 발생 - 온도상승. 속도 제어',
+                message: '설비 이상 발생 - 온도상승 감지. 속도 제어',
               };
               client.publish(
                 'edukit1/log',
@@ -226,7 +226,7 @@ const MQTTconnect = () => {
               data.Temperature <= scenario_edukit1[1]
             ) {
               logger.info(
-                '[edukit1 - scenario 1 ] 시나리오 1 종료 - 가동속도 복귀',
+                '[edukit1 - scenario 1 ] 설비 상태 복원 - 가동속도 복귀',
               );
               scenario_edukit1[4] = false;
               //액션
@@ -250,7 +250,7 @@ const MQTTconnect = () => {
                 Manufacturer: 'edukit1',
                 type: 'scenario 1',
                 createdAt: Date.now(),
-                message: '시나리오 1 종료 - 가동속도 복귀',
+                message: '설비 상태 복원 - 가동속도 복귀',
               };
               client.publish(
                 'edukit1/log',
@@ -286,7 +286,7 @@ const MQTTconnect = () => {
               data.Temperature > scenario_edukit1[2]
             ) {
               logger.info(
-                '[edukit1 - scenario 2 ] 시나리오 2 발생 - 온도상승. 가동 중지',
+                '[edukit1 - scenario 2 ] 설비 이상 발생 - 온도상승 감지. 가동 중지',
               );
               scenario_edukit1[5] = true; //정지
               scenario_edukit1[6] = true; // 가동이력 남김
@@ -311,7 +311,7 @@ const MQTTconnect = () => {
                 Manufacturer: 'edukit1',
                 type: 'scenario 2',
                 createdAt: Date.now(),
-                message: '시나리오 2 발생 - 온도상승. 가동 중지',
+                message: '설비 이상 발생 - 온도상승 감지. 가동 중지',
               };
               client.publish(
                 'edukit1/log',
@@ -414,7 +414,7 @@ const MQTTconnect = () => {
             scenario_edukit2[6] = false; //이력삭제
             scenario_edukit2[5] = false;
             logger.info(
-              '[edukit2 - scenario 2 ] 시나리오 2 종료 - 감속 가동 시작',
+              '[edukit2 - scenario 2 ] 설비 상태 복원 - 감속 가동 시작',
             );
             //액션
             let control1 = command.start;
@@ -452,7 +452,7 @@ const MQTTconnect = () => {
               Manufacturer: 'edukit2',
               type: 'scenario 2',
               createdAt: Date.now(),
-              message: '시나리오 2 종료- 감속 가동 시작',
+              message: '설비 상태 복원 - 감속 가동 시작',
             };
             client.publish(
               'edukit2/log',
@@ -498,7 +498,7 @@ const MQTTconnect = () => {
               data.Temperature < scenario_edukit2[2]
             ) {
               logger.info(
-                '[edukit2 - scenario 1 ] 시나리오 1 발생 - 온도상승. 속도 제어',
+                '[edukit2 - scenario 1 ] 설비 이상 발생 - 온도상승 감지. 속도 제어',
               );
               scenario_edukit2[4] = true;
               //액션
@@ -557,7 +557,7 @@ const MQTTconnect = () => {
               data.Temperature <= scenario_edukit2[1]
             ) {
               logger.info(
-                '[edukit2 - scenario 1 ] 시나리오 1 종료 - 가동속도 복귀',
+                '[edukit2 - scenario 1 ] 설비 상태 복원 - 가동속도 복귀',
               );
               scenario_edukit2[4] = false;
               //액션
@@ -581,7 +581,7 @@ const MQTTconnect = () => {
                 Manufacturer: 'edukit2',
                 type: 'scenario 1',
                 createdAt: Date.now(),
-                message: '시나리오 1 종료 - 가동속도 복귀',
+                message: '설비 상태 복원 - 가동속도 복귀',
               };
               client.publish(
                 'edukit2/log',
@@ -617,7 +617,7 @@ const MQTTconnect = () => {
               data.Temperature > scenario_edukit2[2]
             ) {
               logger.info(
-                '[edukit2 - scenario 2 ] 시나리오 2 발생 - 온도상승. 가동 중지',
+                '[edukit2 - scenario 2 ] 설비 이상 발생 - 온도상승 감지. 가동 중지',
               );
               scenario_edukit2[5] = true; //정지
               scenario_edukit2[6] = true; // 가동이력 남김
@@ -642,7 +642,7 @@ const MQTTconnect = () => {
                 Manufacturer: 'edukit2',
                 type: 'scenario 2',
                 createdAt: Date.now(),
-                message: '시나리오 2 발생 - 온도상승. 가동 중지',
+                message: '설비 이상 발생 - 온도상승 감지. 가동 중지',
               };
               client.publish(
                 'edukit2/log',
@@ -734,7 +734,7 @@ const MQTTconnect = () => {
   });
 };
 
-const folderPath = path.join(__dirname, 'images'); // 이미지를 저장할 폴더 경로
+const folderPath = path.join(__dirname, 'templates'); // 이미지를 저장할 폴더 경로
 // const fileName = `received_image_${Date.now()}.png`;
 const fileName = `received_image.png`;
 
