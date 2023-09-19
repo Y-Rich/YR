@@ -1,21 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Page } from '../../components/Components';
-import {
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Title,
-  ButtonContainer,
-  EmpButton,
-  AdminButton,
-  Scroll,
-} from './style';
+import { Table, Tbody, Td, Th, Thead, Tr, Title, Scroll } from './style';
 import axios from 'axios';
 import { useTable, useSortBy } from 'react-table';
-import { Link } from 'react-router-dom';
+import { FaSort } from 'react-icons/fa';
 import Loading from '../../components/Loading';
 
 const FactoryLog = () => {
@@ -70,7 +58,7 @@ const FactoryLog = () => {
         columns,
         data,
         initialState: {
-          sortBy: [{ id: 'createdAt', desc: false }],
+          sortBy: [{ id: 'createdAt', desc: true }],
         },
       },
       useSortBy
@@ -81,7 +69,16 @@ const FactoryLog = () => {
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+              <Th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className={
+                  column.isSorted ? (column.isSortedDesc ? 'desc' : 'asc') : ''
+                }
+              >
+                {column.render('Header')}
+                &nbsp;&nbsp;
+                <FaSort style={{ fontSize: '13px' }} />
+              </Th>
             ))}
           </Tr>
         ))}

@@ -10,14 +10,10 @@ import {
   Tr,
   Scroll,
   AuthButton,
-  EmpButton,
-  FacButton,
-  ButtonContainer,
 } from './style';
 import axios from 'axios';
 import { useTable, useSortBy } from 'react-table';
 import Modal from './Modal';
-import { Link } from 'react-router-dom';
 import { FaSort } from 'react-icons/fa';
 import Loading from '../../components/Loading';
 
@@ -72,11 +68,16 @@ const EmployeeChart = () => {
         },
       },
       {
-        Header: '소속',
+        Header: '권한',
         accessor: (row) => {
           const part = row.Position.positionName.split('_');
+          const jobTitle = part[0];
           const department = part.slice(1).join('_');
-          return ` ${department}`;
+          if (jobTitle === 'manager') {
+            return 'all';
+          } else {
+            return ` ${department}`;
+          }
         },
       },
       {
