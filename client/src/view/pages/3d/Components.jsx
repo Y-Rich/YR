@@ -148,8 +148,8 @@ export const Log = (props) => {
 
   return (
     <Container className="log" ref={scrollRef}>
-      {page === 1 && <Box className="log">세종공장 {date} 로그 기록중</Box>}
-      {page === 2 && <Box className="log">화성공장 {date} 로그 기록중</Box>}
+      {page === 1 && <Box className="log">세종 공장 {date} 로그 기록중</Box>}
+      {page === 2 && <Box className="log">화성 공장 {date} 로그 기록중</Box>}
       {data.map((item, index) => (
         <Box key={index}>
           {item.createdAt}
