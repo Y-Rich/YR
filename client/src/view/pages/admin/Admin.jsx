@@ -18,10 +18,16 @@ import axios from 'axios';
 import { useTable, useSortBy } from 'react-table';
 import Modal from './Modal';
 import { Link } from 'react-router-dom';
+import Buttons from './Buttons';
 
 const Admin = () => {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [selected, setSelected] = useState('employeeList');
+  const handleSelect = (option) => {
+    setSelected(option);
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -135,14 +141,15 @@ const Admin = () => {
     <Page className="admin">
       <Title>직원 목록</Title>
       <AuthButton onClick={openModal}>권한 관리</AuthButton>
-      <ButtonContainer>
+      {/* <ButtonContainer>
         <Link to="/employeelog">
           <EmpButton>직원 로그</EmpButton>
         </Link>
         <Link to="/factorylog">
           <FacButton>공장 로그</FacButton>
         </Link>
-      </ButtonContainer>
+      </ButtonContainer> */}
+      <Buttons onPageChange={handleSelect} />
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
