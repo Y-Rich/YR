@@ -39,6 +39,15 @@ const FactoryLog = () => {
       {
         Header: '공장명',
         accessor: 'Manufacturer',
+        Cell: ({ value }) => {
+          if (value === 'edukit1') {
+            return 'fac1';
+          } else if (value === 'edukit2') {
+            return 'fac2';
+          } else {
+            return value; // 나머지 타입은 그대로 출력
+          }
+        },
       },
 
       {
@@ -104,7 +113,7 @@ const FactoryLog = () => {
   return (
     <Page className="factorylog">
       {loading ? <Loading /> : null}
-      <Title>공장 로그</Title>
+      <Title>생산 이력</Title>
       <Scroll>
         <Table {...getTableProps()}>
           <TableHead />

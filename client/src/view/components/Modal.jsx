@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-const ModalContainer = styled.section`
+export const ModalContainer = styled.section`
   width: 400px;
   height: 300px;
   z-index: 999;
@@ -22,12 +22,12 @@ const ModalContainer = styled.section`
   align-items: center;
 `;
 
-const ModalContent = styled.div`
+export const ModalContent = styled.div`
   position: absolute;
   top: 35%;
 `;
 
-const ModalBtn = styled.button`
+export const ModalBtn = styled.button`
   background-color: #3579a0;
   border: none;
   /* border: 0.5mm outset black; */
@@ -50,6 +50,51 @@ const ModalBtn = styled.button`
       inset 0.3rem 0.4rem 0.8rem #bec5d0;
 
     /* box-shadow: 2px 3px 0 rgb(0, 0, 0, 0.5); */
+  }
+`;
+
+export const ConfirmModalBtn = styled.button`
+  background-color: #3579a0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 25%;
+  height: 15%;
+  position: absolute;
+  bottom: 30px;
+  right: 55%;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: #a9a9a9;
+  }
+  &:active {
+    border-style: 1mm inset black;
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #fbfbfb,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
+  }
+`;
+export const CancleModalBtn = styled.button`
+  background-color: #3579a0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 25%;
+  height: 15%;
+  position: absolute;
+  bottom: 30px;
+  left: 55%;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: #a9a9a9;
+  }
+  &:active {
+    border-style: 1mm inset black;
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #fbfbfb,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
   }
 `;
 

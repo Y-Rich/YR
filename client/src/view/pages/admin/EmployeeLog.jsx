@@ -110,13 +110,13 @@ const EmployeeLog = () => {
               ? '공정3 시운전 OFF'
               : '공정3 시운전 ON';
           default:
-            return '없음';
+            return '-';
         }
       } else {
-        return '없음';
+        return '-';
       }
     } catch (error) {
-      return '없음';
+      return '-';
     }
   }
 
@@ -142,11 +142,6 @@ const EmployeeLog = () => {
         Cell: ({ value }) => getPositionName(value),
       },
       {
-        Header: '명령어',
-        accessor: 'control',
-        Cell: ({ value }) => getControlDescription(value),
-      },
-      {
         Header: '타입',
         accessor: 'type',
         Cell: ({ value }) => {
@@ -158,6 +153,11 @@ const EmployeeLog = () => {
             return value; // 나머지 타입은 그대로 출력
           }
         },
+      },
+      {
+        Header: '비고',
+        accessor: 'control',
+        Cell: ({ value }) => getControlDescription(value),
       },
     ],
     []
