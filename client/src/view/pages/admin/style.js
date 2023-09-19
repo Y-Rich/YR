@@ -28,9 +28,9 @@ export const Tr = styled.tr`
 `;
 
 export const Th = styled.th`
-  padding: 1.5vw 4vw;
+  padding: 1.5vw 3.2vw;
   text-align: center;
-  background-color: #0xdddddd;
+  background-color: #dddddd;
 `;
 
 export const Td = styled.td`
@@ -41,7 +41,7 @@ export const Td = styled.td`
 
 export const Scroll = styled.div`
   margin-top: 80px;
-  max-height: 580px;
+  max-height: 480px;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 4px;
