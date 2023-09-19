@@ -28,9 +28,9 @@ class TextSprite extends THREE.Sprite {
     const borderThickness = 8; // 테두리 두께
 
     // 글꼴과 크기 설정
-    const fontface = 'Vernada'; // 사용할 글꼴
+    const fontface = 'Hack'; // 사용할 글꼴
     const fontSizePx = `${fontsize}px`;
-    context.font = `Bold ${fontSizePx} ${fontface}`;
+    context.font = `${fontSizePx} ${fontface}`;
 
     context.fillStyle = `rgba(${backgroundColor.r},${backgroundColor.g},${backgroundColor.b},${backgroundColor.a})`;
     context.strokeStyle = `rgba(${borderColor.r},${borderColor.g},${borderColor.b},${borderColor.a})`;
@@ -149,9 +149,9 @@ class TextSprite extends THREE.Sprite {
     } = this.parameters;
 
     // 폰트와 폰트 크기 설정
-    const fontface = 'Vernada'; // 사용할 글꼴
+    const fontface = 'Hack'; // 사용할 글꼴
     const fontSizePx = `${fontsize}px`;
-    context.font = `Bold ${fontSizePx} ${fontface}`;
+    context.font = `${fontSizePx} ${fontface}`;
 
     // 텍스트와 배경 설정
     context.fillStyle = `rgba(${backgroundColor.r},${backgroundColor.g},${backgroundColor.b},${backgroundColor.a})`;

@@ -30,8 +30,8 @@ const Container = styled.nav`
     padding: 0.7em;
   }
   &.order {
-    width: 32vw;
-    left: 34%;
+    width: 50vw;
+    left: 24%;
     /* height: 1vh; */
     top: 7%;
     padding: 0.5em;
@@ -51,12 +51,12 @@ const Container = styled.nav`
 `;
 const hoverAction = keyframes`
   0% { color: yellow; }
-  5% { color: blue; }
+  5% { color: red; }
   10% { color: yellow; }
-  15% { color: blue; }
+  15% { color: red; }
   20% { color: yellow; }
-  25% { color: blue; }
-  100% { color: blue; }
+  25% { color: red; }
+  100% { color: red; }
 `;
 const Box = styled.div`
   font-size: 12px;
@@ -67,7 +67,7 @@ const Box = styled.div`
   padding-bottom: 2px;
   &.scenario {
     background-color: rgba(255, 255, 255, 0.8);
-    color: blue;
+    color: red;
     font-size: 1.4vw;
     animation: ${hoverAction} 5s ease;
   }
@@ -163,28 +163,36 @@ export const Log = (props) => {
 
 export const Order = (props) => {
   const { webSocket, scenario } = props.props;
-  const [alarm, setAlarm] = useState('적용 중인 시나리오 없음.');
+  const [alarm, setAlarm] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (webSocket) {
       if (scenario !== null) {
         // 메시지가 변경될 때마다 보이도록 설정
+        const result = scenario?.message.replace(/시나리오 1|시나리오 2/g, '');
+        setAlarm(result);
         setIsVisible(true);
-        setAlarm(scenario?.message);
       }
     }
 
-    // 10초 후에 메시지가 사라지도록 설정
+    if (alarm === null) {
+      setIsVisible(false);
+    }
+
+    // 15초 후에 메시지가 사라지도록 설정
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 10000);
+    }, 15000);
 
     // 컴포넌트가 unmount되면 타이머 클리어
     return () => {
       clearTimeout(timer);
+      setIsVisible(false);
+      setAlarm(null);
     };
   }, [scenario]);
+
   return (
     <Container className="order">
       {isVisible && (

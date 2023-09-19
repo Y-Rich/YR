@@ -301,7 +301,7 @@ const PLC = (props) => {
         b: 0,
         a: 1.0,
       },
-      message: '   ON',
+      message: '  ON',
     };
     const switchOff = {
       borderColor: {
@@ -310,7 +310,7 @@ const PLC = (props) => {
         b: 0,
         a: 1.0,
       },
-      message: '   OFF',
+      message: '  OFF',
     };
     const PalleteFull = {
       borderColor: {
