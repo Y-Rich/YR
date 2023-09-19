@@ -211,7 +211,7 @@ const Pannel = (props) => {
       {position === 'manager' && (
         <Slider {...settings}>
           <FacPannel
-            facName="공장 1"
+            facName="세종 공장"
             OutputLimit={f1Info.OutputLimit}
             No3Count={f1Info.No3Count}
             Particulates={f1Info.Particulates}
@@ -224,7 +224,7 @@ const Pannel = (props) => {
             DiceValue={f1Info.DiceValue}
           />
           <FacPannel
-            facName="공장 2"
+            facName="화성 공장"
             OutputLimit={f2Info.OutputLimit}
             No3Count={f2Info.No3Count}
             Particulates={f2Info.Particulates}
@@ -238,11 +238,11 @@ const Pannel = (props) => {
           />
         </Slider>
       )}
-      {(position === 'supervisior' || position === 'worker') && (
+      {(position === 'supervisor' || position === 'worker') && (
         <Slider {...settings}>
           {facilities === 'fac1' && (
             <FacPannel
-              facName="공장 1"
+              facName="세종 공장"
               OutputLimit={f1Info.OutputLimit}
               No3Count={f1Info.No3Count}
               Particulates={f1Info.Particulates}
@@ -257,7 +257,7 @@ const Pannel = (props) => {
           )}
           {facilities === 'fac2' && (
             <FacPannel
-              facName="공장 2"
+              facName="화성 공장"
               OutputLimit={f2Info.OutputLimit}
               No3Count={f2Info.No3Count}
               Particulates={f2Info.Particulates}

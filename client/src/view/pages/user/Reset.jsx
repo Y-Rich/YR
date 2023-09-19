@@ -7,20 +7,18 @@ import {
   Page,
   Title,
 } from '../../components/Components';
-import { AlertModal, RefreshModal } from '../../components/Modal';
+import { AlertModal, ReloadModal } from '../../components/Modal';
 import { validateEmail } from '../../../utils/userFunc';
 import { pwcheck } from '../../../services/user';
-import { useNavigate } from 'react-router-dom';
 
 const Reset = () => {
-  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     email: '',
     toEmail: '',
     secret: '',
   });
-  const [refreshModal, setRefreshModal] = useState(false);
-  const [refreshModalContent, setRefreshModalContent] = useState('');
+  const [reloadModal, setReloadModal] = useState(false);
+  const [reloadModalContent, setReloadModalContent] = useState('');
   const [alertmodal, setAlertModal] = useState(false);
   const [alertmodalContent, setAlertModalContent] = useState('');
   const updateUserInfo = (fieldName, value) => {
@@ -39,23 +37,23 @@ const Reset = () => {
     }
     try {
       await pwcheck(email, toEmail, secret);
-      openRefreshModal('메일함을 확인해 주세요!', true);
+      openReloadModal('메일함을 확인해 주세요!', true);
     } catch (error) {
       console.error('Failed to pw check:', error);
       openAlertModal('회원 확인에 실패하였습니다.', false);
     }
   };
-  const openRefreshModal = (content) => {
-    setRefreshModalContent(content);
-    setRefreshModal(true);
+  const openReloadModal = (content) => {
+    setReloadModalContent(content);
+    setReloadModal(true);
   };
   const openAlertModal = (content) => {
     setAlertModalContent(content);
     setAlertModal(true);
   };
-  const closeRefreshModal = () => {
-    setRefreshModal(false);
-    setRefreshModalContent('');
+  const closeReloadModal = () => {
+    setReloadModal(false);
+    setReloadModalContent('');
   };
   const closeAlertModal = () => {
     setAlertModal(false);
@@ -71,14 +69,14 @@ const Reset = () => {
             className="password"
             type="text"
             onChange={(e) => updateUserInfo('email', e.target.value)}
-            placeholder="Please enter your email@uvc.co.kr"
+            placeholder="email@uvc.co.kr 형태의 이메일을 입력해 주세요."
           />
           <Input
             value={userInfo.toEmail}
             className="password"
             type="text"
             onChange={(e) => updateUserInfo('toEmail', e.target.value)}
-            placeholder="Email you want to receive a message"
+            placeholder="재설정 링크를 받을 이메일을 입력해 주세요."
           />
           <Box className="password check">
             <Input
@@ -86,17 +84,17 @@ const Reset = () => {
               className="password"
               type="text"
               onChange={(e) => updateUserInfo('secret', e.target.value)}
-              placeholder="Please enter recieved string"
+              placeholder="개인 고유 번호를 입력해 주세요."
             />
           </Box>
         </Box>
         <Button type="submit" className="submit" onClick={handleSubmit}>
           SUBMIT
         </Button>
-        {refreshModal && (
-          <RefreshModal
-            setRefreshModal={closeRefreshModal}
-            element={refreshModalContent}
+        {reloadModal && (
+          <ReloadModal
+            setReloadModal={closeReloadModal}
+            element={reloadModalContent}
           />
         )}
         {alertmodal && (

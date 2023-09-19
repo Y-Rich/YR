@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 const ModalContainer = styled.section`
@@ -56,6 +57,32 @@ export const RefreshModal = ({ setRefreshModal, element }) => {
   const closeModal = (href) => {
     setRefreshModal(false);
     window.location.reload('/');
+    // window.location.href = `/${href}`;
+  };
+  const modalRef = useRef(null);
+  const handleOutsideClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      closeModal();
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+  return (
+    <ModalContainer ref={modalRef}>
+      <ModalContent>{element}</ModalContent>
+      <ModalBtn onClick={closeModal}>확인</ModalBtn>
+    </ModalContainer>
+  );
+};
+export const ReloadModal = ({ setReloadModal, element }) => {
+  const navigate = useNavigate();
+  const closeModal = (href) => {
+    setReloadModal(false);
+    navigate('/');
     // window.location.href = `/${href}`;
   };
   const modalRef = useRef(null);

@@ -69,14 +69,14 @@ const Login = () => {
           type="text"
           name="email"
           onChange={handleChange}
-          placeholder="Please enter your email@uvc.co.kr"
+          placeholder="email@uvc.co.kr형태의 이메일을 입력해 주세요."
           className="login"
         />
         <Input
           type="password"
           name="password"
           onChange={handleChange}
-          placeholder="Please enter your password"
+          placeholder="비밀번호를 입력해 주세요."
           className="login"
         />
       </Box>

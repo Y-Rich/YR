@@ -19,7 +19,7 @@ const FactoryLog = () => {
       .get('http://192.168.0.127:8000/admin/logs?list=all&category=factory')
       .then((res) => {
         setData(res.data);
-        console.log(res.data);
+        // console.log(res.data);
         setLoading(false);
       })
       .catch((error) => {
