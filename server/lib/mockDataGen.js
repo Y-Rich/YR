@@ -67,26 +67,13 @@ function mockDataGen_Products() {
   const dataToInsert = [];
 
   // 원하는 시작 날짜와 종료 날짜 설정
-  let startDate = moment('2023-08-01T00:00:00').tz('Asia/Seoul'); // 시작 날짜 설정
-  const endDate = moment('2023-09-13T23:59:59').tz('Asia/Seoul'); // 종료 날짜 설정
+  let startDate = moment('2023-09-14T00:00:00').tz('Asia/Seoul'); // 시작 날짜 설정
+  const endDate = moment('2023-09-17T23:59:59').tz('Asia/Seoul'); // 종료 날짜 설정
 
-  // 데이터 생성 및 배열에 추가
-  function getRandomCategory() {
-    const categories = ['line1', 'line2', 'line3'];
-    // 라인별 생산량 - line1 >= line2 >= line3
-    const num = Math.random();
-    if (num >= 0.63) {
-      return categories[0];
-    } else if (num >= 0.3) {
-      return categories[1];
-    } else {
-      return categories[2];
-    }
-  }
-  function generateProduct(factory, currentDate) {
+  function generateProduct(factory, line, currentDate) {
     const ProductName = `product - ${Date.now()}`;
     const Manufacturer = factory;
-    const Category = getRandomCategory();
+    const Category = line;
     const createdAt = currentDate.format('YYYY-MM-DDTHH:mm:ss.SSS+09:00');
     return {
       ProductName,
@@ -96,13 +83,52 @@ function mockDataGen_Products() {
     };
   }
   while (startDate.isBefore(endDate)) {
+    let count = [false, false];
     // Factory 1
-    dataToInsert.push(generateProduct('edukit1', startDate));
+    dataToInsert.push(generateProduct('edukit1', 'line1', startDate));
     // Factory 2
-    dataToInsert.push(generateProduct('edukit2', startDate));
+    dataToInsert.push(generateProduct('edukit2', 'line1', startDate));
 
-    // 24*60*60 =86400초 / 라인3-> 86400/3 = 28800초  / 일평균 전체 공장에서 생산되는양 2000개 ->약 15초
-    startDate = startDate.add(15, 'seconds');
+    startDate = startDate.add(25, 'seconds');
+
+    const num1 = Math.random();
+
+    // line 2 확률 생산
+
+    if (num1 < 0.98) {
+      // 확률을 98%로 조정
+      // Factory 1
+      dataToInsert.push(generateProduct('edukit1', 'line2', startDate));
+      count[0] = true;
+    }
+    // Factory 2
+    if (num1 < 0.98) {
+      // 확률을 98%로 조정
+      // Factory 1
+      dataToInsert.push(generateProduct('edukit2', 'line2', startDate));
+      count[1] = true;
+    }
+
+    startDate = startDate.add(25, 'seconds');
+
+    // line 3 확률 생산 -> line2 가 생성되야 실행
+    if (count[0] == true) {
+      const num2 = Math.random();
+      if (num2 < 0.98) {
+        // 확률을 98%로 조정
+        // Factory 1
+        dataToInsert.push(generateProduct('edukit1', 'line3', startDate));
+      }
+    }
+    if (count[1] == true) {
+      const num2 = Math.random();
+      if (num2 < 0.98) {
+        // 확률을 98%로 조정
+        // Factory 2
+        dataToInsert.push(generateProduct('edukit2', 'line3', startDate));
+      }
+    }
+    startDate = startDate.add(50, 'seconds');
   }
 
   // 데이터 배열을 일괄 삽입

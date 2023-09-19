@@ -18,7 +18,7 @@
     "sen2_ON": { "tagId": "13", "value": "1" },
     "sen2_OFF": { "tagId": "13", "value": "0" },
 
-    "No1Delay": { "tagId": "14", "value": "80" },
+    "No1Delay": { "tagId": "14", "value": "150" },
 
     "No2Mode_all": { "tagId": "31", "value": "1" },
     "No2Mode_color": { "tagId": "31", "value": "0" },

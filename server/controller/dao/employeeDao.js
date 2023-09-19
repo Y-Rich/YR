@@ -117,6 +117,21 @@ const dao = {
         });
     });
   },
+  // 직원 정보 수정
+  updatePW(params) {
+    return new Promise((resolve, reject) => {
+      Employee.update(params, {
+        // id를 조건으로 검색하여 update
+        where: { email: params.email },
+      })
+        .then(([updated]) => {
+          resolve({ updatedCount: updated });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
   // 직원 정보 삭제
   delete(params) {
     return new Promise((resolve, reject) => {
@@ -126,6 +141,24 @@ const dao = {
       })
         .then((deleted) => {
           resolve({ deletedCount: deleted });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  },
+
+  // 비밀번호 재설정 -  이메일로 사용자 검색
+  searchEmployeeforPW(params) {
+    return new Promise((resolve, reject) => {
+      Employee.findOne({
+        attributes: ['email'],
+        where: {
+          email: params.email,
+        },
+      })
+        .then((selectedOne) => {
+          resolve(selectedOne);
         })
         .catch((err) => {
           reject(err);

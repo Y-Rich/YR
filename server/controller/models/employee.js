@@ -24,7 +24,7 @@ module.exports = class Employee extends Sequelize.Model {
         },
         positionID: {
           type: Sequelize.INTEGER,
-          defaultValue: 3, // default 값을 worker로 설정
+          defaultValue: 6, // default 값을 worker로 설정
         },
         phone: {
           type: Sequelize.STRING(20),

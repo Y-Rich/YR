@@ -112,9 +112,9 @@ const tokenUtil = {
 
   // 회원 확인을 위해 페이로드 확인
   decodeToken(token) {
-    const decodedToken = jwt.verify(token, accessSecretKey); // 토큰을 해독하고 유효성 검사
-    const { employeeID } = decodedToken;
-    return employeeID; //DB조회용 employeeID
+    const decodedToken = jwt.decode(token, accessSecretKey); // 토큰을 해독하고 유효성 검사
+    // const { employeeID } = decodedToken;
+    return decodedToken; //DB조회용 employeeID
   },
 };
 

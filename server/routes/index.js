@@ -22,7 +22,8 @@ router.get('/test', (req, res) => {
 });
 
 router.get('/mockData', (req, res) => {
-  mockDataGen_HumiAndTempAndPar();
+  // mockDataGen_HumiAndTempAndPar();
+  mockDataGen_Products();
   res.json('mockDataGen_Products');
 });
 

@@ -4,9 +4,17 @@ const edukit1Service = require('./service/edukit1Service');
 const edukit2Service = require('./service/edukit2Service');
 const fs = require('fs');
 const path = require('path');
+const commandSet = require('../config/edukitConfig.json');
+const command = commandSet.controlSet;
 
-// const addr = 'mqtt://192.168.0.44:1883'; // 교육장
-const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+const addr = 'mqtt://192.168.0.44:1883'; // 교육장
+// const addr = 'mqtt://localhost:1883'; // 집에서 테스트
+
+let scenario_edukit1 = [null, 26, 28, 28, false, false, false];
+let scenario_edukit2 = [null, 26, 28, 28, false, false, false];
+// 에듀킷 상태  , 시나리오 기준값1 [속도조절], 시나리오 기준값2[정지] ,시나리오 기준값3 [재개],
+// 시나리오 상태 - 속도조절 , 시나리오 상태 - 정지 ,  이전 가동이력(6)
+// 27도 [속도조절] → 28도 [정지 및 재가동 구간]
 
 const MQTTconnect = () => {
   const client = mqtt.connect(addr, {
@@ -47,7 +55,6 @@ const MQTTconnect = () => {
   client.on('message', async function (topic, message) {
     try {
       const parsedMes = message.toString();
-      // logger.info(`[ dataStore ]Received message on topic ${topic}`);
       //edukit1 - 센서데이터  - 온습도
       if (topic === 'edukit1/environment/data') {
         // 비즈니스 로직 호출
@@ -63,6 +70,277 @@ const MQTTconnect = () => {
           logger.debug(
             `(edukit1Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
           );
+          //시나리오 적용
+          // scenario - 센서 기준값    -> 특정 온도 기준에 도달할때 액션을 한번만 주어야 한다.
+          // 시나리오 2 종료시 재 가동 프로세스 -> 이전 가동이력과 재기동 온도 기준을 확인
+          if (
+            scenario_edukit1[0] == false &&
+            scenario_edukit1[5] == true &&
+            scenario_edukit1[6] == true &&
+            data.Temperature <= scenario_edukit1[3] &&
+            data.Temperature > scenario_edukit1[1]
+          ) {
+            scenario_edukit1[6] = false; //이력삭제
+            scenario_edukit1[5] = false;
+            logger.info(
+              '[edukit1 - scenario 2 ] 시나리오 2 종료 - 감속 가동 시작',
+            );
+            //액션
+            let control1 = command.start;
+            control1.value = 1;
+            client.publish(
+              'edukit1/control',
+              JSON.stringify(control1),
+              { qos: 0 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit1/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+            let control2 = command.No1Delay;
+            control2.value = 150;
+            client.publish(
+              'edukit1/control',
+              JSON.stringify(control2),
+              { qos: 0 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit1/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+            //edukit1/log  - 로그 발송
+            let mes = {
+              Manufacturer: 'edukit1',
+              type: 'scenario 2',
+              createdAt: Date.now(),
+              message: '시나리오 2 종료- 감속 가동 시작',
+            };
+            client.publish(
+              'edukit1/log',
+              JSON.stringify(mes),
+              { qos: 0 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit1/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+            client.publish(
+              'edukit/scenario',
+              JSON.stringify(mes),
+              { qos: 1 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit1/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+          }
+
+          //가동 중일때만 적용해야됨
+          if (scenario_edukit1[0] == true) {
+            // 평상시
+            if (data.Temperature < scenario_edukit1[1]) {
+              logger.info(
+                '[edukit1 - scenario 1 ] skip process... 정상온도 범위 ',
+              );
+            }
+            //속도조절
+            else if (
+              scenario_edukit1[4] == false &&
+              scenario_edukit1[5] == false &&
+              data.Temperature > scenario_edukit1[1] &&
+              data.Temperature < scenario_edukit1[2]
+            ) {
+              logger.info(
+                '[edukit1 - scenario 1 ] 시나리오 1 발생 - 온도상승. 속도 제어',
+              );
+              scenario_edukit1[4] = true;
+              //액션
+              let control = command.No1Delay;
+              control.value = 150;
+              client.publish(
+                'edukit1/control',
+                JSON.stringify(control),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+
+              //edukit1/log  - 로그 발송
+              let mes = {
+                Manufacturer: 'edukit1',
+                type: 'scenario 1',
+                createdAt: Date.now(),
+                message: '시나리오 1 발생 - 온도상승. 속도 제어',
+              };
+              client.publish(
+                'edukit1/log',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              client.publish(
+                'edukit/scenario',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+            } else if (
+              scenario_edukit1[4] == true &&
+              scenario_edukit1[5] == false &&
+              data.Temperature <= scenario_edukit1[1]
+            ) {
+              logger.info(
+                '[edukit1 - scenario 1 ] 시나리오 1 종료 - 가동속도 복귀',
+              );
+              scenario_edukit1[4] = false;
+              //액션
+              let control = command.No1Delay;
+              control.value = 80;
+              client.publish(
+                'edukit1/control',
+                JSON.stringify(control),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              //edukit1/log  - 로그 발송
+              let mes = {
+                Manufacturer: 'edukit1',
+                type: 'scenario 1',
+                createdAt: Date.now(),
+                message: '시나리오 1 종료 - 가동속도 복귀',
+              };
+              client.publish(
+                'edukit1/log',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              client.publish(
+                'edukit/scenario',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+            }
+            //정지
+            else if (
+              scenario_edukit1[4] == true &&
+              scenario_edukit1[5] == false &&
+              data.Temperature > scenario_edukit1[2]
+            ) {
+              logger.info(
+                '[edukit1 - scenario 2 ] 시나리오 2 발생 - 온도상승. 가동 중지',
+              );
+              scenario_edukit1[5] = true; //정지
+              scenario_edukit1[6] = true; // 가동이력 남김
+              //액션
+              let control = command.start;
+              control.value = 0;
+              client.publish(
+                'edukit1/control',
+                JSON.stringify(control),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              //edukit1/log  - 로그 발송
+              let mes = {
+                Manufacturer: 'edukit1',
+                type: 'scenario 2',
+                createdAt: Date.now(),
+                message: '시나리오 2 발생 - 온도상승. 가동 중지',
+              };
+              client.publish(
+                'edukit1/log',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              client.publish(
+                'edukit/scenario',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit1/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+            }
+          }
         }
       }
       //edukit1 -  에듀킷 상태 데이터
@@ -82,11 +360,31 @@ const MQTTconnect = () => {
           );
           parsedMessage.Wrapper.unshift(dateObj);
         }
+
         //1.  비즈니스 로직 호출 [상태데이터 DB저장]
         const result = await edukit1Service.saveStatus(parsedMessage);
         logger.debug(
           `(edukit1Service.saveStatus.result) : data insert successfully on mongoDB server`,
         );
+        // scenario - 가동 상태 기록
+        if (scenario_edukit1[0] === null) {
+          // 서버시작시 가동상태 전역으로 변수설정
+          scenario_edukit1[0] = Boolean(parsedMessage.Wrapper[1].value);
+          logger.debug('[edukit1-scenario] skip process...  서버시작');
+        } else if (
+          scenario_edukit1[0] !== null &&
+          scenario_edukit1[0] === parsedMessage.Wrapper[1].value
+        ) {
+          // 가동상태가 메모값과 같으면 skip
+          logger.debug('[edukit1-scenario] skip process...');
+        } else if (
+          scenario_edukit1[0] !== null &&
+          scenario_edukit1[0] !== parsedMessage.Wrapper[1].value
+        ) {
+          // 가동상태가 메모값과 다르면 상태값 업데이트
+          scenario_edukit1[0] = Boolean(parsedMessage.Wrapper[1].value);
+          logger.debug('[edukit1-scenario] type changed....');
+        }
       }
       //edukit2 - 센서데이터  - 온습도
       if (topic === 'edukit2/environment/data') {
@@ -94,16 +392,286 @@ const MQTTconnect = () => {
         let data = JSON.parse(parsedMes);
         if (!data.Temperature || !data.Humidity || !data.Particulates) {
           throw new Error(
-            'Property missing.... [edukit2] parsedMes.Temperature ||parsedMes.Humidity ||parsedMes.Particulates',
+            'Property missing....[edukit2] parsedMes.Temperature ||parsedMes.Humidity ||parsedMes.Particulates',
           );
         } else {
-          // 비즈니스 로직 호출
           const result = await edukit2Service.saveTempAndHumi(
             JSON.parse(parsedMes),
           );
           logger.debug(
             `(edukit2Service.saveTempAndHumi.result) : data insert successfully on mongoDB server`,
           );
+          //시나리오 적용
+          // scenario - 센서 기준값    -> 특정 온도 기준에 도달할때 액션을 한번만 주어야 한다.
+          // 시나리오 2 종료시 재 가동 프로세스 -> 이전 가동이력과 재기동 온도 기준을 확인
+          if (
+            scenario_edukit2[0] == false &&
+            scenario_edukit2[5] == true &&
+            scenario_edukit2[6] == true &&
+            data.Temperature <= scenario_edukit2[3] &&
+            data.Temperature > scenario_edukit2[1]
+          ) {
+            scenario_edukit2[6] = false; //이력삭제
+            scenario_edukit2[5] = false;
+            logger.info(
+              '[edukit2 - scenario 2 ] 시나리오 2 종료 - 감속 가동 시작',
+            );
+            //액션
+            let control1 = command.start;
+            control1.value = 1;
+            client.publish(
+              'edukit2/control',
+              JSON.stringify(control1),
+              { qos: 0 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit2/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+            let control2 = command.No1Delay;
+            control2.value = 200;
+            client.publish(
+              'edukit2/control',
+              JSON.stringify(control2),
+              { qos: 0 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit2/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+            //edukit2/log  - 로그 발송
+            let mes = {
+              Manufacturer: 'edukit2',
+              type: 'scenario 2',
+              createdAt: Date.now(),
+              message: '시나리오 2 종료- 감속 가동 시작',
+            };
+            client.publish(
+              'edukit2/log',
+              JSON.stringify(mes),
+              { qos: 0 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit2/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+            client.publish(
+              'edukit/scenario',
+              JSON.stringify(mes),
+              { qos: 1 },
+              function (err, message) {
+                if (err) {
+                  logger.error(
+                    '[ edukit2/log ] Error publishing message:',
+                    err,
+                  );
+                }
+              },
+            );
+          }
+
+          //가동 중일때만 적용해야됨
+          if (scenario_edukit2[0] == true) {
+            // 평상시
+            if (data.Temperature < scenario_edukit2[1]) {
+              logger.info(
+                '[edukit2 - scenario 1 ] skip process... 정상온도 범위 ',
+              );
+            }
+            //속도조절
+            else if (
+              scenario_edukit2[4] == false &&
+              scenario_edukit2[5] == false &&
+              data.Temperature > scenario_edukit2[1] &&
+              data.Temperature < scenario_edukit2[2]
+            ) {
+              logger.info(
+                '[edukit2 - scenario 1 ] 시나리오 1 발생 - 온도상승. 속도 제어',
+              );
+              scenario_edukit2[4] = true;
+              //액션
+              let control = command.No1Delay;
+              control.value = 200;
+              client.publish(
+                'edukit2/control',
+                JSON.stringify(control),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+
+              //edukit2/log  - 로그 발송
+              let mes = {
+                Manufacturer: 'edukit2',
+                type: 'scenario 1',
+                createdAt: Date.now(),
+                message: '시나리오 1 발생 - 온도상승. 속도 제어',
+              };
+              client.publish(
+                'edukit2/log',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              client.publish(
+                'edukit/scenario',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+            } else if (
+              scenario_edukit2[4] == true &&
+              scenario_edukit2[5] == false &&
+              data.Temperature <= scenario_edukit2[1]
+            ) {
+              logger.info(
+                '[edukit2 - scenario 1 ] 시나리오 1 종료 - 가동속도 복귀',
+              );
+              scenario_edukit2[4] = false;
+              //액션
+              let control = command.No1Delay;
+              control.value = 150;
+              client.publish(
+                'edukit2/control',
+                JSON.stringify(control),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              //edukit2/log  - 로그 발송
+              let mes = {
+                Manufacturer: 'edukit2',
+                type: 'scenario 1',
+                createdAt: Date.now(),
+                message: '시나리오 1 종료 - 가동속도 복귀',
+              };
+              client.publish(
+                'edukit2/log',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              client.publish(
+                'edukit/scenario',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+            }
+            //정지
+            else if (
+              scenario_edukit2[4] == true &&
+              scenario_edukit2[5] == false &&
+              data.Temperature > scenario_edukit2[2]
+            ) {
+              logger.info(
+                '[edukit2 - scenario 2 ] 시나리오 2 발생 - 온도상승. 가동 중지',
+              );
+              scenario_edukit2[5] = true; //정지
+              scenario_edukit2[6] = true; // 가동이력 남김
+              //액션
+              let control = command.start;
+              control.value = 0;
+              client.publish(
+                'edukit2/control',
+                JSON.stringify(control),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              //edukit2/log  - 로그 발송
+              let mes = {
+                Manufacturer: 'edukit2',
+                type: 'scenario 2',
+                createdAt: Date.now(),
+                message: '시나리오 2 발생 - 온도상승. 가동 중지',
+              };
+              client.publish(
+                'edukit2/log',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+              client.publish(
+                'edukit/scenario',
+                JSON.stringify(mes),
+                { qos: 1 },
+                function (err, message) {
+                  if (err) {
+                    logger.error(
+                      '[ edukit2/log ] Error publishing message:',
+                      err,
+                    );
+                  }
+                },
+              );
+            }
+          }
         }
       }
       //edukit2 -  에듀킷 상태 데이터
@@ -123,11 +691,31 @@ const MQTTconnect = () => {
           );
           parsedMessage.Wrapper.unshift(dateObj);
         }
+
         //1.  비즈니스 로직 호출 [상태데이터 DB저장]
         const result = await edukit2Service.saveStatus(parsedMessage);
         logger.debug(
           `(edukit2Service.saveStatus.result) : data insert successfully on mongoDB server`,
         );
+        // scenario - 가동 상태 기록
+        if (scenario_edukit2[0] === null) {
+          // 서버시작시 가동상태 전역으로 변수설정
+          scenario_edukit2[0] = Boolean(parsedMessage.Wrapper[1].value);
+          logger.debug('[edukit2-scenario] skip process...  서버시작');
+        } else if (
+          scenario_edukit2[0] !== null &&
+          scenario_edukit2[0] === parsedMessage.Wrapper[1].value
+        ) {
+          // 가동상태가 메모값과 같으면 skip
+          logger.debug('[edukit2-scenario] skip process...');
+        } else if (
+          scenario_edukit2[0] !== null &&
+          scenario_edukit2[0] !== parsedMessage.Wrapper[1].value
+        ) {
+          // 가동상태가 메모값과 다르면 상태값 업데이트
+          scenario_edukit2[0] = Boolean(parsedMessage.Wrapper[1].value);
+          logger.debug('[edukit2-scenario] type changed....');
+        }
       }
 
       // // 센서 이미지 저장
