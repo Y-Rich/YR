@@ -19,8 +19,10 @@ import { useTable, useSortBy } from 'react-table';
 import Modal from './Modal';
 import { Link } from 'react-router-dom';
 import { FaSort } from 'react-icons/fa';
+import Loading from '../../components/Loading';
 
 const EmployeeChart = () => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -41,9 +43,11 @@ const EmployeeChart = () => {
       .get('http://192.168.0.127:8000/admin/search/?positionID=all')
       .then((res) => {
         setData(res.data.rows);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('데이터를 불러오는 중 에러가 발생했습니다.', error);
+        setLoading(false);
       });
   };
 
@@ -136,16 +140,9 @@ const EmployeeChart = () => {
   };
   return (
     <Page className="admin">
-      <Title>직원 목록</Title>
+      {loading ? <Loading /> : null}
+      <Title>직원 관리</Title>
       <AuthButton onClick={openModal}>권한 관리</AuthButton>
-      <ButtonContainer>
-        <Link to="/employeelog">
-          <EmpButton>직원 로그</EmpButton>
-        </Link>
-        <Link to="/factorylog">
-          <FacButton>공장 로그</FacButton>
-        </Link>
-      </ButtonContainer>
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

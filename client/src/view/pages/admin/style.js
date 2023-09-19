@@ -28,13 +28,12 @@ export const Tr = styled.tr`
 `;
 
 export const Th = styled.th`
-  padding: 1.5vw 3.2vw;
+  padding: 1vw 3vw;
   text-align: center;
   background-color: #dddddd;
 `;
 
 export const Td = styled.td`
-  padding: 8px;
   text-align: center;
   padding: 1.5vw;
 `;
@@ -43,6 +42,7 @@ export const Scroll = styled.div`
   margin-top: 80px;
   max-height: 480px;
   overflow-y: auto;
+  margin-top: 7%;
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -53,11 +53,13 @@ export const Scroll = styled.div`
 `;
 export const AuthButton = styled.button`
   position: absolute;
-  top: 90px;
-  right: 300px;
-  background-color: #97c0d8;
+  top: 15%;
+  right: 320px;
+  background-color: #4b5668;
   color: white;
-  padding: 8px 12px;
+  /* padding: 10px 14px; */
+  width: 6vw;
+  height: 6vh;
   border: none;
   border-radius: 5px;
   cursor: pointer;
