@@ -30,10 +30,14 @@ const Container = styled.nav`
     padding: 0.7em;
   }
   &.order {
-    width: 18vw;
+    width: 32vw;
+    left: 34%;
     /* height: 1vh; */
     top: 7%;
     padding: 0.5em;
+    text-align: center;
+    background-color: transparent;
+    border: none;
   }
   &.btn {
     width: 18.45vw;
@@ -47,9 +51,12 @@ const Container = styled.nav`
 `;
 const hoverAction = keyframes`
   0% { color: yellow; }
-  10% { color: white; }
+  5% { color: blue; }
+  10% { color: yellow; }
+  15% { color: blue; }
   20% { color: yellow; }
-  100% { color: white; }
+  25% { color: blue; }
+  100% { color: blue; }
 `;
 const Box = styled.div`
   font-size: 12px;
@@ -59,7 +66,10 @@ const Box = styled.div`
   // font-size: 0.7rem;
   padding-bottom: 2px;
   &.scenario {
-    animation: ${hoverAction} 1s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: blue;
+    font-size: 1.4vw;
+    animation: ${hoverAction} 5s ease;
   }
 `;
 
@@ -154,22 +164,35 @@ export const Log = (props) => {
 export const Order = (props) => {
   const { webSocket, scenario } = props.props;
   const [alarm, setAlarm] = useState('적용 중인 시나리오 없음.');
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (webSocket) {
-      console.log('here1', scenario);
       if (scenario !== null) {
-        console.log('here2', scenario);
+        // 메시지가 변경될 때마다 보이도록 설정
+        setIsVisible(true);
         setAlarm(scenario?.message);
       }
     }
+
+    // 10초 후에 메시지가 사라지도록 설정
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 10000);
+
+    // 컴포넌트가 unmount되면 타이머 클리어
+    return () => {
+      clearTimeout(timer);
+    };
   }, [scenario]);
   return (
     <Container className="order">
-      <Box className="log scenario">
-        <AiFillNotification style={{ marginRight: '10px' }} />
-        알림 : {alarm}
-      </Box>
+      {isVisible && (
+        <Box className="scenario">
+          <AiFillNotification style={{ marginRight: '10px' }} />
+          알림 : {alarm}
+        </Box>
+      )}
     </Container>
   );
 };

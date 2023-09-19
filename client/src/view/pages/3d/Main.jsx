@@ -6,7 +6,7 @@ import Pannel from '../pannel/Pannel';
 import Chart from '../chart/Chart';
 
 const Main = () => {
-  const [selected, setSelected] = useState('pannel');
+  const [selected, setSelected] = useState('chart');
   const handleSelect = (option) => {
     setSelected(option);
   };
