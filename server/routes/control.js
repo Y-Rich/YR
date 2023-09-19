@@ -96,7 +96,7 @@ router.post('/edukit1', (req, res) => {
               ...decoded,
               type: 'edukit1/control',
               control: mes,
-              Category: 'employee',
+              Category: 'factory',
             };
             const result = await logService.control(params);
             logger.info(`(logService.control) logged successfully...`);
@@ -199,6 +199,7 @@ router.post('/edukit2', (req, res) => {
               ...decoded,
               type: 'edukit2/control',
               control: mes,
+              Category: 'factory',
             };
             const result = await logService.control(params);
             logger.info(`(logService.control) logged successfully...`);

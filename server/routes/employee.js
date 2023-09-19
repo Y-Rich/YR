@@ -9,7 +9,10 @@ const tokenService = require('../controller/service/tokenService');
 const tokenUtil = require('../lib/tokenUtil');
 const hashUtil = require('../lib/hashUtil');
 const { isLoggedIn } = require('../lib/middleware');
-
+const mailSender = require('../lib/nodeMailer');
+const env = require('dotenv');
+env.config();
+const { SECRET } = process.env;
 /**
  * @swagger
  * components:
@@ -463,6 +466,95 @@ router.get('/logout', async (req, res) => {
     return res.status(200).json('successfully logout.... ');
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
+  }
+});
+
+// // router - 비밀번호 재설정
+router.put('/password', async (req, res) => {
+  try {
+    // 패스워드 파라미터가 있는지 확인 및 값체크
+    if (!req.body) {
+      return res
+        .status(400)
+        .json({ error: 'body parameter error... required: email , password' });
+    }
+
+    let hashPassword = null;
+
+    if (req.body.email && req.body.password) {
+      // 있으면 암호화 진행
+      try {
+        hashPassword = await hashUtil.makePasswordHash(req.body.password);
+      } catch (err) {
+        logger.error(`(employee.edit.hashPassword) ${err.toString()}`);
+        return res.status(500).json({ error: `hashPassword error` });
+      }
+      //  hashPassword로 비밀번호 변경해서 params 전달
+      const pwParams = {
+        password: hashPassword,
+      };
+      const params = {
+        email: req.body.email,
+        ...pwParams, // 비밀번호 파라미터 합치기
+      };
+      logger.info(`(employee.editPW.params) ${JSON.stringify(params)}`);
+
+      // 비즈니스 로직 호출
+      const result = await employeeService.editPW(params);
+      // 최종 응답
+      return res
+        .status(200)
+        .json({ message: '성공적으로 업데이트 되었습니다.' });
+    } else if (!req.body.email || !req.body.password) {
+      return res
+        .status(400)
+        .json({ err: 'body parameter error. required: email,password' });
+    }
+  } catch (err) {
+    return res.status(500).json({ err: err.toString() });
+  }
+});
+
+router.post('/password-reset', async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(401).json('parameter error.... required : req.body');
+    }
+    if (!req.body.email || !req.body.toEmail || !req.body.secret) {
+      return res
+        .status(401)
+        .json('parameter error.... required field: email , toEmail , secret ');
+    }
+    const params = {
+      email: req.body.email, // 찾으려는 이메일
+      toEmail: req.body.toEmail, // 수신할 이메일
+      secret: req.body.secret, // 사내 발급 시크릿키
+    };
+    // 시크릿키 검증
+    if (params.secret != SECRET) {
+      return res.status(401).json('parameter error....  invalid secret key. ');
+    }
+
+    // 직원 찾기 서비스 로직 호출
+    const employee = {
+      email: req.body.email,
+    };
+    const findResult = await employeeService.findEmployee(employee);
+    if (findResult !== null) {
+      logger.info(
+        `(employeeService.findEmployee.result) user exists... ${findResult.dataValues.email}`,
+      );
+    } else {
+      return res.status(401).json({ error: '해당 유저를 찾을수 없습니다. ' });
+    }
+    // 메일 발송
+    const result = await mailSender.sendGmail(params, employee.email);
+    logger.info(
+      `(mailSender.sendGmail) sent password-reset email.   ${result}`,
+    );
+    return res.status(200).json('sent password-reset email.......');
+  } catch (err) {
+    return res.status(500).json({ error: err.toString() });
   }
 });
 

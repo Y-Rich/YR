@@ -576,4 +576,5 @@ router.get('/logs', async (req, res) => {
   }
 });
 
+router.post('/edit');
 module.exports = router;

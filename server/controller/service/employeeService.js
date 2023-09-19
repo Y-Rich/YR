@@ -167,6 +167,48 @@ const service = {
       resolve(result);
     });
   },
+
+  // 회원 조회 - 비밀번호 재설정
+  async findEmployee(params) {
+    let result = null;
+
+    try {
+      result = await employeeDao.searchEmployeeforPW(params);
+      logger.debug(
+        `(employeeDao.searchEmployeeforPW) ${JSON.stringify(result)}`,
+      );
+    } catch (err) {
+      logger.error(`(employeeDao.searchEmployeeforPW) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
+
+  //회원 비밀번호 수정
+  async editPW(params) {
+    let result = null;
+
+    try {
+      result = await employeeDao.updatePW(params);
+      logger.debug(`(employeeService.edit) ${JSON.stringify(result)}`);
+    } catch (err) {
+      logger.error(`(employeeService.edit) ${err.toString()}`);
+      return new Promise((resolve, reject) => {
+        reject(err);
+      });
+    }
+
+    // 결과값 리턴
+    return new Promise((resolve) => {
+      resolve(result);
+    });
+  },
 };
 
 module.exports = service;
