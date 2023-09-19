@@ -531,4 +531,452 @@ router.post('/edukit2/search/production-data', async (req, res) => {
     return res.status(500).json({ err: err.toString() });
   }
 });
+
+/**
+ * @swagger
+ * tags:
+ *   name: data
+ *   description: data - 각종 센서데이터 조회 / 투입량 , 생산량 , 불량률 , 라인별 공장별 생산량 데이터 조회
+ */
+
+//완료 - Edukit1 센서 데이터 조회
+
+/**
+ * @swagger
+ * /data/edukit1/search:
+ *   post:
+ *     summary: Edukit1 센서 데이터 조회
+ *     tags: [data]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Temperature:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 온도 데이터 조회 설정 [센서 유형, 조회 기간]
+ *               Humidity:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 습도 데이터 조회 설정 [센서 유형, 조회 기간]
+ *               Particulates:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 미세먼지 데이터 조회 설정 [센서 유형, 조회 기간]
+ *             required:
+ *               - Temperature
+ *               - Humidity
+ *               - Particulates
+ *     responses:
+ *       200:
+ *         description: 센서 데이터 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dailyAvgTemp:
+ *                   type: object
+ *                   description: 일별 온도 평균 데이터
+ *                 weeklyAvgTemp:
+ *                   type: object
+ *                   description: 주간 온도 평균 데이터
+ *                 monthlyAvgTemp:
+ *                   type: object
+ *                   description: 월간 온도 평균 데이터
+ *                 dailyAvgHumi:
+ *                   type: object
+ *                   description: 일별 습도 평균 데이터
+ *                 weeklyAvgHumi:
+ *                   type: object
+ *                   description: 주간 습도 평균 데이터
+ *                 monthlyAvgHumi:
+ *                   type: object
+ *                   description: 월간 습도 평균 데이터
+ *                 dailyAvgPar:
+ *                   type: object
+ *                   description: 일별 미세먼지 평균 데이터
+ *                 weeklyAvgPar:
+ *                   type: object
+ *                   description: 주간 미세먼지 평균 데이터
+ *                 monthlyAvgPar:
+ *                   type: object
+ *                   description: 월간 미세먼지 평균 데이터
+ *       400:
+ *         description: 잘못된 요청 형식
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 센서 데이터 조회 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 err:
+ *                   type: string
+ *                   description: 오류 메시지
+ */
+
+// 완료 - Edukit1 생산 데이터 조회
+
+/**
+ * @swagger
+ * /data/edukit1/search/production-data:
+ *   post:
+ *     summary: Edukit1 생산 데이터 조회
+ *     tags: [data]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               LineProdRate:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 라인별 생산량 조회 설정 [라인 유형, 조회 기간]
+ *               Input:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 자재투입량 조회 설정 [라인 유형, 조회 기간]
+ *               Output:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 완제품 생산량 조회 설정 [라인 유형, 조회 기간]
+ *               Line1defectRate:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 1공정 불량률 조회 설정 [라인 유형, 조회 기간]
+ *               Line2defectRate:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 2공정 불량률 조회 설정 [라인 유형, 조회 기간]
+ *             required:
+ *               - LineProdRate
+ *               - Input
+ *               - Output
+ *               - Line1defectRate
+ *               - Line2defectRate
+ *     responses:
+ *       200:
+ *         description: 생산 데이터 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dailyAvgLineProdRate:
+ *                   type: object
+ *                   description: 일별 라인별 생산량 평균 데이터
+ *                 weeklyAvgLineProdRate:
+ *                   type: object
+ *                   description: 주간 라인별 생산량 평균 데이터
+ *                 monthlyAvgLineProdRate:
+ *                   type: object
+ *                   description: 월간 라인별 생산량 평균 데이터
+ *                 dailyAvgInput:
+ *                   type: object
+ *                   description: 일별 자재투입량 평균 데이터
+ *                 weeklyAvgInput:
+ *                   type: object
+ *                   description: 주간 자재투입량 평균 데이터
+ *                 monthlyAvgInput:
+ *                   type: object
+ *                   description: 월간 자재투입량 평균 데이터
+ *                 dailyAvgOutput:
+ *                   type: object
+ *                   description: 일별 완제품 생산량 평균 데이터
+ *                 weeklyAvgOutput:
+ *                   type: object
+ *                   description: 주간 완제품 생산량 평균 데이터
+ *                 monthlyAvgOutput:
+ *                   type: object
+ *                   description: 월간 완제품 생산량 평균 데이터
+ *                 dailyAvgLine1defectRate:
+ *                   type: object
+ *                   description: 일별 1공정 불량률 평균 데이터
+ *                 weeklyAvgLine1defectRate:
+ *                   type: object
+ *                   description: 주간 1공정 불량률 평균 데이터
+ *                 monthlyAvgLine1defectRate:
+ *                   type: object
+ *                   description: 월간 1공정 불량률 평균 데이터
+ *                 dailyAvgLine2defectRate:
+ *                   type: object
+ *                   description: 일별 2공정 불량률 평균 데이터
+ *                 weeklyAvgLine2defectRate:
+ *                   type: object
+ *                   description: 주간 2공정 불량률 평균 데이터
+ *                 monthlyAvgLine2defectRate:
+ *                   type: object
+ *                   description: 월간 2공정 불량률 평균 데이터
+ *       400:
+ *         description: 잘못된 요청 형식
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 생산 데이터 조회 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 err:
+ *                   type: string
+ *                   description: 오류 메시지
+ */
+
+//완료 - Edukit2 센서 데이터 조회
+
+/**
+ * @swagger
+ * /data/edukit2/search:
+ *   post:
+ *     summary: Edukit2 센서 데이터 조회
+ *     tags: [data]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Temperature:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 온도 데이터 조회 설정 [센서 유형, 조회 기간]
+ *               Humidity:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 습도 데이터 조회 설정 [센서 유형, 조회 기간]
+ *               Particulates:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 미세먼지 데이터 조회 설정 [센서 유형, 조회 기간]
+ *             required:
+ *               - Temperature
+ *               - Humidity
+ *               - Particulates
+ *     responses:
+ *       200:
+ *         description: 센서 데이터 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dailyAvgTemp:
+ *                   type: object
+ *                   description: 일별 온도 평균 데이터
+ *                 weeklyAvgTemp:
+ *                   type: object
+ *                   description: 주간 온도 평균 데이터
+ *                 monthlyAvgTemp:
+ *                   type: object
+ *                   description: 월간 온도 평균 데이터
+ *                 dailyAvgHumi:
+ *                   type: object
+ *                   description: 일별 습도 평균 데이터
+ *                 weeklyAvgHumi:
+ *                   type: object
+ *                   description: 주간 습도 평균 데이터
+ *                 monthlyAvgHumi:
+ *                   type: object
+ *                   description: 월간 습도 평균 데이터
+ *                 dailyAvgPar:
+ *                   type: object
+ *                   description: 일별 미세먼지 평균 데이터
+ *                 weeklyAvgPar:
+ *                   type: object
+ *                   description: 주간 미세먼지 평균 데이터
+ *                 monthlyAvgPar:
+ *                   type: object
+ *                   description: 월간 미세먼지 평균 데이터
+ *       400:
+ *         description: 잘못된 요청 형식
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 센서 데이터 조회 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 err:
+ *                   type: string
+ *                   description: 오류 메시지
+ */
+
+// 완료 - Edukit1 생산 데이터 조회
+
+/**
+ * @swagger
+ * /data/edukit2/search/production-data:
+ *   post:
+ *     summary: Edukit2 생산 데이터 조회
+ *     tags: [data]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               LineProdRate:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 라인별 생산량 조회 설정 [라인 유형, 조회 기간]
+ *               Input:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 자재투입량 조회 설정 [라인 유형, 조회 기간]
+ *               Output:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 완제품 생산량 조회 설정 [라인 유형, 조회 기간]
+ *               Line1defectRate:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 1공정 불량률 조회 설정 [라인 유형, 조회 기간]
+ *               Line2defectRate:
+ *                 type: array
+ *                 items:
+ *                   - type: string
+ *                   - type: string
+ *                 description: 2공정 불량률 조회 설정 [라인 유형, 조회 기간]
+ *             required:
+ *               - LineProdRate
+ *               - Input
+ *               - Output
+ *               - Line1defectRate
+ *               - Line2defectRate
+ *     responses:
+ *       200:
+ *         description: 생산 데이터 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dailyAvgLineProdRate:
+ *                   type: object
+ *                   description: 일별 라인별 생산량 평균 데이터
+ *                 weeklyAvgLineProdRate:
+ *                   type: object
+ *                   description: 주간 라인별 생산량 평균 데이터
+ *                 monthlyAvgLineProdRate:
+ *                   type: object
+ *                   description: 월간 라인별 생산량 평균 데이터
+ *                 dailyAvgInput:
+ *                   type: object
+ *                   description: 일별 자재투입량 평균 데이터
+ *                 weeklyAvgInput:
+ *                   type: object
+ *                   description: 주간 자재투입량 평균 데이터
+ *                 monthlyAvgInput:
+ *                   type: object
+ *                   description: 월간 자재투입량 평균 데이터
+ *                 dailyAvgOutput:
+ *                   type: object
+ *                   description: 일별 완제품 생산량 평균 데이터
+ *                 weeklyAvgOutput:
+ *                   type: object
+ *                   description: 주간 완제품 생산량 평균 데이터
+ *                 monthlyAvgOutput:
+ *                   type: object
+ *                   description: 월간 완제품 생산량 평균 데이터
+ *                 dailyAvgLine1defectRate:
+ *                   type: object
+ *                   description: 일별 1공정 불량률 평균 데이터
+ *                 weeklyAvgLine1defectRate:
+ *                   type: object
+ *                   description: 주간 1공정 불량률 평균 데이터
+ *                 monthlyAvgLine1defectRate:
+ *                   type: object
+ *                   description: 월간 1공정 불량률 평균 데이터
+ *                 dailyAvgLine2defectRate:
+ *                   type: object
+ *                   description: 일별 2공정 불량률 평균 데이터
+ *                 weeklyAvgLine2defectRate:
+ *                   type: object
+ *                   description: 주간 2공정 불량률 평균 데이터
+ *                 monthlyAvgLine2defectRate:
+ *                   type: object
+ *                   description: 월간 2공정 불량률 평균 데이터
+ *       400:
+ *         description: 잘못된 요청 형식
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 생산 데이터 조회 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 err:
+ *                   type: string
+ *                   description: 오류 메시지
+ */
+
 module.exports = router;

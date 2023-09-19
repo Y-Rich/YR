@@ -13,221 +13,315 @@ const mailSender = require('../lib/nodeMailer');
 const env = require('dotenv');
 env.config();
 const { SECRET } = process.env;
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         _id:
- *           type: string
- *         name:
- *           type: string
- *         email:
- *           type: string
- *         password:
- *           type: string
- *         role:
- *           type: string
- *       required:
- *         - name
- *         - email
- *         - password
- *         - role
- */
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: 유저 CRUD 기능
+ *   name: Employee
+ *   description: Employee - 유저 CRUD 기능
  */
+
+//완료 - 회원가입
 
 /**
  * @swagger
  * /users/register:
  *   post:
- *     summary: 회원가입
- *     tags: [Users]
+ *     summary: 사용자 회원가입
+ *     tags: [Employee]
  *     requestBody:
- *       description: 스키마 유의사항 확인바람.
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               departmentCode:
- *                 type: string
- *                 example: "edukit01"
- *                 description: "네이밍규칙 edukit01,edukit02,edukit03...."
- *               name:
- *                 type: string
- *                 example: "영앤리치"
- *               userid:
- *                 type: string
- *                 example: "yhoon8"
- *                 description: "스키마 모델 참고.. unique key"
- *               password:
- *                 type: string
- *                 example: "1111"
- *               role:
- *                 type: string
- *                 example: "manager"
- *                 description: "manager , supervisor , worker"
  *               email:
  *                 type: string
- *                 example: "test@test.com"
+ *                 description: 사용자 이메일 주소
+ *               password:
+ *                 type: string
+ *                 description: 사용자 비밀번호
+ *               name:
+ *                 type: string
+ *                 description: 사용자 이름
  *               phone:
  *                 type: string
- *                 example: "010-1111-1111"
+ *                 description: 사용자 전화번호
  *             required:
- *               - departmentCode
- *               - name
- *               - userid
- *               - password
- *               - role
  *               - email
+ *               - password
+ *               - name
  *               - phone
  *     responses:
  *       201:
  *         description: 회원가입 성공
- *       500:
- *         description: 실패-Failed to create a new user
- */
-
-/***
- * @swagger
- * /users/login:
- *   post:
- *     summary: 로그인
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *             required:
- *               - email
- *               - password
- *     responses:
- *       200:
- *         description: 로그인성공, 액세스토큰 발급
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 token:
- *                   type: string
  *                 user:
- *                   $ref: '#/components/schemas/User'
- *       401:
- *         description: Invalid email or password
+ *                   $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: 이메일, 비밀번호, 이름, 전화번호는 필수입니다.
  *       500:
- *         description: Failed to login
+ *         description: 회원가입에 실패했습니다.
  */
+
+//완료 - 로그인
 
 /**
  * @swagger
- * /users/search:
- *   get:
- *     summary: Get all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: List of all users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
- *       500:
- *         description: Failed to fetch users
- */
-
-/**
- * @swagger
- * /users/profile/{id}:
- *   get:
- *     summary: Get a user by their ID
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the user to fetch
- *     responses:
- *       200:
- *         description: User details
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       500:
- *         description: Failed to fetch user details
- */
-
-/**
- * @swagger
- * /users/profile/{id}:
- *   put:
- *     summary: Update a user by their ID
- *     tags: [Users]
- *     parameters:
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the user to update
+ * /users/login:
+ *   post:
+ *     summary: 사용자 로그인
+ *     tags: [Employee]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: 사용자 이메일 주소
+ *               password:
+ *                 type: string
+ *                 description: 사용자 비밀번호
+ *             required:
+ *               - email
+ *               - password
  *     responses:
  *       200:
- *         description: Updated user details
+ *         description: 로그인 성공, 액세스 토큰 발급
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/Employee'
+ *       400:
+ *         description: 이메일과 비밀번호는 필수입니다.
+ *       401:
+ *         description: 이메일 또는 비밀번호가 잘못되었습니다.
  *       500:
- *         description: Failed to update user details
+ *         description: 로그인에 실패했습니다.
  */
+
+//완료 - 직원 상세 정보 조회
+
+/**
+ * @swagger
+ * /users/profile/{id}:
+ *   get:
+ *     summary: 직원 상세 정보 조회
+ *     tags: [Employee]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: 직원의 고유 ID
+ *     responses:
+ *       200:
+ *         description: 직원 상세 정보 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       401:
+ *         description: unauthorized.로그인 권한이 필요.
+ *       500:
+ *         description: 조회에 실패했습니다.
+ */
+
+//완료 - 유저 정보 수정
+
+/**
+ * @swagger
+ * /users/profile/{id}:
+ *   put:
+ *     summary: 유저 정보 수정
+ *     tags: [Employee]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: 수정 대상 유저의 고유 ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: 유저 이름
+ *               phone:
+ *                 type: string
+ *                 description: 유저 전화번호
+ *               password:
+ *                 type: string
+ *                 description: 변경할 비밀번호
+ *     responses:
+ *       200:
+ *         description: 유저 정보 수정 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/Employee'
+ *       500:
+ *         description: 유저 정보 수정에 실패했습니다.
+ */
+
+//완료 - 회원 탈퇴
 
 /**
  * @swagger
  * /users/{id}:
  *   delete:
- *     summary: Delete a user by their ID
- *     tags: [Users]
+ *     summary: 회원 탈퇴
+ *     tags: [Employee]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
- *           type: string
+ *           type: integer
  *         required: true
- *         description: ID of the user to delete
+ *         description: 탈퇴할 회원의 고유 ID
  *     responses:
  *       200:
- *         description: Deleted user details
+ *         description: 회원 탈퇴 성공
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 result:
+ *                   type: string
+ *                   description: 탈퇴 결과 메시지
  *       500:
- *         description: Failed to delete user
+ *         description: 회원 탈퇴에 실패했습니다.
+ */
+
+/**
+ * @swagger
+ * /users/logout:
+ *   get:
+ *     summary: 로그아웃
+ *     tags: [Employee]
+ *     responses:
+ *       200:
+ *         description: 로그아웃 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               description: 로그아웃 결과 메시지
+ *       500:
+ *         description: 로그아웃에 실패했습니다.
+ */
+
+/**
+ * @swagger
+ * /users/password-reset:
+ *   post:
+ *     summary: 비밀번호 재설정(1)
+ *     tags: [Employee]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: 사용자 이메일 주소
+ *               toEmail:
+ *                 type: string
+ *                 description: 수신할 이메일 주소
+ *               secret:
+ *                 type: string
+ *                 description: 사내 발급 시크릿 키
+ *             required:
+ *               - email
+ *               - toEmail
+ *               - secret
+ *     responses:
+ *       200:
+ *         description: 비밀번호 재설정 이메일 전송 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               description: 이메일 전송 결과 메시지
+ *       401:
+ *         description: 파라미터 오류 또는 유효하지 않은 시크릿 키
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               description: 오류 메시지
+ *       500:
+ *         description: 이메일 전송에 실패했습니다.
+ */
+
+/**
+ * @swagger
+ * /users/password:
+ *   put:
+ *     summary: 비밀번호 재설정(2)
+ *     tags: [Employee]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: 사용자 이메일 주소
+ *               password:
+ *                 type: string
+ *                 description: 새로운 비밀번호
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: 비밀번호 업데이트 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 업데이트 성공 메시지
+ *       400:
+ *         description: 파라미터 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 비밀번호 업데이트에 실패했습니다.
  */
 
 // router - 회원가입
@@ -246,7 +340,7 @@ router.post('/register', async (req, res) => {
       const err = new Error('Not allowed null (email, name, phone, password)');
       logger.error(err.toString());
 
-      res.status(500).json({ err: err.toString() });
+      res.status(400).json({ err: err.toString() });
     }
 
     // 비즈니스 로직 호출
@@ -275,7 +369,7 @@ router.post('/login', async (req, res) => {
       const err = new Error('Not allowed null (email, password)');
       logger.error(err.toString());
 
-      return res.status(500).json({ err: err.toString() });
+      return res.status(401).json({ err: err.toString() });
     }
 
     // 비즈니스 로직 호출
@@ -329,36 +423,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// // router - 전체 조회  - 직급에따라 검색
-// router.get('/search', async (req, res) => {
-//   try {
-//     const validQueries = ['positionID']; // 유효한 쿼리 매개변수 목록
-
-//     // 모든 쿼리 파라미터가 유효한지 확인
-//     for (const queryParam in req.query) {
-//       if (!validQueries.includes(queryParam)) {
-//         // 유효하지 않은 쿼리가 있을 경우, 400 Bad Request 상태 코드를 반환
-//         return res
-//           .status(400)
-//           .json({ error: `Invalid query parameter: ${queryParam}` });
-//       }
-//     }
-//     const params = {
-//       positionID: req.query.positionID,
-//     };
-//     logger.info(`(employee.list.params) ${JSON.stringify(params)}`);
-
-//     const result = await employeeService.positionList(params);
-//     logger.info(`(employee.list.result) ${JSON.stringify(result)}`);
-
-//     // 최종 응답
-//     return res.status(200).json(result);
-//   } catch (err) {
-//     return res.status(500).json({ err: err.toString() });
-//   }
-// });
-
-// router - 직원 상세정보
+// router - 직원상세정보
 router.get('/profile/:id', isLoggedIn, async (req, res) => {
   try {
     const params = {
@@ -469,7 +534,50 @@ router.get('/logout', async (req, res) => {
   }
 });
 
-// // router - 비밀번호 재설정
+// router - 비밀번호 재설정(1)
+router.post('/password-reset', async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(401).json('parameter error.... required : req.body');
+    }
+    if (!req.body.email || !req.body.toEmail || !req.body.secret) {
+      return res
+        .status(401)
+        .json('parameter error.... required field: email , toEmail , secret ');
+    }
+    const params = {
+      email: req.body.email, // 찾으려는 이메일
+      toEmail: req.body.toEmail, // 수신할 이메일
+      secret: req.body.secret, // 사내 발급 시크릿키
+    };
+    // 시크릿키 검증
+    if (params.secret != SECRET) {
+      return res.status(401).json('parameter error....  invalid secret key. ');
+    }
+
+    // 직원 찾기 서비스 로직 호출
+    const employee = {
+      email: req.body.email,
+    };
+    const findResult = await employeeService.findEmployee(employee);
+    if (findResult !== null) {
+      logger.info(
+        `(employeeService.findEmployee.result) user exists... ${findResult.dataValues.email}`,
+      );
+    } else {
+      return res.status(401).json({ error: '해당 유저를 찾을수 없습니다. ' });
+    }
+    // 메일 발송
+    const result = await mailSender.sendGmail(params, employee.email);
+    console.log(result);
+    logger.info(`(mailSender.sendGmail) sent password-reset email.`);
+    return res.status(200).json('sent password-reset email.......');
+  } catch (err) {
+    return res.status(500).json({ error: err.toString() });
+  }
+});
+
+// router - 비밀번호 재설정(2)
 router.put('/password', async (req, res) => {
   try {
     // 패스워드 파라미터가 있는지 확인 및 값체크
@@ -512,49 +620,6 @@ router.put('/password', async (req, res) => {
     }
   } catch (err) {
     return res.status(500).json({ err: err.toString() });
-  }
-});
-
-router.post('/password-reset', async (req, res) => {
-  try {
-    if (!req.body) {
-      return res.status(401).json('parameter error.... required : req.body');
-    }
-    if (!req.body.email || !req.body.toEmail || !req.body.secret) {
-      return res
-        .status(401)
-        .json('parameter error.... required field: email , toEmail , secret ');
-    }
-    const params = {
-      email: req.body.email, // 찾으려는 이메일
-      toEmail: req.body.toEmail, // 수신할 이메일
-      secret: req.body.secret, // 사내 발급 시크릿키
-    };
-    // 시크릿키 검증
-    if (params.secret != SECRET) {
-      return res.status(401).json('parameter error....  invalid secret key. ');
-    }
-
-    // 직원 찾기 서비스 로직 호출
-    const employee = {
-      email: req.body.email,
-    };
-    const findResult = await employeeService.findEmployee(employee);
-    if (findResult !== null) {
-      logger.info(
-        `(employeeService.findEmployee.result) user exists... ${findResult.dataValues.email}`,
-      );
-    } else {
-      return res.status(401).json({ error: '해당 유저를 찾을수 없습니다. ' });
-    }
-    // 메일 발송
-    const result = await mailSender.sendGmail(params, employee.email);
-    logger.info(
-      `(mailSender.sendGmail) sent password-reset email.   ${result}`,
-    );
-    return res.status(200).json('sent password-reset email.......');
-  } catch (err) {
-    return res.status(500).json({ error: err.toString() });
   }
 });
 

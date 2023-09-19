@@ -9,8 +9,9 @@ const logger = require('./lib/logger');
 const path = require('path');
 const Models = require('./controller/models/index');
 const indexRouter = require('./routes/index');
+
+//MQTT connection module
 const MongoDBconnect = require('./controller/connection_mongoDB');
-const { swaggerUi, specs } = require('./lib/swagger');
 const MQTTconnectForDataStore = require('./controller/connection_MQTT_dataStore');
 const MQTTconnectForProducts = require('./controller/connection_MQTT_products');
 
@@ -48,7 +49,7 @@ MongoDBconnect();
 // middleware settings
 app.use(cors(corsConfig));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'images')));
+// app.use(express.static(path.join(__dirname, 'templates')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -58,7 +59,6 @@ MQTTconnectForDataStore();
 // connection - MQTT / 생산 통계위한 클라이언트
 MQTTconnectForProducts();
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler

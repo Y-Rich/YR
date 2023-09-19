@@ -96,7 +96,7 @@ router.post('/edukit1', (req, res) => {
               ...decoded,
               type: 'edukit1/control',
               control: mes,
-              Category: 'factory',
+              Category: 'employee',
             };
             const result = await logService.control(params);
             logger.info(`(logService.control) logged successfully...`);
@@ -199,7 +199,7 @@ router.post('/edukit2', (req, res) => {
               ...decoded,
               type: 'edukit2/control',
               control: mes,
-              Category: 'factory',
+              Category: 'employee',
             };
             const result = await logService.control(params);
             logger.info(`(logService.control) logged successfully...`);
@@ -220,5 +220,144 @@ router.post('/edukit2', (req, res) => {
     res.status(404).json({ error: error.toString() });
   }
 });
+
+/**
+ * @swagger
+ * tags:
+ *   name: control
+ *   description: control - 에듀킷을 제어함.commandSet에 등록되어있는 command를 mqtt publish
+ */
+
+// 완료 - Edukit1 제어 명령 실행
+
+/**
+ * @swagger
+ * /control/edukit1:
+ *   post:
+ *     summary: Edukit1 제어 명령 실행
+ *     tags: [control]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               command:
+ *                 type: string
+ *                 description: 제어 명령
+ *               value:
+ *                 type: string
+ *                 description: 명령 값 (옵션)
+ *             required:
+ *               - command
+ *     responses:
+ *       200:
+ *         description: 명령 실행 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 명령 실행 결과 메시지
+ *       400:
+ *         description: 잘못된 요청 형식
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       404:
+ *         description: 명령이 존재하지 않음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 명령 실행 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ */
+
+// 완료 - Edukit2 제어 명령 실행
+
+/**
+ * @swagger
+ * /control/edukit2:
+ *   post:
+ *     summary: Edukit2 제어 명령 실행
+ *     tags: [control]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               command:
+ *                 type: string
+ *                 description: 제어 명령
+ *               value:
+ *                 type: string
+ *                 description: 명령 값 (옵션)
+ *             required:
+ *               - command
+ *     responses:
+ *       200:
+ *         description: 명령 실행 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 명령 실행 결과 메시지
+ *       400:
+ *         description: 잘못된 요청 형식
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       404:
+ *         description: 명령이 존재하지 않음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ *       500:
+ *         description: 명령 실행 실패
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: 오류 메시지
+ */
 
 module.exports = router;
