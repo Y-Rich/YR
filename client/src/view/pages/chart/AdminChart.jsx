@@ -79,8 +79,8 @@ export const AdminChart = () => {
               <LineGraph2
                 title="이번 달 1공장 생산 현황"
                 labels={day}
-                label1="1공장 생산량"
-                label2="1공장 투입량"
+                label1="세종 공장 생산량"
+                label2="화성 공장 투입량"
                 data1={data.monthM1Output}
                 data2={data.monthM1Input}
                 borderColor1="#3d5a7f"
@@ -95,8 +95,8 @@ export const AdminChart = () => {
               <LineGraph2
                 title="이번 달 2공장 투입 현황"
                 labels={day}
-                label1="2공장 생산량"
-                label2="2공장 투입량"
+                label1="세종 공장 생산량"
+                label2="화성 공장 투입량"
                 data1={data.monthM2Output}
                 data2={data.monthM2Input}
                 borderColor1="#3d5a7f"

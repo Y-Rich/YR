@@ -41,7 +41,7 @@ const FacPannel = ({
           </Section>
           <Section>
             <Progress className="pannel top">
-              <ProgressBar style={{ width: `${No3Count}%` }}></ProgressBar>
+              <ProgressBar style={{ width: `${No3Count * 10}%` }}></ProgressBar>
             </Progress>
           </Section>
           <Section className="top left">

@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
-ChartJS.defaults.font.family = 'Do Hyeon';
+ChartJS.defaults.font.family = 'SUITE-Regular';
 
 export const LineGraph1 = ({
   title,
