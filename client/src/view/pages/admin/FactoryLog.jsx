@@ -1,0 +1,124 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { Page } from '../../components/Components';
+import {
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Title,
+  ButtonContainer,
+  EmpButton,
+  AdminButton,
+  Scroll,
+} from './style';
+import axios from 'axios';
+import { useTable, useSortBy } from 'react-table';
+import { Link } from 'react-router-dom';
+
+const FactoryLog = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    axios
+      .get('http://192.168.0.127:8000/admin/logs?list=all&category=factory')
+      .then((res) => {
+        setData(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error('데이터를 불러오는 중 에러가 발생했습니다.', error);
+      });
+  };
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: '시간',
+        accessor: 'createdAt',
+        sortType: 'basic',
+        defaultCanSort: true,
+      },
+      {
+        Header: '공장명',
+        accessor: 'Manufacturer',
+      },
+
+      {
+        Header: '라인',
+        accessor: 'type',
+      },
+      {
+        Header: '공정',
+        accessor: 'ProductName',
+      },
+    ],
+    []
+  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        initialState: {
+          sortBy: [{ id: 'createdAt', desc: false }],
+        },
+      },
+      useSortBy
+    );
+  const TableHead = () => {
+    return (
+      <Thead>
+        {headerGroups.map((headerGroup) => (
+          <Tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+            ))}
+          </Tr>
+        ))}
+      </Thead>
+    );
+  };
+  const Tablebody = () => {
+    return (
+      <Tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <Tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
+                return <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>;
+              })}
+            </Tr>
+          );
+        })}
+      </Tbody>
+    );
+  };
+  return (
+    <Page className="factorylog">
+      <Title>공장 로그</Title>
+      <ButtonContainer>
+        <Link to="/employeelog">
+          <EmpButton>직원 로그</EmpButton>
+        </Link>
+        <Link to="/admin">
+          <AdminButton>직원 목록</AdminButton>
+        </Link>
+      </ButtonContainer>
+      <Scroll>
+        <Table {...getTableProps()}>
+          <TableHead />
+          <Tablebody />
+        </Table>
+      </Scroll>
+    </Page>
+  );
+};
+
+export default FactoryLog;

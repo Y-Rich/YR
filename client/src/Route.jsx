@@ -4,6 +4,8 @@ import Password from './view/pages/user/Password';
 import Register from './view/pages/user/Register';
 import Admin from './view/pages/admin/Admin';
 import Main from './view/pages/3d/Main';
+import EmployeeLog from './view/pages/admin/EmployeeLog';
+import FactoryLog from './view/pages/admin/FactoryLog';
 
 export const ROUTE = {
   HOME: {
@@ -45,6 +47,14 @@ export const PRIVATE_ROUTE = {
   ADMIN: {
     path: '/admin',
     element: Admin,
+  },
+  EMPLOYEELOG: {
+    path: '/employeelog',
+    element: EmployeeLog,
+  },
+  FACTIRYLOG: {
+    path: '/factorylog',
+    element: FactoryLog,
   },
   MAIN: {
     path: '/main',
