@@ -50,6 +50,7 @@ export const Box = styled.div`
     padding: 1em;
     margin: auto;
     background: gray;
+    opacity: 80%;
     border-radius: 0 0 5px 5px;
   }
   &.guiDetail {
