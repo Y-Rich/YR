@@ -13,6 +13,14 @@ export const Page = styled.main`
     background-color: #f6f8f7;
     align-items: baseline;
   }
+  &.employeelog {
+    background-color: #f6f8f7;
+    align-items: baseline;
+  }
+  &.factorylog {
+    background-color: #f6f8f7;
+    align-items: baseline;
+  }
   &::after {
     content: '';
     background: url('assets/back.jpg');

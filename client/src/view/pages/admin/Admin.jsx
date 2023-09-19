@@ -10,10 +10,14 @@ import {
   Tr,
   Scroll,
   AuthButton,
+  EmpButton,
+  FacButton,
+  ButtonContainer,
 } from './style';
 import axios from 'axios';
 import { useTable, useSortBy } from 'react-table';
 import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
 const Admin = () => {
   const [data, setData] = useState([]);
@@ -36,7 +40,6 @@ const Admin = () => {
       .get('http://192.168.0.127:8000/admin/search/?positionID=all')
       .then((res) => {
         setData(res.data.rows);
-        console.log(res.data);
       })
       .catch((error) => {
         console.error('데이터를 불러오는 중 에러가 발생했습니다.', error);
@@ -82,17 +85,16 @@ const Admin = () => {
     ],
     []
   );
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-        initialState: {
-          sortBy: [{ id: 'employeeID', desc: false }],
-        },
+  const { getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        sortBy: [{ id: 'employeeID', desc: false }],
       },
-      useSortBy
-    );
+    },
+    useSortBy
+  );
   const TableHead = () => {
     return (
       <Thead>
@@ -131,8 +133,16 @@ const Admin = () => {
   };
   return (
     <Page className="admin">
-      <Title>권한 관리 및 로그</Title>
+      <Title>직원 목록</Title>
       <AuthButton onClick={openModal}>권한 관리</AuthButton>
+      <ButtonContainer>
+        <Link to="/employeelog">
+          <EmpButton>직원 로그</EmpButton>
+        </Link>
+        <Link to="/factorylog">
+          <FacButton>공장 로그</FacButton>
+        </Link>
+      </ButtonContainer>
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -140,7 +150,7 @@ const Admin = () => {
         reloadData={fetchData} // fetchData 함수를 전달
       />
       <Scroll>
-        <Table {...getTableProps()}>
+        <Table>
           <TableHead />
           <Tablebody />
         </Table>

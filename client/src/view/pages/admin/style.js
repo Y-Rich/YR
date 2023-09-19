@@ -63,3 +63,47 @@ export const AuthButton = styled.button`
   cursor: pointer;
   font-weight: bold;
 `;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100px;
+  left: 53px;
+`;
+
+export const EmpButton = styled.button`
+  height: 40px;
+  width: 140px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+`;
+
+export const FacButton = styled.button`
+  height: 40px;
+  width: 140px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+`;
+
+export const AdminButton = styled.button`
+  height: 40px;
+  width: 140px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+`;
