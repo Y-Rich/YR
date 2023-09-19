@@ -24,9 +24,15 @@ const PLC = (props) => {
   // tray를 위한 셋팅
   const [arrivedM1, setArrivedM1] = useState(false);
   const [arrivedM2, setArrivedM2] = useState(false);
-  const [arrivedM3, setArrivedM3] = useState(false);
+  const [arrivedM3, setArrivedM3] = useState([1, 1, 1, 1, 1]);
   const [arrivedColorM2, setArrivedColorM2] = useState('');
-  const [arrivedColorM3, setArrivedColorM3] = useState('');
+  const [arrivedColorM3, setArrivedColorM3] = useState([
+    'white',
+    'white',
+    'white',
+    'white',
+    'white',
+  ]);
 
   const currentArrivedM1 = useRef(arrivedM1);
   const currentArrivedM2 = useRef(arrivedM2);
@@ -165,7 +171,10 @@ const PLC = (props) => {
     scene.add(camera);
     // scene.add(new THREE.CameraHelper(camera)); // 카메라 헬퍼
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+    });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0xdddddd); // webgl 전체 배경색
@@ -182,25 +191,34 @@ const PLC = (props) => {
     directionalLight.position.y = 20;
     directionalLight.position.z = -10;
     scene.add(directionalLight);
-    scene.add(new THREE.DirectionalLightHelper(directionalLight)); // 라이트의 위치를 알려주는 헬퍼
+    // scene.add(new THREE.DirectionalLightHelper(directionalLight)); // 라이트의 위치를 알려주는 헬퍼
     // Light2
-    const pointLight1 = new THREE.PointLight(0xffffff, 100, 0, 1);
+    const pointLight1 = new THREE.PointLight(0xffffff, 75, 0, 1);
     pointLight1.position.y = 30;
     pointLight1.position.z = -20;
     pointLight1.position.x = 10;
     pointLight1.castShadow = true;
     scene.add(pointLight1);
-    scene.add(new THREE.PointLightHelper(pointLight1)); // 라이트의 위치를 알려주는 헬퍼
+    // scene.add(new THREE.PointLightHelper(pointLight1)); // 라이트의 위치를 알려주는 헬퍼
     // Light3
-    const pointLight2 = new THREE.PointLight(0xffffff, 100, 0, 1);
+    const pointLight2 = new THREE.PointLight(0xffffff, 75, 0, 1);
     pointLight2.position.y = 30;
     pointLight2.position.z = -20;
     pointLight2.position.x = -15;
     pointLight2.castShadow = true;
     scene.add(pointLight2);
-    scene.add(new THREE.PointLightHelper(pointLight2)); // 라이트의 위치를 알려주는 헬퍼
-    const control = new OrbitControls(camera, renderer.domElement);
+    // scene.add(new THREE.PointLightHelper(pointLight2)); // 라이트의 위치를 알려주는 헬퍼
 
+    // Light4
+    const pointLight3 = new THREE.PointLight(0xffffff, 10, 0, 1);
+    pointLight3.position.y = 15;
+    pointLight3.position.z = -25;
+    pointLight3.position.x = -5;
+    pointLight3.castShadow = true;
+    scene.add(pointLight3);
+    // scene.add(new THREE.PointLightHelper(pointLight3)); // 라이트의 위치를 알려주는 헬퍼
+
+    const control = new OrbitControls(camera, renderer.domElement);
     let requestId = null;
 
     const [minY, maxY] = [0, 18000000];
@@ -246,14 +264,15 @@ const PLC = (props) => {
 
         // 트레이
         edukitRef.current.trayActionM1(currentArrivedM1.current);
-        edukitRef.current.trayActionM2(
-          currentArrivedM2.current,
-          currentArrivedColorM2.current
-        );
-        edukitRef.current.trayActionM3(
-          currentArrivedM3.current,
-          currentArrivedColorM3.current
-        );
+        // edukitRef.current.trayActionM2(
+        //   currentArrivedM2.current,
+        //   currentArrivedColorM2.current
+        // );
+        edukitRef.current.trayActionM3_1(currentArrivedM3.current[0], 'white');
+        edukitRef.current.trayActionM3_2(currentArrivedM3.current[1], 'white');
+        edukitRef.current.trayActionM3_3(currentArrivedM3.current[2], 'white');
+        edukitRef.current.trayActionM3_4(currentArrivedM3.current[3], 'white');
+        edukitRef.current.trayActionM3_5(currentArrivedM3.current[4], 'white');
 
         // textSprite 업데이트
         textSprite1_1Ref.current.updateParameters(currentm1OnOff.current);
@@ -480,15 +499,16 @@ const PLC = (props) => {
             currentArrivedM1.current = false;
           }
         }
-
+        // 2호기 도착여부
         if (item.tagId === '24') {
           const convertedValue = item.value ? 1 : 0;
           if (convertedValue) {
             setArrivedM2(true);
             currentArrivedM2.current = true;
+            validation1 = false;
           } else {
             validation1 = true;
-            console.log('hi 24');
+            // console.log('hi 24');
           }
         }
         if (item.tagId === '29') {
@@ -496,25 +516,54 @@ const PLC = (props) => {
           if (convertedValue) {
             setArrivedM2(true);
             currentArrivedM2.current = true;
+            validation2 = false;
           } else {
             validation2 = true;
-            console.log('hi 29');
+            // console.log('hi 29');
           }
         }
-        console.log('24=', validation1, '29=', validation2);
+        // console.log('24=', validation1, '29=', validation2);
         if (validation1 === true && validation2 === true) {
           setArrivedM2(false);
           currentArrivedM2.current = false;
         }
         // 3호기 도착 여부
-        if (item.tagId === '5') {
-          const convertedValue = item.value ? 1 : 0;
-          if (convertedValue) {
-            setArrivedM3(true);
-            currentArrivedM3.current = true;
-          } else {
-            setArrivedM3(false);
-            currentArrivedM3.current = false;
+        // if (item.tagId === '5') {
+        //   const convertedValue = item.value ? 1 : 0;
+        //   if (convertedValue) {
+        //     setArrivedM3(true);
+        //     currentArrivedM3.current = true;
+        //   } else {
+        //     setArrivedM3(false);
+        //     currentArrivedM3.current = false;
+        //   }
+        // }
+        // 생산수
+        if (item.tagId === '17') {
+          const convertedValue = parseInt(item.value);
+          if (convertedValue === 0) {
+            setArrivedM3([false, false, false, false, false]);
+            currentArrivedM3.current = [false, false, false, false, false];
+          }
+          if (convertedValue === 1) {
+            setArrivedM3([true, false, false, false, false]);
+            currentArrivedM3.current = [true, false, false, false, false];
+          }
+          if (convertedValue === 2) {
+            setArrivedM3([true, true, false, false, false]);
+            currentArrivedM3.current = [true, true, false, false, false];
+          }
+          if (convertedValue === 3) {
+            setArrivedM3([true, true, true, false, false]);
+            currentArrivedM3.current = [true, true, true, false, false];
+          }
+          if (convertedValue === 4) {
+            setArrivedM3([true, true, true, true, false]);
+            currentArrivedM3.current = [true, true, true, true, false];
+          }
+          if (convertedValue === 5) {
+            setArrivedM3([true, true, true, true, true]);
+            currentArrivedM3.current = [true, true, true, true, true];
           }
         }
         // 색상체인지 M2
@@ -529,16 +578,16 @@ const PLC = (props) => {
           }
         }
         // 색상체인지 M3
-        if (item.tagId === '37') {
-          const convertedValue = parseInt(item.value);
-          if (convertedValue > 0) {
-            setArrivedColorM3('white');
-            currentArrivedColorM3.current = 'white';
-          } else {
-            setArrivedColorM3('red');
-            currentArrivedColorM3.current = 'red';
-          }
-        }
+        // if (item.tagId === '37') {
+        //   const convertedValue = parseInt(item.value);
+        //   if (convertedValue > 0) {
+        //     setArrivedColorM3('white');
+        //     currentArrivedColorM3.current = 'white';
+        //   } else {
+        //     setArrivedColorM3('red');
+        //     currentArrivedColorM3.current = 'red';
+        //   }
+        // }
       });
     }
   }, [messagePayloadEdukit1]);

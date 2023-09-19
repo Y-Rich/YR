@@ -24,9 +24,14 @@ export default class Edukit {
     const groupM3X = (this.axes.xAxis = new Group());
     const groupM3X2 = (this.axes.xAxis2 = new Group());
 
+    // 트레이
     const groupTrayM1 = (this.trays.m1 = new Group());
     const groupTrayM2 = (this.trays.m2 = new Group());
-    const groupTrayM3 = (this.trays.m3 = new Group());
+    const groupTrayM3_1 = (this.trays.m3_1 = new Group());
+    const groupTrayM3_2 = (this.trays.m3_2 = new Group());
+    const groupTrayM3_3 = (this.trays.m3_3 = new Group());
+    const groupTrayM3_4 = (this.trays.m3_4 = new Group());
+    const groupTrayM3_5 = (this.trays.m3_5 = new Group());
 
     // 3호기 중심축 위치 재조정
     groupM3X.position.x = -6; // bar+gripper
@@ -92,7 +97,7 @@ export default class Edukit {
     // Tray 위치 조정
     mesh_tray_m1.position.set(19.8, 0.3, 4);
     mesh_tray_m2.position.set(11.4, 0.3, 4);
-    mesh_tray_m3.position.set(0, 0, 0);
+    mesh_tray_m3.position.set(2.3, 0, 0);
 
     // 3호기 중심축 위치 재조정
     mesh_m3_y_bar.position.x = 6; // bar+gripper
@@ -118,13 +123,17 @@ export default class Edukit {
 
     // groupM3X2.add(mesh_m3_gripper, new AxesHelper(7));
     // groupM3X.add(mesh_m3_y_bar, groupM3X2, new AxesHelper(7));
-    groupM3X2.add(mesh_m3_gripper, new AxesHelper(7));
-    groupM3X.add(mesh_m3_y_bar, groupM3X2, new AxesHelper(7));
+    groupM3X2.add(mesh_m3_gripper);
+    groupM3X.add(mesh_m3_y_bar, groupM3X2);
     groupM3Y.add(groupM3X, mesh_m3_y_axis);
     group.add(groupM3Y);
     groupTrayM1.add(mesh_tray_m1);
     groupTrayM2.add(mesh_tray_m2);
-    groupTrayM3.add(mesh_tray_m3);
+    groupTrayM3_1.add(mesh_tray_m3.clone());
+    groupTrayM3_2.add(mesh_tray_m3.clone());
+    groupTrayM3_3.add(mesh_tray_m3.clone());
+    groupTrayM3_4.add(mesh_tray_m3.clone());
+    groupTrayM3_5.add(mesh_tray_m3.clone());
     group.add(
       mesh_belt,
       // mesh_edukit_body,
@@ -146,51 +155,20 @@ export default class Edukit {
       // mesh_tray_m2,
       // mesh_tray_m3,
       groupTrayM1,
-      groupTrayM2,
-      groupTrayM3
+      // groupTrayM2,
+      // groupTrayM3
+      groupTrayM3_1,
+      groupTrayM3_2,
+      groupTrayM3_3,
+      groupTrayM3_4,
+      groupTrayM3_5
     );
     group.position.x = -1;
     group.position.y = -5;
     scene.add(group);
-    // scene.add(body);
-
-    // // group2.add(mesh2_1, mesh.clone(), new AxesHelper(7));
-    // // scene.add(group2);
-    // // group2.position.x = -14.6;
-    // scene.add(mesh2_1);
-    // mesh2_1.position.x = -14.6;
-    // scene.add(mesh2_2);
-    // mesh2_2.position.x += -14.6;
-
-    // scene.add(mesh3_1);
-    // mesh3_1.position.x = -5.2;
-    // scene.add(mesh3_2);
-    // mesh3_2.position.x = -5.2;
 
     this.loaded = true;
   }
-
-  // actionY(value) {
-  //   const currentY = this.axes.yAxis.position.y;
-  //   if (value < currentY) {
-  //     this.axes.yAxis.position.y -= 0.02;
-  //   } else if (value > currentY) {
-  //     this.axes.yAxis.position.y += 0.02;
-  //   }
-  // }
-
-  // actionX(value) {
-  //   const currentX = this.axes.xAxis2.rotation.y;
-  //   // this.axes.xAxis.rotation.y = -value
-  //   // this.axes.xAxis2.rotation.y = value
-  //   if (value < currentX) {
-  //     this.axes.xAxis.rotation.y += MathUtils.degToRad(1);
-  //     this.axes.xAxis2.rotation.y += MathUtils.degToRad(-1);
-  //   } else if (value > currentX) {
-  //     this.axes.xAxis.rotation.y += MathUtils.degToRad(-1);
-  //     this.axes.xAxis2.rotation.y += MathUtils.degToRad(1);
-  //   }
-  // }
 
   actionY(value) {
     const currentY = this.axes.yAxis.position.y;
@@ -244,12 +222,72 @@ export default class Edukit {
     }
   }
 
-  trayActionM3(value, color) {
+  trayActionM3_1(value, color) {
     // console.log('trayActionM3 호출, value=', value);
-    this.trays.m3.visible = value;
+    this.trays.m3_1.visible = value;
 
     // 재질 가져오기
-    const currentMaterial = this.trays.m3.children[0].children[0].material[0];
+    const currentMaterial = this.trays.m3_1.children[0].children[0].material[0];
+    if (color === 'red') {
+      currentMaterial.color.set(0xff0000);
+    }
+    if (color === 'white') {
+      currentMaterial.color.set(0xffffff);
+    }
+  }
+
+  trayActionM3_2(value, color) {
+    // console.log('trayActionM3 호출, value=', value);
+    this.trays.m3_2.position.y = 1.2;
+    this.trays.m3_2.visible = value;
+
+    // 재질 가져오기
+    const currentMaterial = this.trays.m3_2.children[0].children[0].material[0];
+    if (color === 'red') {
+      currentMaterial.color.set(0xff0000);
+    }
+    if (color === 'white') {
+      currentMaterial.color.set(0xffffff);
+    }
+  }
+
+  trayActionM3_3(value, color) {
+    // console.log('trayActionM3 호출, value=', value);
+    this.trays.m3_3.position.y = 2.4;
+    this.trays.m3_3.visible = value;
+
+    // 재질 가져오기
+    const currentMaterial = this.trays.m3_3.children[0].children[0].material[0];
+    if (color === 'red') {
+      currentMaterial.color.set(0xff0000);
+    }
+    if (color === 'white') {
+      currentMaterial.color.set(0xffffff);
+    }
+  }
+
+  trayActionM3_4(value, color) {
+    // console.log('trayActionM3 호출, value=', value);
+    this.trays.m3_4.position.y = 3.6;
+    this.trays.m3_4.visible = value;
+
+    // 재질 가져오기
+    const currentMaterial = this.trays.m3_4.children[0].children[0].material[0];
+    if (color === 'red') {
+      currentMaterial.color.set(0xff0000);
+    }
+    if (color === 'white') {
+      currentMaterial.color.set(0xffffff);
+    }
+  }
+
+  trayActionM3_5(value, color) {
+    // console.log('trayActionM3_5 호출, value=', value);
+    this.trays.m3_5.position.y = 4.8;
+    this.trays.m3_5.visible = value;
+
+    // 재질 가져오기
+    const currentMaterial = this.trays.m3_5.children[0].children[0].material[0];
     if (color === 'red') {
       currentMaterial.color.set(0xff0000);
     }
