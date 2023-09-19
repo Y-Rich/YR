@@ -18,8 +18,11 @@ const FactoryLog = () => {
     axios
       .get('http://192.168.0.127:8000/admin/logs?list=all&category=factory')
       .then((res) => {
-        setData(res.data);
-        // console.log(res.data);
+        // 데이터 필터링: 'type'이 'edukit1/control'인 행 제외
+        const filteredData = res.data.filter(
+          (item) => item.type !== 'edukit1/control'
+        );
+        setData(filteredData);
         setLoading(false);
       })
       .catch((error) => {
@@ -37,13 +40,13 @@ const FactoryLog = () => {
         defaultCanSort: true,
       },
       {
-        Header: '공장명',
+        Header: '공장 분류',
         accessor: 'Manufacturer',
         Cell: ({ value }) => {
           if (value === 'edukit1') {
-            return 'fac1';
+            return '세종 공장';
           } else if (value === 'edukit2') {
-            return 'fac2';
+            return '화성 공장';
           } else {
             return value; // 나머지 타입은 그대로 출력
           }
@@ -51,12 +54,25 @@ const FactoryLog = () => {
       },
 
       {
-        Header: '라인',
+        Header: '내용',
         accessor: 'type',
-      },
-      {
-        Header: '공정',
-        accessor: 'ProductName',
+        Cell: ({ value }) => {
+          if (value === 'process-stop') {
+            return '공장 가동 종료';
+          } else if (value === 'process-start') {
+            return '공장 가동 시작';
+          } else if (value === 'line1') {
+            return '1공정 반출';
+          } else if (value === 'line2') {
+            return '2공정 가공';
+          } else if (value === 'line3') {
+            return '3공정 출하';
+          } else if (value === 'product-line1') {
+            return '1공정 반출';
+          } else {
+            return value; // 나머지 타입은 그대로 출력
+          }
+        },
       },
     ],
     []
@@ -102,7 +118,6 @@ const FactoryLog = () => {
           return (
             <Tr {...row.getRowProps()}>
               {row.cells.map((cell, index) => {
-                console.log('here', index, cell.value);
                 if (cell.column.Header === '시간') {
                   const date = new Date(cell.value);
                   const formattedDate = `${date.getFullYear()}-${(
