@@ -1,21 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Page } from '../../components/Components';
-import {
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Scroll,
-  Title,
-  ButtonContainer,
-  AdminButton,
-  FacButton,
-} from './style';
+import { Table, Tbody, Td, Th, Thead, Tr, Scroll, Title } from './style';
 import axios from 'axios';
 import { useTable, useSortBy } from 'react-table';
-import { Link } from 'react-router-dom';
+import { FaSort } from 'react-icons/fa';
 import Loading from '../../components/Loading';
 
 const EmployeeLog = () => {
@@ -78,8 +66,6 @@ const EmployeeLog = () => {
         typeof controlData.tagId === 'string' &&
         typeof controlData.value === 'string'
       ) {
-        // 여기서 controlData를 사용하여 설명을 생성하면 됩니다.
-
         switch (controlData.tagId) {
           case '1':
             return controlData.value === '0'
@@ -177,17 +163,32 @@ const EmployeeLog = () => {
     []
   );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns,
-      data,
-    });
+    useTable(
+      {
+        columns,
+        data,
+        initialState: {
+          sortBy: [{ id: 'createdAt', desc: true }],
+        },
+      },
+      useSortBy
+    );
   const TableHead = () => {
     return (
       <Thead>
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+              <Th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className={
+                  column.isSorted ? (column.isSortedDesc ? 'desc' : 'asc') : ''
+                }
+              >
+                {column.render('Header')}
+                &nbsp;&nbsp;
+                <FaSort style={{ fontSize: '13px' }} />
+              </Th>
             ))}
           </Tr>
         ))}
