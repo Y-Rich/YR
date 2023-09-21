@@ -99,7 +99,7 @@ arduino, C#, mosquitto, MQTT, XG5000, XG-PM
 
 **👉 Admin 페이지**
 
-![YR-Admin](https://github.com/Y-Rich/YR/assets/112938316/0e45e0b8-1928-4ec9-a904-dfc8be01dc5e)
+![YR-Admin-EmployeeControl](https://github.com/Y-Rich/YR/assets/112938316/679740cd-785f-4f1a-b774-f003f1cb4c4e)
 
 🎈 직원 관리
 직원의 권한을 변경할 수 있습니다.
