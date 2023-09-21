@@ -51,8 +51,8 @@ export default class Edukit {
     const mesh_belt = (this.object.mesh_belt = await this.loader.loadAsync(
       'files/Belt.FBX'
     ));
-    const mesh_edukit_body = (this.object.mesh_edukit_body =
-      await this.loader.loadAsync('files/BodyEdukit.FBX'));
+    // const mesh_edukit_body = (this.object.mesh_edukit_body =
+    //   await this.loader.loadAsync('files/BodyEdukit.FBX'));
     const mesh_c_sensor_body = (this.object.mesh_c_sensor_body =
       await this.loader.loadAsync('files/ColorSensor_Body.FBX'));
     const mesh_c_sensor_grn = (this.object.mesh_c_sensor_grn =
