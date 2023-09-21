@@ -9,7 +9,6 @@ import {
   Button,
   ButtonContainer,
 } from './ModalStyle';
-import axios from 'axios';
 import ConfirmModal from './ConfirmModal';
 
 const Modal = ({ isOpen, onClose, data, reloadData }) => {
@@ -40,25 +39,6 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
 
   const handleConfirm = () => {
     setIsSubmitting(true);
-
-    axios
-      .put('http://192.168.0.127:8000/admin/permission', {
-        id: selectedUserID,
-        positionID: selectedPositionID,
-      })
-      .then((res) => {
-        handleClose();
-        setIsPermissionChangeConfirmed(true); // 권한 변경이 확인되었습니다.
-        reloadData();
-      })
-      .catch((error) => {
-        console.error('포지션 변경 중 에러가 발생했습니다.', error);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-        setIsConfirmationModalOpen(false); // 모달을 닫습니다.
-        handleClose(); // 원래 모달을 닫습니다.
-      });
   };
 
   const positions = [
@@ -118,6 +98,12 @@ const Modal = ({ isOpen, onClose, data, reloadData }) => {
             isOpen={isConfirmationModalOpen}
             onClose={() => setIsConfirmationModalOpen(false)}
             onConfirm={handleConfirm}
+            selectedUserID={selectedUserID}
+            selectedPositionID={selectedPositionID}
+            setIsPermissionChangeConfirmed={setIsPermissionChangeConfirmed}
+            reloadData={reloadData}
+            setIsSubmitting={setIsSubmitting}
+            setIsConfirmationModalOpen={setIsConfirmationModalOpen}
           />
         )}
       </PermissionModalContent>
